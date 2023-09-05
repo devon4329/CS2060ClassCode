@@ -19,6 +19,7 @@ void guessGame(void);
 bool isCorrect(int guess, int answer); 
 
 int main(void) {
+
     // srand() will seed the value in the rand() function so the 
     // sequence is randomized and a rand number will be produced.
     // time() is used with srand() to ensure the seeded value used in 
@@ -26,6 +27,12 @@ int main(void) {
    srand(time(0)); 
    
    // guessGame() calls the function to start the game in the program
+
+    //
+   //srand(time(0));
+   //printf("Hello Deb");
+   //
+
    guessGame();
 } // end main
 
