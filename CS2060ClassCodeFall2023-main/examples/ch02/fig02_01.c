@@ -16,7 +16,7 @@ int main(void) {
     int area = 0;
     
     //Create a variable to store the scanf return value
-    unsigned scanfReturn;
+    //unsigned scanfReturn;
     
     //Prompt for length and store in variable length
     //puts() used to securely prompt user for a length
@@ -48,10 +48,11 @@ int main(void) {
     double average = 0;
     
     //Calculation to find the average
+    //Fix the issue so we have correct average result
     average = (length + width) / 2;
     
     //Display the average value to one decimal place
-    printf("Average: %.1g\n", average);
+    printf("Average: %.1f\n", average);
     
     printf("Welcome to C!\n");
     
