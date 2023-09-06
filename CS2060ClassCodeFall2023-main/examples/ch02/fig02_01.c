@@ -42,7 +42,16 @@ int main(void) {
     //Print out the information.
     printf("Length: %d  Width: %d  Area: %d\n", length, width, area);
     
+    //Update the code to find the division result of the length/width after
+    //the area is printed
+    //Create a double variable to store the average of the length and width
+    double average = 0;
     
+    //Calculation to find the average
+    average = (length + width) / 2;
+    
+    //Display the average value to one decimal place
+    printf("Average: %.1g\n", average);
     
     printf("Welcome to C!\n");
     
