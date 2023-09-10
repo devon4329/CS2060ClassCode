@@ -3,6 +3,7 @@
 #include <stdio.h>
 
 int main(void) {
+    // Variables initialized to zero for secure programming practices
    int aCount = 0;
    int bCount = 0; 
    int cCount = 0; 
@@ -14,6 +15,12 @@ int main(void) {
    int grade = 0; // one grade 
 
    // loop until user types end-of-file key sequence
+    // grade is the variable that will hold the obtained character from the function
+    // getchar() is the function that reads a char from the user and changes the value
+    //to its decimal value according to the ASCII table.
+    // != is an equality operator used for comparison in loops and selection
+    // EOF is the "End of File" input used to signal the end of input either from a user
+    //or a file. Here it is used to exit the loop for grade inputs from a user.
    while ((grade = getchar()) != EOF) {
 
       // determine which grade was input
