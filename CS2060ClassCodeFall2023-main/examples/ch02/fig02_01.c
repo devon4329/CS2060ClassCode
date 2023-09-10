@@ -2,6 +2,8 @@
 // A first program in C.
 #include <stdio.h>
 
+double calculateArea(int, int);
+
 // function main begins program execution 
 int main(void) {
     
@@ -49,7 +51,10 @@ int main(void) {
     
     //Calculation to find the average
     //Fix the issue so we have correct average result
-    average = (length + width) / 2;
+    //average = (length + width) / 2;
+    
+    //Passing return value from function into the area
+    calculateArea(<#int length#>, <#int width#>);
     
     //Display the average value to one decimal place
     printf("Average: %.1f\n", average);
@@ -63,7 +68,23 @@ int main(void) {
     
 } // end function main 
 
-
+/*
+ * Function to calculate area
+ */
+double calculateArea (int length, int width){
+    
+    double area = 0.0;
+    int height = 0;
+    int base = 0;
+    
+    area = ((double)base * height);
+    
+    scanf("Area: %.1f", area);
+    
+    return area;
+    
+    
+}
 
 /**************************************************************************
  * (C) Copyright 1992-2021 by Deitel & Associates, Inc. and               *
