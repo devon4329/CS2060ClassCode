@@ -11,20 +11,33 @@ int main(void) {
 
    // process 10 students using counter-controlled loop 
    while (student <= 10) {
-      // prompt user for input and obtain value from user 
+       
+       // prompt user for input and obtain value from user
       printf("%s", "Enter result (1=pass,2=fail): ");
-      int result = 0; // one exam result 
-      scanf("%d", &result);
-
-      // if result 1, increment passes 
-      if (result == 1) {     
-         passes = passes + 1;
-      } // end if 
-      else { // otherwise, increment failures 
-         failures = failures + 1;
-      } // end else 
-
-      student = student + 1; // increment student counter  
+      int result = 0; // one exam result
+       scanf("%d", &result);
+       
+       // if to compare if input is correct
+       if (result == 1 || result == 2){
+           
+           // if result 1, increment passes
+           if (result == 1) {
+              passes = passes + 1;
+           } // end if
+           else { // otherwise, increment failures
+              failures = failures + 1;
+           } // end else
+           
+           student = student + 1; // increment student counter
+       } // end if
+       
+       // else to request re-entry of input if value does not result in 1 or 2
+       else {
+           printf("%s", "Incorrect input. ");
+           puts("Please re-enter result. ");
+       }// end else
+       
+    
    } // end while 
 
    // termination phase; display number of passes and failures 
