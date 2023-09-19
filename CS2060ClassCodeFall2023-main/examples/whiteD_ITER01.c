@@ -45,32 +45,63 @@ int main(void){
     int totalNights = 0;
     double totalCharges = 0.0;
     
+    //do-while loop ensures the program continues to run for multiple customers
+    //until the sentinel value is entered and the program enters rental property
+    //owner mode.
+    //Acceptance Criteria 2.1
     do
     {
+        //calling the printRentalPropertyInfo function to display information
+        //for vacationer.
+        //Acceptance Criteria 1.1
         printRetnalPropertyInfo(MIN_RENTAL_NIGHTS, MAX_RENTAL_NIGHTS, INTERVAL_1_NIGHTS, INTERVAL_2_NIGHTS, RENTAL_RATE, DISCOUNT);
         
+        //Assigning the value of numberNights to the returned value of the
+        //function call getValidInt. This function will not end until a valid integer
+        //value is enetered.
+        //so a valid integer value is stored in numberNights.
+        //Acceptance Criteria 1.2
         numberNights = getValidInt(MIN_RENTAL_NIGHTS, MAX_RENTAL_NIGHTS, SENTINEL_NEG1);
         
+        //If statement to determine which mode the program will run in.
+        //Customer mode will run, and continue to run as long as numberNights
+        //does not equal the sentinel value (-1).
         if (numberNights != SENTINEL_NEG1)
         {
             totalNights = totalNights + numberNights;
             
+            //Assigning the value rentalCharges to the value returned from the function
+            //calcualteCharges. Values will be valid due to prior getValidInt function call.
+            //Acceptance Critera 1.2.b
             rentalCharges = calculateCharges(numberNights, INTERVAL_1_NIGHTS, INTERVAL_2_NIGHTS, RENTAL_RATE, DISCOUNT);
             
             totalCharges = totalCharges + rentalCharges;
             
             puts ("Rental Charges\n");
             printNightsCharges(numberNights, rentalCharges);
-        }
+        } //if customer mode end
         
+        //Else for event that valid user input is the sentinel value of (-1) and puts
+        //the program into property owner mode.
+        //Acceptance Criteria 1.2.c
         else if (numberNights == SENTINEL_NEG1)
         {
-            puts ("\n");
-            puts ("Rental Propterty Owener Total Summary\n");
-            printNightsCharges(totalNights, totalCharges);
-        }
+            if (totalNights == 0)
+            {
+                puts ("Rental Property Owner Total Summary\n");
+                puts ("There were no rentals\n");
+            } // if no rentals
+            
+            else
+            {
+                puts ("\n");
+                puts ("Rental Propterty Owener Total Summary\n");
+                printNightsCharges(totalNights, totalCharges);
+            } //else rentals
+            
+        } //else rental property owener mode end
         
-    }
+    } //do-while end
     while (numberNights != SENTINEL_NEG1);
     
     
@@ -109,6 +140,7 @@ int getValidInt(int min, int max, int sentinel)
         while (getchar() != '\n');
         
         // if statement for scanfReturn to ensure input is valid
+        // Acceptance Criteria 1.2.a
         if (scanfReturn == 1)
         {
          
@@ -127,6 +159,7 @@ int getValidInt(int min, int max, int sentinel)
             } //end else if
             
             // else for error of input not within the range of min and max nights
+            // Acceptance Criteria 1.2.a
             else
             {
                 printf ("Error: Not within %d and %d. Please enter the value again: ", min, max);
