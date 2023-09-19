@@ -139,7 +139,7 @@ double calculateCharges(unsigned int nights, unsigned int interval1Nights, unsig
     } //else interval1Nights discount
     else if (nights > interval2Nights)
     {
-        totalCharge = (rate * nights) - ((nights - interval2Nights) * (discount * 2) + ((nights - interval2Nights + interval1Nights) * discount));
+        totalCharge = (rate * nights) - ((nights - interval2Nights) * (discount * 2) + (interval2Nights - interval1Nights) * discount);
     }
     
     return totalCharge;
