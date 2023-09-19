@@ -42,13 +42,38 @@ int main(void){
     double const DISCOUNT = 50;
     int numberNights = 0;
     double rentalCharges = 0.0;
+    int totalNights = 0;
+    double totalCharges = 0.0;
     
-    printRetnalPropertyInfo(MIN_RENTAL_NIGHTS, MAX_RENTAL_NIGHTS, INTERVAL_1_NIGHTS, INTERVAL_2_NIGHTS, RENTAL_RATE, DISCOUNT);
-    numberNights = getValidInt(MIN_RENTAL_NIGHTS, MAX_RENTAL_NIGHTS, SENTINEL_NEG1);
-    rentalCharges = calculateCharges(numberNights, INTERVAL_1_NIGHTS, INTERVAL_2_NIGHTS, RENTAL_RATE, DISCOUNT);
+    do
+    {
+        printRetnalPropertyInfo(MIN_RENTAL_NIGHTS, MAX_RENTAL_NIGHTS, INTERVAL_1_NIGHTS, INTERVAL_2_NIGHTS, RENTAL_RATE, DISCOUNT);
+        
+        numberNights = getValidInt(MIN_RENTAL_NIGHTS, MAX_RENTAL_NIGHTS, SENTINEL_NEG1);
+        
+        if (numberNights != SENTINEL_NEG1)
+        {
+            totalNights = totalNights + numberNights;
+            
+            rentalCharges = calculateCharges(numberNights, INTERVAL_1_NIGHTS, INTERVAL_2_NIGHTS, RENTAL_RATE, DISCOUNT);
+            
+            totalCharges = totalCharges + rentalCharges;
+            
+            puts ("Rental Charges\n");
+            printNightsCharges(numberNights, rentalCharges);
+        }
+        
+        else if (numberNights == SENTINEL_NEG1)
+        {
+            puts ("\n");
+            puts ("Rental Propterty Owener Total Summary\n");
+            printNightsCharges(totalNights, totalCharges);
+        }
+        
+    }
+    while (numberNights != SENTINEL_NEG1);
     
-    printf("$%.2f", rentalCharges);
-    puts(" ");
+    
     
     return 0;
 } //end main
@@ -144,3 +169,16 @@ double calculateCharges(unsigned int nights, unsigned int interval1Nights, unsig
     
     return totalCharge;
 } //calculateCharges function end
+
+/*
+ * Function to print summary of nights rented and total charges
+ */
+void printNightsCharges(unsigned int nights, double charges)
+{
+    
+    puts("Nights\tCharge");
+    printf("%d\t\t$%.2f\n\n", nights, charges);
+    
+    
+} //printNightsCharges function end
+
