@@ -38,7 +38,7 @@ int main(void){
     unsigned int const MAX_RENTAL_NIGHTS = 14;
     unsigned int const INTERVAL_1_NIGHTS = 3;
     unsigned int const INTERVAL_2_NIGHTS = 6;
-    double const RENTAL_RATE = 400;
+    double const RENTAL_RATE = 200;
     double const DISCOUNT = 50;
     int numberNights = 0;
     double rentalCharges = 0.0;
