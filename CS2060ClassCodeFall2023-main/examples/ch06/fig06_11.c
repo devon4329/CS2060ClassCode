@@ -5,11 +5,20 @@
 
 // function prototypes
 void modifyArray(int b[], size_t size); 
-void modifyElement(int e);              
+void modifyElement(int e); 
+void displayArray(int a[], size_t size);
  
 // function main begins program execution
 int main(void) {
    int a[SIZE] = {0, 1, 2, 3, 4}; // initialize array a
+    
+    // 1.1 Demonstrate that "the value of an array name" is really the
+    // address of the first element of the array.
+    // %p is the format specifer used to print pointers and addresses
+    printf("array name: %p\n", a);
+    
+    //1.3 Call printArray function to display elements inside of the array.
+    displayArray(a, SIZE);
 
    puts("Effects of passing entire array by reference:\n\nThe "
       "values of the original array are:");
@@ -52,9 +61,20 @@ void modifyArray(int b[], size_t size) {
 void modifyElement(int e) {                                      
    e *= 2; // multiply parameter by 2                                  
    printf("Value in modifyElement is %d\n", e);            
-} 
+}
 
-
+// Function to display the elements inside of an array
+// Able to work with different sized arrays
+void displayArray(int a[], size_t size)
+{
+    for (size_t i = 0; i < size; i++)
+    {
+        puts("Element\t\tValue");
+        printf("%3zu%10d\n", i, a[i]);
+        
+    } //end for loop
+    
+} //end printArray function
 
 /**************************************************************************
  * (C) Copyright 1992-2021 by Deitel & Associates, Inc. and               *
