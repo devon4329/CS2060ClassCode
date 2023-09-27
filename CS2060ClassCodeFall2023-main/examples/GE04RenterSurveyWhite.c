@@ -14,7 +14,10 @@
 
 void printCategories(const char *categories[], size_t totalCategories);
 int getValidInt(int min, int max, int sentinel);
-void getRatings(int ratingsArray[][3], int maxRating, int minRating, const int numRatings, const int numCategories, int sentinel);
+void getRatings(int maxRating, int minRating, const int numRatings, const int numCategories,int ratingsArray[][numCategories], int sentinel);
+void printSurveyResults(int numRatings, int numCategories, int ratingsArray[][numCategories]);
+void calculateCategoryAverages(int numRatings, int numCategories, int ratingsArray[][numCategories], double averageArray[]);
+void printCategoryData(const char *categories[], int numRatings, int numCategories, double averageArray[]);
 
 int main (void) {
     
@@ -32,8 +35,15 @@ int main (void) {
     //create 2D array to hold ratings of the survey.
     int rentalSurvey[NUM_RATINGS][RENTER_SURVEY_CATEGORIES] = {0};
     
-    getRatings(rentalSurvey, MAX_RATING, MIN_RATING, NUM_RATINGS, RENTER_SURVEY_CATEGORIES, SENTINEL_NEG1);
+    getRatings(MAX_RATING, MIN_RATING, NUM_RATINGS, RENTER_SURVEY_CATEGORIES, rentalSurvey, SENTINEL_NEG1);
     
+    printSurveyResults(NUM_RATINGS, RENTER_SURVEY_CATEGORIES, rentalSurvey);
+    
+    double categoryAverages[RENTER_SURVEY_CATEGORIES] = {0};
+    
+    calculateCategoryAverages(NUM_RATINGS, RENTER_SURVEY_CATEGORIES, rentalSurvey, categoryAverages);
+    
+    printCategoryData(surveyCategories, NUM_RATINGS, RENTER_SURVEY_CATEGORIES, categoryAverages);
     
     
     return 0;
@@ -110,34 +120,81 @@ int getValidInt(int min, int max, int sentinel)
 
 
 // Get ratings from user
-void getRatings(int ratingsArray[][3], int maxRating, int minRating, const int numRatings, const int numCategories, int sentinel)
+void getRatings(int maxRating, int minRating, const int numRatings, const int numCategories,int ratingsArray[][numCategories], int sentinel)
 {
-    int categoryNum = 1;
-    bool surveyComplete = false;
     
     for (size_t i = 0; i < numRatings; i++)
     {
-        for (size_t j = 0; j < numRatings; j++)
+        for (size_t j = 0; j < numCategories; j++)
         {
             printf("%s%zu\n", "Renter ", i+1);
             
-            do
-            {
-                puts("Enter your rating for");
-                printf("Category%d: ", categoryNum);
-                ratingsArray[i][j] = getValidInt(maxRating, minRating, sentinel);
-                categoryNum++;
-                
-                if (categoryNum == 3)
-                {
-                    surveyComplete = true;
-                }
-                
-            } //do
-            while (surveyComplete == false);
-            
+            puts("Enter your rating for");
+            printf("Category %zu: ", j+1);
+            ratingsArray[i][j] = getValidInt(minRating, maxRating, sentinel);
+            //ratingsArray[i][j] = inputRating;
+
         } //nested for loop end
     
     } // end for loop
     
 } //end getRatings
+
+//Print results of survey
+void printSurveyResults(int numRatings, int numCategories, int ratingsArray[][numCategories])
+{
+    for (size_t i = 0; i < numRatings; i++)
+    {
+        printf("%s %zu: ", "Survey", i+1);
+        
+        for (size_t j = 0; j < numCategories; j++)
+        {
+            printf("%7d", ratingsArray[i][j]);
+            
+        } //nested for
+        puts("");
+    } //for
+} //printSurveyResults end
+
+//calculate the averages of the ratings
+void calculateCategoryAverages(int numRatings, int numCategories, int ratingsArray[][numCategories], double averageArray[])
+{
+    double average = 0.0;
+    int sum = 0;
+    
+    for (size_t i = 0; i < numCategories; i++)
+    {
+        sum = 0;
+        
+        for (size_t j = 0; j < numRatings; j++)
+        {
+            sum = sum + ratingsArray[j][i];
+            
+            if (j == numRatings - 1)
+            {
+                average = (double)sum / numRatings;
+                averageArray[i] = average;
+            }
+            
+        } //end nested for
+        
+        
+    } //end for
+    
+    
+} //calculateCategoryAverages end
+
+// Print averages by reading from the categoryAverages array
+void printCategoryData(const char *categories[], int numRatings, int numCategories, double averageArray[])
+{
+    printCategories(categories, numCategories);
+    printf("%s", "Rating Averages:");
+    
+    for (size_t i = 0; i < numCategories; i++)
+    {
+        printf("%20.1f", averageArray[i]);
+    } //for loop end
+    
+    puts("");
+    
+} // printCategoryData end
