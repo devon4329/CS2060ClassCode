@@ -39,6 +39,9 @@ int main (void) {
     
     printSurveyResults(NUM_RATINGS, RENTER_SURVEY_CATEGORIES, rentalSurvey);
     
+    //declare and initialize 1D array to hold averages
+    //declared as double to hold non-whole values
+    //initialized to 0 to not have "garbage values" in the array.
     double categoryAverages[RENTER_SURVEY_CATEGORIES] = {0};
     
     calculateCategoryAverages(NUM_RATINGS, RENTER_SURVEY_CATEGORIES, rentalSurvey, categoryAverages);
@@ -140,6 +143,7 @@ void getRatings(int maxRating, int minRating, const int numRatings, const int nu
     
 } //end getRatings
 
+
 //Print results of survey
 void printSurveyResults(int numRatings, int numCategories, int ratingsArray[][numCategories])
 {
@@ -162,14 +166,20 @@ void calculateCategoryAverages(int numRatings, int numCategories, int ratingsArr
     double average = 0.0;
     int sum = 0;
     
+    //for loop to iterate through the columns second
+    //allows for easy calculation of sum an averages of each column
     for (size_t i = 0; i < numCategories; i++)
     {
         sum = 0;
         
+        //nested for loop to iterate through each survey in the first column
+        //to obtain sum and average
         for (size_t j = 0; j < numRatings; j++)
         {
             sum = sum + ratingsArray[j][i];
             
+            //if used for when the sum of all columns have been obtained
+            //then able to find the average and store in the averageCatergories array in main
             if (j == numRatings - 1)
             {
                 average = (double)sum / numRatings;
@@ -185,9 +195,12 @@ void calculateCategoryAverages(int numRatings, int numCategories, int ratingsArr
 } //calculateCategoryAverages end
 
 // Print averages by reading from the categoryAverages array
+// uses *categories parameter to be able to print category info using printCategories function
 void printCategoryData(const char *categories[], int numRatings, int numCategories, double averageArray[])
 {
+    //Call function to reprint category information
     printCategories(categories, numCategories);
+    
     printf("%s", "Rating Averages:");
     
     for (size_t i = 0; i < numCategories; i++)
