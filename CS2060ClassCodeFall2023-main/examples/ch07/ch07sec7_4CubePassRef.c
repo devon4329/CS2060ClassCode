@@ -5,51 +5,73 @@
 #include <stdlib.h>
 
 int cubePass1(int number);
-int cubePass2(int * numberPtr);
+int cubePass2(const int * numberPtr);
 
 int main(void) {
 
     // numberMain initialized to 5
 	int numberMain = 5;
     
+    const int test = 5;
+    
     // result initialized to 0
 	int result = 0;
+    int result2 = 0;
 	
     // Printing the value of numberMain
     // numberMain memory location in Main Stack of memory
 	printf ("In main before cubePass1  numberMain = %d\n", numberMain);
+    printf ("In main before cubePass1  test = %d\n", test);
+
     
     // printing the address of the variable numberMain
     // located on main stack memory
 	printf("&numberMain = %p\n", &numberMain);
+    printf("&test = %p\n", &test);
+
+    
     
     // result is being re-initialized to the value that returns from
     // cubePass1 funciton.
     // cubePass1 funciont is passing by value the element present in
     // numberMain
 	result = cubePass1(numberMain);
+    result2 = cubePass1(test);
+
     
     // No changes made to value of numberMain
     // cubePass1 was pass-by-value and used a copy of the value
     // located in numberMain
 	printf ("In main after cubePass1  numberMain = %d\n", numberMain);
+    printf ("In main after cubePass1  test = %d\n", test);
+
     
     // result initialized to the return value of cubePass1 function.
 	printf ("Result = %d\n", result);
+    printf ("Result2 = %d\n", result2);
+
 	printf("\nIn main before cubePass2  numberMain = %d\n", numberMain);
+    printf("\nIn main before cubePass2  test = %d\n", test);
+
     
     // cubePass2 function is passing a value by reference
     // numberMain will be modified by this function
     // result is initialized to outcome of the function.
 	result = cubePass2(&numberMain);
+    result2 = cubePass2(&test);
+
     
     // numberMain value has changed because cubePass2 passed the address of
     // numberMain and not a copy of its original value.
 	printf("\nIn main after cubePass2  numberMain = %d\n", numberMain);
+    printf("\nIn main after cubePass2  test = %d\n", test);
+
     
     // result will show the same value as numberMain because it has been intialized
     // to the return value from the cubePass2 function.
 	printf("result = %d\n", result);
+    printf("result2 = %d\n", result2);
+
 
 } // main
 
@@ -82,7 +104,7 @@ int cubePass1 (int number)
 // cubePass2 function is pass-by-reference
 // numberPtr is a pointer to the address location on the main
 // stack of memory to the variable numberMain.
-int cubePass2 (int * numberPtr)
+int cubePass2 (const int * numberPtr)
 {
 	int cube = 0;
 	puts ("\nIn cubePass2");
@@ -112,7 +134,10 @@ int cubePass2 (int * numberPtr)
     // same as the value currently in the variable cube.
     // *numberPtr allows the value at the address this pointer is hold to
     // be changed because numberPtr has the "*" symbole infront of it
-	*numberPtr = cube;
+	numberPtr = &cube;
+    
+    printf("&cube = %p\n", &cube);
+    printf("&numberPtr = %p\n", &numberPtr);
     
     // printing the modified element at the address numberPtr is holding.
 	printf ("*numberPtr = %d\n", *numberPtr);
