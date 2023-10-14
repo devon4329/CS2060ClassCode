@@ -45,6 +45,14 @@ int main(void){
     double rentalCharges = 0.0;
     int totalNights = 0;
     double totalCharges = 0.0;
+    int unsigned const RENTER_SURVEY_CATEGORIES = 3;
+    int unsigned const MAX_RATING = 5;
+    unsigned int const MIN_RATING = 1;
+    int unsigned const NUM_RATINGS = 5;
+    
+    const char *surveyCategories[RENTER_SURVEY_CATEGORIES] = {"Check-in Process", "Cleanliness", "Amenities"};
+    
+    for 
     
     //do-while loop ensures the program continues to run for multiple customers
     //until the sentinel value is entered and the program enters rental property
