@@ -20,7 +20,7 @@
 void printRetnalPropertyInfo(unsigned int minNights, unsigned int maxNights, unsigned int interval1Nights, unsigned int interval2Nights, double rate, double discount);
 
 // retruns only valid input from the user based on the min and max values inclusively
-int getValidInt(int min, int max, int sentinel);
+int getValidInt(int min, int max);
 
 // calculates the charge based on the number of nights rented
 double calculateCharges(unsigned int nights, unsigned int interval1Nights, unsigned int interval2Nights, double rate, double discount);
@@ -29,6 +29,7 @@ double calculateCharges(unsigned int nights, unsigned int interval1Nights, unsig
 // Use for printing vacationer charge or for property owner summay
 void printNightsCharges(unsigned int nights, double charges);
 
+char getString(char array[]);
 
 int main(void){
     
@@ -61,7 +62,7 @@ int main(void){
         //value is enetered.
         //so a valid integer value is stored in numberNights.
         //Acceptance Criteria 1.2
-        numberNights = getValidInt(MIN_RENTAL_NIGHTS, MAX_RENTAL_NIGHTS, SENTINEL_NEG1);
+        numberNights = getValidInt(MIN_RENTAL_NIGHTS, MAX_RENTAL_NIGHTS);
         
         //If statement to determine which mode the program will run in.
         //Customer mode will run, and continue to run as long as numberNights
@@ -124,7 +125,7 @@ void printRetnalPropertyInfo(unsigned int minNights, unsigned int maxNights, uns
 /*
  * Function to determine input is valid
  */
-int getValidInt(int min, int max, int sentinel)
+int getValidInt(int min, int max)
 {
     int inputNights = 0;
     double scanfReturn = 0;
@@ -153,11 +154,12 @@ int getValidInt(int min, int max, int sentinel)
             
             // else if checking for input of the sentinel value
             // this input will also initialize validInput to true to exit while loop
+            /*
             else if (inputNights == -1)
             {
                 validInput = true;
             } //end else if
-            
+            */
             // else for error of input not within the range of min and max nights
             // Acceptance Criteria 1.2.a
             else
