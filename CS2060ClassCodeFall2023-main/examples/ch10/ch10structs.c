@@ -178,6 +178,12 @@ void passStructByReference(struct employee* employeeTestPtr)
 
 	strncpy(employeeTestPtr->firstName, "Dynamic", NAME_SIZE);
 	employeeTestPtr->hourlySalary = 100.00;
+    
+    // GE06 1.a code
+    scanf("%lf", &employeeTestPtr->hourlySalary);
+    
+    // GE06 1.b code
+    fgets(employeeTestPtr->firstName, sizeof(employeeTestPtr->firstName), stdin);
 
 	printf("Employee's first name = %s\n", employeeTestPtr->firstName);
 	printf("Employee's hourly salary = %3.2f\n\n", employeeTestPtr->hourlySalary);
