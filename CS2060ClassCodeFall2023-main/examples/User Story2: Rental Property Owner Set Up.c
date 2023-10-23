@@ -5,6 +5,8 @@
 //  Created by Devon White on 10/22/23.
 //
 
+#define SIZE 80
+
 typedef struct property {
     
     unsigned int interval1Nights;
@@ -17,13 +19,32 @@ typedef struct property {
 } Property;
 
 #include <stdio.h>
+#include <errno.h>
+#include <limits.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
 
 void setUpProperty(struct property* property);
 void displayOrganization(struct property property);
+bool getValidInt(const char *input, const int min, const int max, int* validInt);
 
 int main (void) {
+    const unsigned int MIN_NIGHTS = 1;
+    const unsigned int MAX_NIGHTS = 14;
+    char input[SIZE] = {'\0'};
+    bool inputValid = false;
+    int numNights = 0;
+    
+    do {
+        puts ("Enter number of nights.");
+        fgets(input, SIZE, stdin);
+        inputValid = getValidInt(input, MIN_NIGHTS, MAX_NIGHTS, &numNights);
+    }
+    while (inputValid == false);
     
     Property property1 = {};
+    
     
     
     return 0;
@@ -74,3 +95,41 @@ void displayOrganization(struct property property){
     printf ("Discount amount: %u\n", property.discount);
     
 } //displayOrganization
+
+
+bool getValidInt(const char *input, const int min, const int max, int* validInt) {
+    
+    char* end;
+    errno = 0;
+    bool inputIsValid = false;
+    
+    long numInput = strtol(input, &end, 10);
+    
+    if (*end == '\n') {
+        *end = '\0';
+    }
+    
+    if (end == input) {
+        fprintf(stderr, "Error: %s is not a valid number.\n", input);
+    }
+    else if ('\0' != *end) {
+        fprintf(stderr, "Error: Characters at end of input.\n");
+    }
+    else if ((LONG_MIN == numInput || LONG_MAX == numInput) && ERANGE == errno) {
+        fprintf(stderr, "Error: %s is not between %u and %u\n", input, min, max);
+    }
+    else if (numInput > max) {
+        fprintf(stderr, "Error: %ld is not between %u and %u\n", numInput, min, max);
+    }
+    else if (numInput < min) {
+        fprintf(stderr, "Error: %ld is not between %u and %u\n", numInput, min, max);
+    }
+    else {
+        *validInt = (int)numInput;
+        //printf("%d is integer value ", *validInt);
+        inputIsValid = true;
+    }
+    
+    return inputIsValid;
+}
+
