@@ -60,6 +60,12 @@ void  exploreValidateInt(const char* buff)
 	errno = 0;
 	int validInt = 0;
 	long intTest = strtol(buff, &end, 10);
+    
+    // Add strchr to find the newline character and replace with null terminator
+    if (*end == '\n') {
+        *end = '\0';
+    }
+    
 	if (end == buff) {
 		fprintf(stderr, "%s: not a decimal number\n", buff);
 	}
