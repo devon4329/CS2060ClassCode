@@ -51,8 +51,8 @@ typedef struct Property {
     int interval1;
     int interval2;
     int totalRenters;
-    int rate;
-    int discount;
+    double rate;
+    double discount;
     int ratings[VACATION_RENTERS][RENTER_SURVEY_CATEGORIES];
     int totalRevenue;
     int totalNights;
@@ -60,6 +60,7 @@ typedef struct Property {
 
 
 // Function Prototypes
+void printRetnalPropertyInfo(Property *currentPropPtr);
 void setUpProperty(int minNights, int maxNights, int minRate, int maxRate, Property *propertyPtr);
 int scanInt(char* str);
 int getValidInt(unsigned int min, unsigned int max);
@@ -67,6 +68,7 @@ char *fgetsWrapper (char *str, int size, FILE *stream);
 double calculateCharges(unsigned int nights, unsigned int interval1Nights, unsigned int interval2Nights, double rate, double discount, int multiplier);
 bool ownerLogin(const char* username, const char* passcode, unsigned int attempts);
 int getValidNights(unsigned int min, unsigned int max, const int sentinel);
+void rentalMode(Property *currentPropPtr);
 
 
 int main (void){
@@ -81,6 +83,7 @@ int main (void){
     
     Property property1;
     
+    
     // User Story 1: Rental Property Owner Login
     if (ownerLogin(CORRECT_ID, CORRECT_PASSCODE, LOGIN_MAX_ATTEMPTS) == true)
     {
@@ -88,6 +91,7 @@ int main (void){
         
         // User Story 2: Rental Property Owner Set-up
         setUpProperty(MIN_RENTAL_NIGHTS, MAX_RENTAL_NIGHTS, MIN_RATE, MAX_RATE, &property1);
+        printRetnalPropertyInfo(&property1);
     }
     else
     {
@@ -96,6 +100,22 @@ int main (void){
     
     return 0;
 } //main
+
+// printRentalPropertyInfo
+// Prints property information using a pointer to the information held in the
+// property structure.
+void printRetnalPropertyInfo(Property *currentPropPtr)
+{
+    printf("Rental Property: %s\n", currentPropPtr->name);
+    printf("Location: %s\n", currentPropPtr->location);
+    printf("Rental Property can be rented for %d to %d nights.\n", MIN_RENTAL_NIGHTS, MAX_RENTAL_NIGHTS);
+    printf("$%.2f rate a night for the first %d nights.\n", currentPropPtr->rate, currentPropPtr->interval1);
+    printf("$%.2f discount rate a night for nights %d to %d\n", currentPropPtr->discount, (currentPropPtr->interval1 + 1), currentPropPtr->interval2);
+    printf("$%.2f discount rate a night for each remaining night over %d.\n\n", (currentPropPtr->discount * DISCOUNT_MULTIPLIER), currentPropPtr->interval2);
+    
+   
+    
+} //printRentalPropertyInfo
 
 
 // setUpProperty
@@ -116,11 +136,11 @@ void setUpProperty(int minNights, int maxNights, int minRate, int maxRate, Prope
     
     // Task 2.3 - Get nightly rental rate.
     puts("\nEnter the nightly rental rate: ");
-    propertyPtr->rate = getValidInt(minRate, maxRate);
+    propertyPtr->rate = (double)getValidInt(minRate, maxRate);
     
     // Task 2.4 - Get the discount amount.
     puts("\nEnter the discount: ");
-    propertyPtr->discount = getValidInt(minRate, maxRate);
+    propertyPtr->discount = (double)getValidInt(minRate, maxRate);
     
     // Task 2.5 * 2.6 - Get rental property name and location.
     puts("\nEnter the location of the property: ");
@@ -310,3 +330,12 @@ int getValidNights(unsigned int min, unsigned int max, const int sentinel)
     }
     return validInt;
 } //getValidInt
+
+
+// rentalMode
+// This method is for the vacationer to select the properlty they want to rent
+// get the deails and provide a rating for the property.
+void rentalMode(Property *currentPropPtr)
+{
+    bool sentinalEntered = false;
+} //rentalMode
