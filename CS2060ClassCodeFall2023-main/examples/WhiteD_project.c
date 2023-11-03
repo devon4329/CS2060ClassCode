@@ -121,9 +121,9 @@ void setUpProperty(int minNights, int maxNights, int minRate, int maxRate, Prope
     propertyPtr->discount = getValidInt(minRate, maxRate);
     
     // Task 2.5 * 2.6 - Get rental property name and location.
-    puts("Enter the location of the property: ");
+    puts("\nEnter the location of the property: ");
     fgetsWrapper(propertyPtr->location, STRING_LENGTH, stdin);
-    puts("Enter the name of the property: ");
+    puts("\nEnter the name of the property: ");
     fgetsWrapper(propertyPtr->name, STRING_LENGTH, stdin);
     
 } //setUpProperty
