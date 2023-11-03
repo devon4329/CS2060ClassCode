@@ -69,19 +69,23 @@ bool ownerLogin(const char* username, const char* passcode, unsigned int attempt
 
 int main (void){
     
+    /*
     //test
     puts("Test");
     char test[STRING_LENGTH] = {'\0'};
     getValidInt(MIN_RENTAL_NIGHTS, MAX_RENTAL_NIGHTS);
     printf("%s", test);
+    */
     
+    Property property1;
     
     // User Story 1: Rental Property Owner Login
     if (ownerLogin(CORRECT_ID, CORRECT_PASSCODE, LOGIN_MAX_ATTEMPTS) == true)
     {
-        puts("Login Successful");
+        puts("Login Successful\n");
         
         // User Story 2: Rental Property Owner Set-up
+        setUpProperty(MIN_RENTAL_NIGHTS, MAX_RENTAL_NIGHTS, MIN_RATE, MAX_RATE, &property1);
     }
     else
     {
@@ -101,19 +105,19 @@ void setUpProperty(int minNights, int maxNights, int minRate, int maxRate, Prope
     propertyPtr->totalNights = 0;
     
     // Task 2.1 - Get interval 1 number of nights.
-    puts("Enter the number of nights until the first discount: ");
+    puts("\nEnter the number of nights until the first discount: ");
     propertyPtr->interval1 = getValidInt(minNights, maxNights);
     
     // Task 2.2 - Get interval 2 number of nights.
-    puts("Enter the number of night suntil the second discount: ");
+    puts("\nEnter the number of night suntil the second discount: ");
     propertyPtr->interval2 = getValidInt(minNights, maxNights);
     
     // Task 2.3 - Get nightly rental rate.
-    puts("Enter the nightly rental rate: ");
+    puts("\nEnter the nightly rental rate: ");
     propertyPtr->rate = getValidInt(minRate, maxRate);
     
     // Task 2.4 - Get the discount amount.
-    puts("Enter the discount: ");
+    puts("\nEnter the discount: ");
     propertyPtr->discount = getValidInt(minRate, maxRate);
     
     // Task 2.5 * 2.6 - Get rental property name and location.
