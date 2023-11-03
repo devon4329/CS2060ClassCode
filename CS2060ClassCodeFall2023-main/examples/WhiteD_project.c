@@ -30,6 +30,8 @@
 //Two dimensional array storage amounts for rows and columns of surve data
 #define VACATION_RENTERS 5
 #define RENTER_SURVEY_CATEGORIES 3
+#define MIN_RATING 1
+#define MAX_RATING 5
 //Rental property login and sentinal values
 #define CORRECT_ID "id1"
 #define CORRECT_PASSCODE "ABCD"
@@ -69,6 +71,8 @@ double calculateCharges(unsigned int nights, unsigned int interval1Nights, unsig
 bool ownerLogin(const char* username, const char* passcode, unsigned int attempts);
 int getValidNights(unsigned int min, unsigned int max, const int sentinel);
 void rentalMode(Property *currentPropPtr);
+void getPropertyRatings(Property *propPtr);
+void printCategories(const char *categories[], size_t totalCategories);
 
 
 int main (void){
@@ -339,3 +343,42 @@ void rentalMode(Property *currentPropPtr)
 {
     bool sentinalEntered = false;
 } //rentalMode
+
+
+// getPropertyRatings
+// A function that points to the property structure to access and mainuplate the
+// 2D property array in the structure.
+void getPropertyRatings(Property *propPtr)
+{
+    if (propPtr->totalRenters <= sizeof(propPtr->ratings))
+    {
+        // display survey info
+        for (int i = 0; i < (propPtr->totalRenters + 1); i++)
+        {
+            for (int j = 0; j < RENTER_SURVEY_CATEGORIES; j++)
+            {
+                propPtr->ratings[i][j] = getValidInt(MIN_RATING, MAX_RATING);
+            }
+        }
+    }
+    else
+    {
+        puts("Maximum number of rating has been reached.");
+    }
+}
+
+
+
+// Prints categories of the survey
+void printCategories(const char *categories[], size_t totalCategories)
+{
+    //loop to display each category horizontally
+    puts("We want to know how your experience was renting out property. Using the rating system 1 to 5 to enter your rating for each category.");
+    printf("%s", "Rating Categories:\t");
+    for (size_t surveyCategory = 0; surveyCategory < totalCategories; ++surveyCategory)
+    {
+        printf("\t%zu.%s\t", surveyCategory+1, categories[surveyCategory]);
+    }
+    puts(""); //start new line of output
+    
+} //end printCategories
