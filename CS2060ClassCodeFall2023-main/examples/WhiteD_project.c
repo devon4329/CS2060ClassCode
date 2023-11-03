@@ -62,7 +62,7 @@ typedef struct Property {
 // Function Prototypes
 void setUpProperty(int minNights, int maxNights, int minRate, int maxRate, Property *propertyPtr);
 int scanInt(char* str);
-int getValidInt(char* input, int min, int max);
+int getValidInt(int min, int max);
 char *fgetsWrapper (char *str, int size, FILE *stream);
 double calculateCharges(unsigned int nights, unsigned int interval1Nights, unsigned int interval2Nights, double rate, double discount, int multiplier);
 bool ownerLogin(const char* username, const char* passcode, unsigned int attempts);
@@ -70,7 +70,10 @@ bool ownerLogin(const char* username, const char* passcode, unsigned int attempt
 int main (void){
     
     //test
-    
+    puts("Test");
+    char test[STRING_LENGTH] = {'\0'};
+    getValidInt(MIN_RENTAL_NIGHTS, MAX_RENTAL_NIGHTS);
+    printf("%s", test);
     
     
     // User Story 1: Rental Property Owner Login
@@ -99,19 +102,19 @@ void setUpProperty(int minNights, int maxNights, int minRate, int maxRate, Prope
     
     // Task 2.1 - Get interval 1 number of nights.
     puts("Enter the number of nights until the first discount: ");
-    //propertyPtr->interval1 = getValidInt(, minNights, maxNights);
+    propertyPtr->interval1 = getValidInt(minNights, maxNights);
     
     // Task 2.2 - Get interval 2 number of nights.
     puts("Enter the number of night suntil the second discount: ");
-    //propertyPtr->interval2 = getValidInt(, minNights, maxNights);
+    propertyPtr->interval2 = getValidInt(minNights, maxNights);
     
     // Task 2.3 - Get nightly rental rate.
     puts("Enter the nightly rental rate: ");
-    //propertyPtr->rate = getValidInt(, minRate, maxRate);
+    propertyPtr->rate = getValidInt(minRate, maxRate);
     
     // Task 2.4 - Get the discount amount.
     puts("Enter the discount: ");
-    //propertyPtr->discount = getValidInt(, minRate, maxRate);
+    propertyPtr->discount = getValidInt(minRate, maxRate);
     
     // Task 2.5 * 2.6 - Get rental property name and location.
     puts("Enter the location of the property: ");
@@ -135,7 +138,7 @@ int scanInt(char* str)
     do
     {
         // Use fgetsWrapper method to get rid of '\n' and replace with '\0'
-        str = fgetsWrapper(str, STRING_LENGTH, stdin);
+        fgetsWrapper(str, STRING_LENGTH, stdin);
         long intTest = strtol(str, &end, 10);
         
         if (end == str)
@@ -171,10 +174,11 @@ int scanInt(char* str)
 
 // getValidInt
 // Checks the range of the input from the user
-int getValidInt(char* input, int min, int max)
+int getValidInt(int min, int max)
 {
     bool intIsValid = false;
     int validInt = 0;
+    char input[STRING_LENGTH];
     
     while (intIsValid == false)
     {
