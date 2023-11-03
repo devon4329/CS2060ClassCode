@@ -69,7 +69,11 @@ bool ownerLogin(const char* username, const char* passcode, unsigned int attempt
 
 int main (void){
     
+    //test
     
+    
+    
+    // User Story 1: Rental Property Owner Login
     if (ownerLogin(CORRECT_ID, CORRECT_PASSCODE, LOGIN_MAX_ATTEMPTS) == true)
     {
         puts("Login Successful");
@@ -78,7 +82,7 @@ int main (void){
     }
     else
     {
-        puts("Incorrect Login more than 3 times. Good Bye!");
+        puts("Incorrect Login more than 3 times. Exiting AirUCCS.");
     }
     
     return 0;
@@ -93,6 +97,27 @@ void setUpProperty(int minNights, int maxNights, int minRate, int maxRate, Prope
     propertyPtr->totalRenters = 0;
     propertyPtr->totalNights = 0;
     
+    // Task 2.1 - Get interval 1 number of nights.
+    puts("Enter the number of nights until the first discount: ");
+    //propertyPtr->interval1 = getValidInt(, minNights, maxNights);
+    
+    // Task 2.2 - Get interval 2 number of nights.
+    puts("Enter the number of night suntil the second discount: ");
+    //propertyPtr->interval2 = getValidInt(, minNights, maxNights);
+    
+    // Task 2.3 - Get nightly rental rate.
+    puts("Enter the nightly rental rate: ");
+    //propertyPtr->rate = getValidInt(, minRate, maxRate);
+    
+    // Task 2.4 - Get the discount amount.
+    puts("Enter the discount: ");
+    //propertyPtr->discount = getValidInt(, minRate, maxRate);
+    
+    // Task 2.5 * 2.6 - Get rental property name and location.
+    puts("Enter the location of the property: ");
+    fgetsWrapper(propertyPtr->location, STRING_LENGTH, stdin);
+    puts("Enter the name of the property: ");
+    fgetsWrapper(propertyPtr->name, STRING_LENGTH, stdin);
     
 } //setUpProperty
 
@@ -146,7 +171,7 @@ int scanInt(char* str)
 
 // getValidInt
 // Checks the range of the input from the user
-int getValidInt(char* input,int min, int max)
+int getValidInt(char* input, int min, int max)
 {
     bool intIsValid = false;
     int validInt = 0;
@@ -176,9 +201,9 @@ char *fgetsWrapper (char *str, int size, FILE *stream)
     char *input;
     size_t length;
     
-    input = fgets(str, size, stream);
+    fgets(str, size, stream);
     
-    if (input != NULL)
+    if (str != NULL)
     {
         length = strlen(str);
         
@@ -216,6 +241,7 @@ double calculateCharges(unsigned int nights, unsigned int interval1Nights, unsig
 } //calculateCharges
 
 
+// Task 1.1
 // ownerLogin
 // This method will return a bool value if the login for the owner is valid.
 // Pass constant pointers to username and passcode because values will not be changed
