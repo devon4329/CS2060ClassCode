@@ -62,10 +62,12 @@ typedef struct Property {
 // Function Prototypes
 void setUpProperty(int minNights, int maxNights, int minRate, int maxRate, Property *propertyPtr);
 int scanInt(char* str);
-int getValidInt(int min, int max);
+int getValidInt(unsigned int min, unsigned int max);
 char *fgetsWrapper (char *str, int size, FILE *stream);
 double calculateCharges(unsigned int nights, unsigned int interval1Nights, unsigned int interval2Nights, double rate, double discount, int multiplier);
 bool ownerLogin(const char* username, const char* passcode, unsigned int attempts);
+int getValidNights(unsigned int min, unsigned int max, const int sentinel);
+
 
 int main (void){
     
@@ -129,6 +131,31 @@ void setUpProperty(int minNights, int maxNights, int minRate, int maxRate, Prope
 } //setUpProperty
 
 
+// getValidInt
+// Checks the range of the input from the user
+int getValidInt(unsigned int min, unsigned int max)
+{
+    bool intIsValid = false;
+    int validInt = 0;
+    char input[STRING_LENGTH];
+    
+    while (intIsValid == false)
+    {
+        validInt = scanInt(input);
+        
+        if (validInt >= min && validInt <= max)
+        {
+            intIsValid = true;
+        }
+        else
+        {
+            printf("Error: Input must be between %d and %d.\n", min, max);
+        }
+    }
+    return validInt;
+} //getValidInt
+
+
 // scanInt
 // Obtains a valid integer value and loops if a valid integer is not input by user.
 // Will replace stdio function "scanf"
@@ -176,38 +203,12 @@ int scanInt(char* str)
 } //scanInt
 
 
-// getValidInt
-// Checks the range of the input from the user
-int getValidInt(int min, int max)
-{
-    bool intIsValid = false;
-    int validInt = 0;
-    char input[STRING_LENGTH];
-    
-    while (intIsValid == false)
-    {
-        validInt = scanInt(input);
-        
-        if (validInt >= min && validInt <= max)
-        {
-            intIsValid = true;
-        }
-        else
-        {
-            printf("Error: Input must be between %d and %d.\n", min, max);
-        }
-    }
-    return validInt;
-} //getValidInt
-
-
 // fgetsWrapper
 // Replaces '\n' character with '\0' character from user input.
 // Passing variable "str" not as constant because value will be changed at its address
 char *fgetsWrapper (char *str, int size, FILE *stream)
 {
-    char *input;
-    size_t length;
+    size_t length = 0;
     
     fgets(str, size, stream);
     
@@ -284,3 +285,28 @@ bool ownerLogin(const char* username, const char* passcode, unsigned int attempt
     }
     return validLogin;
 }
+
+
+// getValidNight
+// Checks the range of the input from the user
+int getValidNights(unsigned int min, unsigned int max, const int sentinel)
+{
+    bool intIsValid = false;
+    int validInt = 0;
+    char input[STRING_LENGTH];
+    
+    while (intIsValid == false)
+    {
+        validInt = scanInt(input);
+        
+        if (validInt >= min && validInt <= max)
+        {
+            intIsValid = true;
+        }
+        else
+        {
+            printf("Error: Input must be between %d and %d.\n", min, max);
+        }
+    }
+    return validInt;
+} //getValidInt
