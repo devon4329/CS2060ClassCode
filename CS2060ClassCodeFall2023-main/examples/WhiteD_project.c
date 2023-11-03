@@ -65,14 +65,21 @@ int scanInt(char* str);
 int getValidInt(char* input, int min, int max);
 char *fgetsWrapper (char *str, int size, FILE *stream);
 double calculateCharges(unsigned int nights, unsigned int interval1Nights, unsigned int interval2Nights, double rate, double discount, int multiplier);
+bool ownerLogin(const char* username, const char* passcode, unsigned int attempts);
 
 int main (void){
     
-    puts("Insert an integer value.");
-    char test[STRING_LENGTH];
-    getValidInt(test, MIN_RENTAL_NIGHTS, MAX_RENTAL_NIGHTS);
     
-    puts(test);
+    if (ownerLogin(CORRECT_ID, CORRECT_PASSCODE, LOGIN_MAX_ATTEMPTS) == true)
+    {
+        puts("Login Successful");
+        
+        // User Story 2: Rental Property Owner Set-up
+    }
+    else
+    {
+        puts("Incorrect Login more than 3 times. Good Bye!");
+    }
     
     return 0;
 } //main
@@ -86,7 +93,7 @@ void setUpProperty(int minNights, int maxNights, int minRate, int maxRate, Prope
     propertyPtr->totalRenters = 0;
     propertyPtr->totalNights = 0;
     
-    puts("")
+    
 } //setUpProperty
 
 
@@ -163,6 +170,7 @@ int getValidInt(char* input,int min, int max)
 
 // fgetsWrapper
 // Replaces '\n' character with '\0' character from user input.
+// Passing variable "str" not as constant because value will be changed at its address
 char *fgetsWrapper (char *str, int size, FILE *stream)
 {
     char *input;
@@ -206,3 +214,39 @@ double calculateCharges(unsigned int nights, unsigned int interval1Nights, unsig
     }
     return totalCharge;
 } //calculateCharges
+
+
+// ownerLogin
+// This method will return a bool value if the login for the owner is valid.
+// Pass constant pointers to username and passcode because values will not be changed
+// Use of fgetsWrapper method to obtain string values from user input -- do not need to be
+// validated.
+// strcmp function used to compare input string (character by character) for valid login
+bool ownerLogin(const char* username, const char* passcode, unsigned int attempts)
+{
+    bool validLogin = false;
+    int counter = 1;
+    char inputID[STRING_LENGTH] = {'\0'};
+    char inputPassword[STRING_LENGTH] = {'\0'};
+    
+    
+    while (counter <= attempts && validLogin == false)
+    {
+        puts("Enter User ID:");
+        fgetsWrapper(inputID, STRING_LENGTH, stdin);
+        puts("Enter User Password: ");
+        fgetsWrapper(inputPassword, STRING_LENGTH, stdin);
+        
+        if (strcmp(username, inputID) == 0 && strcmp(passcode, inputPassword) == 0)
+        {
+            validLogin = true;
+        }
+        else
+        {
+            puts("User ID or Password incorrect. Try again.");
+            printf("Attempts remaining: %d\n\n", attempts - counter);
+            counter++;
+        }
+    }
+    return validLogin;
+}
