@@ -72,7 +72,7 @@ bool ownerLogin(const char* username, const char* passcode, unsigned int attempt
 int getValidNights(unsigned int min, unsigned int max, const int sentinel);
 void rentalMode(Property *currentPropPtr);
 void getPropertyRatings(Property *propPtr);
-void printCategories(const char *categories[], size_t totalCategories);
+void printCategories(void);
 
 
 int main (void){
@@ -96,6 +96,7 @@ int main (void){
         // User Story 2: Rental Property Owner Set-up
         setUpProperty(MIN_RENTAL_NIGHTS, MAX_RENTAL_NIGHTS, MIN_RATE, MAX_RATE, &property1);
         printRetnalPropertyInfo(&property1);
+        printCategories();
     }
     else
     {
@@ -353,6 +354,7 @@ void getPropertyRatings(Property *propPtr)
     if (propPtr->totalRenters <= sizeof(propPtr->ratings))
     {
         // display survey info
+        printCategories();
         for (int i = 0; i < (propPtr->totalRenters + 1); i++)
         {
             for (int j = 0; j < RENTER_SURVEY_CATEGORIES; j++)
@@ -370,14 +372,16 @@ void getPropertyRatings(Property *propPtr)
 
 
 // Prints categories of the survey
-void printCategories(const char *categories[], size_t totalCategories)
+void printCategories(void)
 {
+    const char *surveyCategories[RENTER_SURVEY_CATEGORIES] = {"Check-in Process", "Cleanliness", "Amenities"};
+    
     //loop to display each category horizontally
     puts("We want to know how your experience was renting out property. Using the rating system 1 to 5 to enter your rating for each category.");
     printf("%s", "Rating Categories:\t");
-    for (size_t surveyCategory = 0; surveyCategory < totalCategories; ++surveyCategory)
+    for (size_t surveyCategory = 0; surveyCategory < RENTER_SURVEY_CATEGORIES; ++surveyCategory)
     {
-        printf("\t%zu.%s\t", surveyCategory+1, categories[surveyCategory]);
+        printf("\t%zu.%s\t", surveyCategory+1, surveyCategories[surveyCategory]);
     }
     puts(""); //start new line of output
     
