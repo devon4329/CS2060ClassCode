@@ -20,6 +20,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <errno.h>
+#include <limits.h>
+#include <string.h>
 
 // Symbolic constants to prevent hardcoding
 //Maximum length of a string
@@ -42,14 +45,164 @@
 // Structure for rental property information
 // Holds the values each property needs to hold
 // typedef allows for easy creation and reference of the property
-//
-typedef struct {
-    
-    
+typedef struct Property {
+    char name[STRING_LENGTH];
+    char location[STRING_LENGTH];
+    int interval1;
+    int interval2;
+    int totalRenters;
+    int rate;
+    int discount;
+    int ratings[VACATION_RENTERS][RENTER_SURVEY_CATEGORIES];
+    int totalRevenue;
+    int totalNights;
 } Property;
 
 
+// Function Prototypes
+void setUpProperty(int minNights, int maxNights, int minRate, int maxRate, Property *propertyPtr);
+int scanInt(char* str);
+int getValidInt(char* input, int min, int max);
+char *fgetsWrapper (char *str, int size, FILE *stream);
+double calculateCharges(unsigned int nights, unsigned int interval1Nights, unsigned int interval2Nights, double rate, double discount, int multiplier);
+
 int main (void){
     
+    puts("Insert an integer value.");
+    char test[STRING_LENGTH];
+    getValidInt(test, MIN_RENTAL_NIGHTS, MAX_RENTAL_NIGHTS);
     
+    puts(test);
+    
+    return 0;
 } //main
+
+
+// setUpProperty
+// Sets up the property once a valid userID and password have been
+// entered within 3 attempts.
+void setUpProperty(int minNights, int maxNights, int minRate, int maxRate, Property *propertyPtr)
+{
+    propertyPtr->totalRenters = 0;
+    propertyPtr->totalNights = 0;
+    
+    puts("")
+} //setUpProperty
+
+
+// scanInt
+// Obtains a valid integer value and loops if a valid integer is not input by user.
+// Will replace stdio function "scanf"
+int scanInt(char* str)
+{
+    char* end;
+    errno = 0;
+    int validInt = 0;
+    bool intIsValid = false;
+    
+    do
+    {
+        // Use fgetsWrapper method to get rid of '\n' and replace with '\0'
+        str = fgetsWrapper(str, STRING_LENGTH, stdin);
+        long intTest = strtol(str, &end, 10);
+        
+        if (end == str)
+        {
+            fprintf(stderr, "Not an integer value. Please try again.\n");
+        }
+        else if ('\0' != *end) 
+        {
+            fprintf(stderr, "Input has extra characters at end: %s Please try again.\n", end);
+        }
+        else if ((LONG_MIN == intTest || LONG_MAX == intTest) && ERANGE == errno) 
+        {
+            fprintf(stderr, "Input is out of range. Please try again.\n");
+        }
+        else if (intTest > INT_MAX) 
+        {
+            fprintf(stderr, "%ld is too large. Please try again.\n", intTest);
+        }
+        else if (intTest < INT_MIN) 
+        {
+            fprintf(stderr, "%ld is too small. Please try again.\n", intTest);
+        }
+        else 
+        {
+            validInt = (int)intTest;
+            intIsValid = true;
+        }
+    }
+    while (intIsValid == false);
+    return validInt;
+} //scanInt
+
+
+// getValidInt
+// Checks the range of the input from the user
+int getValidInt(char* input,int min, int max)
+{
+    bool intIsValid = false;
+    int validInt = 0;
+    
+    while (intIsValid == false)
+    {
+        validInt = scanInt(input);
+        
+        if (validInt >= min && validInt <= max)
+        {
+            intIsValid = true;
+        }
+        else
+        {
+            printf("Error: Input must be between %d and %d.\n", min, max);
+        }
+    }
+    return validInt;
+} //getValidInt
+
+
+// fgetsWrapper
+// Replaces '\n' character with '\0' character from user input.
+char *fgetsWrapper (char *str, int size, FILE *stream)
+{
+    char *input;
+    size_t length;
+    
+    input = fgets(str, size, stream);
+    
+    if (input != NULL)
+    {
+        length = strlen(str);
+        
+        if (length > 0 && str[length - 1] == '\n')
+        {
+            str[length - 1] = '\0';
+        }
+        return str;
+    }
+    else{
+        return NULL;
+    }
+} //fgetsWrapper
+
+
+// calcualteCharges
+// calculates the charge based on the number of nights rented
+double calculateCharges(unsigned int nights, unsigned int interval1Nights, unsigned int interval2Nights, double rate, double discount, int multiplier)
+{
+    double totalCharge = 0.0;
+    
+    if (nights <= interval1Nights)
+    {
+        totalCharge = (nights * rate);
+    } //if base chage end
+    else if (nights > interval1Nights && nights <= interval2Nights)
+    {
+        totalCharge = (rate * nights) - ((nights - interval1Nights) * discount);
+    } //else interval1Nights discount
+    else if (nights > interval2Nights)
+    {
+        totalCharge = (rate * nights) - ((nights - interval2Nights) * (discount * multiplier) + (interval2Nights - interval1Nights) * discount);
+    }
+    return totalCharge;
+} //calculateCharges
