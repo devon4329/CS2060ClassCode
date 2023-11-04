@@ -467,10 +467,6 @@ void getRatings(int maxRating, int minRating, const int numRatings, const int nu
         puts("");
         arrayPtr->ratingsEntered++;
     }
-    else
-    {
-        puts("Maximum number of rating has been reached.");
-    }
 } //getRatings
 
 
@@ -536,11 +532,11 @@ void printSurveyResults(Property *propPtr)
         puts("No Ratings Currently");
         puts("");
     }
-    else if (propPtr->ratingsEntered < VACATION_RENTERS)
+    else
     {
         puts("");
         printCategories(propPtr);
-        for (size_t i = 0; i < propPtr->totalRenters; i++)
+        for (size_t i = 0; i < VACATION_RENTERS; i++)
         {
             printf("%s %zu: ", "Survey", i+1);
             
@@ -551,7 +547,6 @@ void printSurveyResults(Property *propPtr)
             puts("");
         } //for
     }
-    
     puts("");
 } //printSurveyResults end
 
