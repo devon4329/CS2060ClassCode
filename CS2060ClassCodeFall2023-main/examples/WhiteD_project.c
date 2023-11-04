@@ -548,7 +548,7 @@ void printSurveyResults(Property *propPtr)
             
             for (size_t j = 0; j < RENTER_SURVEY_CATEGORIES; j++)
             {
-                printf("%23d", propPtr->ratings[i][j]);
+                printf("%21d", propPtr->ratings[i][j]);
                 
             } //nested for
             puts("");
@@ -573,8 +573,12 @@ void ownerReportMode(Property *currentProp)
     calculateCategoryAverages(currentProp);
     
     puts("Category Rating Averages");
-    printf("Check-in Process: %.1lf\n", currentProp->averageRatings[0]);
-    printf("Cleanliness: %.1lf\n", currentProp->averageRatings[1]);
-    printf("Amenities: %.1lf\n", currentProp->averageRatings[2]);
+    for (size_t i = 0; i < RENTER_SURVEY_CATEGORIES; i++)
+    {
+        printf("%s: %.1lf\n", currentProp->categories[i], currentProp->averageRatings[i]);
+    }
+    //printf("Check-in Process: %.1lf\n", currentProp->averageRatings[0]);
+    //printf("Cleanliness: %.1lf\n", currentProp->averageRatings[1]);
+    //printf("Amenities: %.1lf\n", currentProp->averageRatings[2]);
     
 }
