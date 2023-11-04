@@ -60,6 +60,7 @@ typedef struct Property {
     char categories[RENTER_SURVEY_CATEGORIES][STRING_LENGTH];
     double totalRevenue;
     int totalNights;
+    int ratingsEntered;
 } Property;
 
 
@@ -338,6 +339,10 @@ int getValidNights(unsigned int min, unsigned int max, const int sentinel)
         {
             intIsValid = true;
         }
+        else if (validInt == sentinel)
+        {
+            intIsValid = true;
+        }
         else
         {
             printf("Error: Input must be between %d and %d.\n", min, max);
@@ -410,6 +415,7 @@ void rentalMode(Property *currentPropPtr)
 // Get ratings from user
 void getRatings(int maxRating, int minRating, const int numRatings, const int numCategories, Property *arrayPtr)
 {
+    arrayPtr->ratingsEntered = 0;
     const char *surveyCats[RENTER_SURVEY_CATEGORIES] = {"Check-in Process", "Cleanliness", "Amenities"};
     
     // Puts categories into array located in structure
@@ -424,20 +430,28 @@ void getRatings(int maxRating, int minRating, const int numRatings, const int nu
         printf("%zu: %s\n", i + 1, arrayPtr->categories[i]);
     }
     puts("");
-    for (size_t i = 0; i < numRatings; i++)
+    if (arrayPtr->ratingsEntered <= numRatings)
     {
-        for (size_t j = 0; j < numCategories; j++)
+        for (size_t i = 0; i < numRatings; i++)
         {
-            puts("Enter your rating for");
-            printf("Category %zu: ", j+1);
-            arrayPtr->ratings[i][j] = getValidInt(minRating, maxRating);
-            //ratingsArray[i][j] = inputRating;
+            for (size_t j = 0; j < numCategories; j++)
+            {
+                puts("Enter your rating for");
+                printf("Category %zu: ", j+1);
+                arrayPtr->ratings[i][j] = getValidInt(minRating, maxRating);
+            } //inner
+        } //outer
 
-        } //nested for loop end
+    }
+    else
+    {
+        puts("Maximum number of rating has been reached.");
+    }
+        
     
-    } // end for loop
     
-} //end getRatings
+    
+} //getRatings
 
 
 
@@ -462,7 +476,7 @@ void getPropertyRatings(Property *propPtr)
     {
         puts("Maximum number of rating has been reached.");
     }
-}
+} //getPropertyRatings
 
 
 
