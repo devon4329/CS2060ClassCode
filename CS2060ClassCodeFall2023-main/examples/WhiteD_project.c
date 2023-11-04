@@ -57,7 +57,7 @@ typedef struct Property {
     double rate;
     double discount;
     int ratings[VACATION_RENTERS][RENTER_SURVEY_CATEGORIES];
-    int totalRevenue;
+    double totalRevenue;
     int totalNights;
 } Property;
 
@@ -347,7 +347,7 @@ int getValidNights(unsigned int min, unsigned int max, const int sentinel)
         }
     }
     return validInt;
-} //getValidInt
+} //getValidNights
 
 
 // rentalMode
@@ -357,6 +357,7 @@ void rentalMode(Property *currentPropPtr)
 {
     bool sentinalEntered = false;
     int validInt = 0;
+    double totalCost = 0.0;
     
     do 
     {
@@ -370,17 +371,26 @@ void rentalMode(Property *currentPropPtr)
         if (validInt == SENTINAL_NEG1)
         {
             // get owner login
+            ownerLogin(CORRECT_ID, CORRECT_PASSCODE, LOGIN_MAX_ATTEMPTS);
             sentinalEntered = true;
         }
         else
         {
             // calculate charge
-            // get property rating
+            totalCost = calculateCharges(validInt, currentPropPtr->interval1, currentPropPtr->interval2, currentPropPtr->rate, currentPropPtr->discount, DISCOUNT_MULTIPLIER);
+            
+            // Incriment renters
+            currentPropPtr->totalRenters++;
+            
+            // Add to total revenue
+            currentPropPtr->totalRevenue = currentPropPtr->totalRevenue + totalCost;
+            
+            // Add to total nights
+            currentPropPtr->totalNights = currentPropPtr->totalNights + validInt;
+            
+            // Task 3.3 - Get property ratings from Renter
+            getPropertyRatings(currentPropPtr);
         }
-        
-        // Task 3.3 - Get property ratings from Renter
-        
-        
     } while (sentinalEntered == false);
 } //rentalMode
 
