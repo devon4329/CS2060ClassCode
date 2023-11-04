@@ -75,6 +75,7 @@ bool ownerLogin(const char* username, const char* passcode, unsigned int attempt
 int getValidNights(unsigned int min, unsigned int max, const int sentinel);
 void printNightsCharges(unsigned int nights, double charges);
 void rentalMode(Property *currentPropPtr);
+void getRatings(int maxRating, int minRating, const int numRatings, const int numCategories,Property *arrayPtr);
 void getPropertyRatings(Property *propPtr);
 void printCategories(void);
 void printCategoryData(Property *propPtr);
@@ -162,8 +163,9 @@ void setUpProperty(int minNights, int maxNights, int minRate, int maxRate, Prope
     // Task 2.5 * 2.6 - Get rental property name and location.
     puts("\nEnter the location of the property: ");
     fgetsWrapper(propertyPtr->location, STRING_LENGTH, stdin);
-    puts("\nEnter the name of the property: \n");
+    puts("\nEnter the name of the property: ");
     fgetsWrapper(propertyPtr->name, STRING_LENGTH, stdin);
+    puts("");
     
 } //setUpProperty
 
@@ -394,6 +396,7 @@ void rentalMode(Property *currentPropPtr)
             currentPropPtr->totalRenters++;
             
             // Print charges for current stay
+            puts("");
             printNightsCharges(validInt, totalCost);
             
             // Add to total revenue
@@ -403,10 +406,33 @@ void rentalMode(Property *currentPropPtr)
             currentPropPtr->totalNights = currentPropPtr->totalNights + validInt;
             
             // Task 3.3 - Get property ratings from Renter
-            getPropertyRatings(currentPropPtr);
+            getRatings(MAX_RATING, MIN_RATING, currentPropPtr->totalRenters, RENTER_SURVEY_CATEGORIES, currentPropPtr);
         }
     } while (sentinalEntered == false);
 } //rentalMode
+
+
+// Get ratings from user
+void getRatings(int maxRating, int minRating, const int numRatings, const int numCategories, Property *arrayPtr)
+{
+    
+    for (size_t i = 0; i < numRatings; i++)
+    {
+        for (size_t j = 0; j < numCategories; j++)
+        {
+            printf("%s%zu\n", "Renter ", i+1);
+            
+            puts("Enter your rating for");
+            printf("Category %zu: ", j+1);
+            arrayPtr->ratings[i][j] = getValidInt(minRating, maxRating);
+            //ratingsArray[i][j] = inputRating;
+
+        } //nested for loop end
+    
+    } // end for loop
+    
+} //end getRatings
+
 
 
 // getPropertyRatings
@@ -418,7 +444,7 @@ void getPropertyRatings(Property *propPtr)
     {
         puts("We want to know how your experience was renting out property. Using the rating system 1 to 5 to enter your rating for each category:");
         // display survey info
-        printCategories();
+        
         for (int i = 0; i < (propPtr->totalRenters + 1); i++)
         {
             for (int j = 0; j < RENTER_SURVEY_CATEGORIES; j++)
