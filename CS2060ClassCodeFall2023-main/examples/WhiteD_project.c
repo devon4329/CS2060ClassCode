@@ -395,17 +395,17 @@ void rentalMode(Property *currentPropPtr)
             // calculate charge
             totalCost = calculateCharges(validInt, currentPropPtr->interval1, currentPropPtr->interval2, currentPropPtr->rate, currentPropPtr->discount, DISCOUNT_MULTIPLIER);
             
-            // Incriment renters
+            // Increment totalRenters element in property structure
             currentPropPtr->totalRenters++;
             
             // Print charges for current stay
             puts("");
             printNightsCharges(validInt, totalCost);
             
-            // Add to total revenue
+            // Add to totalRevenue element in property structure
             currentPropPtr->totalRevenue = currentPropPtr->totalRevenue + totalCost;
             
-            // Add to total nights
+            // Add to totalNights element in property structure
             currentPropPtr->totalNights = currentPropPtr->totalNights + validInt;
             
             // Task 3.3 - Get property ratings from Renter
@@ -416,6 +416,7 @@ void rentalMode(Property *currentPropPtr)
 } //rentalMode
 
 
+// getRatings
 // Get ratings from user
 // A function that points to the property structure to access and mainuplate the
 // 2D property array in the structure.
@@ -463,7 +464,9 @@ void getRatings(int maxRating, int minRating, const int numRatings, const int nu
 
 
 
-// Prints categories of the survey
+// printCategories
+// Displays the categories of the survey that are stored in the categories element
+// in the property structure.
 void printCategories(Property *categoryPtr)
 {
     //loop to display each category horizontally
@@ -477,7 +480,11 @@ void printCategories(Property *categoryPtr)
     
 } //printCategories
 
-
+// calculateCategoryAverages
+// Calcuates the averages of each category and stores that value into
+// an averages array elemeent inside the property structure.
+// Use of an array element to store category averages so it can be stored with this
+// specific property and not lost once method is completed.
 void calculateCategoryAverages(Property *currentProp)
 {
     double average = 0.0;
@@ -508,7 +515,8 @@ void calculateCategoryAverages(Property *currentProp)
 } //calculateCategoryAverages end
 
 
-// Prints
+// printSurveyResults
+// Displays the results of every survey completed for a property.
 void printSurveyResults(Property *propPtr)
 {
     if (propPtr->totalRenters == 0)
@@ -536,7 +544,8 @@ void printSurveyResults(Property *propPtr)
 } //printSurveyResults end
 
 
-// Prints the report of total property information and ratings
+// ownerReportMode
+// Prints the report of total property renters, nights rented, revenue made and ratings
 void ownerReportMode(Property *currentProp)
 {
     puts("Rental Property Report");
