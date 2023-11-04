@@ -123,7 +123,7 @@ void printRetnalPropertyInfo(Property *currentPropPtr)
     printf("Rental Property can be rented for %d to %d nights.\n", MIN_RENTAL_NIGHTS, MAX_RENTAL_NIGHTS);
     printf("$%.2f rate a night for the first %d nights.\n", currentPropPtr->rate, currentPropPtr->interval1);
     printf("$%.2f discount rate a night for nights %d to %d\n", currentPropPtr->discount, (currentPropPtr->interval1 + 1), currentPropPtr->interval2);
-    printf("$%.2f discount rate a night for each remaining night over %d.\n", (currentPropPtr->discount * DISCOUNT_MULTIPLIER), currentPropPtr->interval2);
+    printf("$%.2f discount rate a night for each remaining night over %d.\n\n", (currentPropPtr->discount * DISCOUNT_MULTIPLIER), currentPropPtr->interval2);
     
    
     
@@ -401,6 +401,7 @@ void rentalMode(Property *currentPropPtr)
             
             // Task 3.3 - Get property ratings from Renter
             getRatings(MAX_RATING, MIN_RATING, currentPropPtr->totalRenters, RENTER_SURVEY_CATEGORIES, currentPropPtr);
+            puts("");
         }
     } while (sentinalEntered == false);
 } //rentalMode
@@ -547,7 +548,7 @@ void printSurveyResults(Property *propPtr)
     else
     {
         //printCategories();
-        for (size_t i = 0; i < VACATION_RENTERS; i++)
+        for (size_t i = 0; i < propPtr->totalRenters; i++)
         {
             printf("%s %zu: ", "Survey", i+1);
             
@@ -556,7 +557,7 @@ void printSurveyResults(Property *propPtr)
                 printf("%7d", propPtr->ratings[i][j]);
                 
             } //nested for
-            puts("");
+            puts("\n");
         } //for
     }
     
