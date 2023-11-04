@@ -94,7 +94,6 @@ int main (void){
     Property property1;
     
     
-    
     // User Story 1: Rental Property Owner Login
     if (ownerLogin(CORRECT_ID, CORRECT_PASSCODE, LOGIN_MAX_ATTEMPTS) == true)
     {
@@ -102,7 +101,12 @@ int main (void){
         
         // User Story 2: Rental Property Owner Set-up
         setUpProperty(MIN_RENTAL_NIGHTS, MAX_RENTAL_NIGHTS, MIN_RATE, MAX_RATE, &property1);
-        printRetnalPropertyInfo(&property1);
+        
+        // User Story 3: Vacationer Rental Mode
+        rentalMode(&property1);
+        
+        // User Story 4: Rental Property Owner Report mode
+        // Task 4.1 - Display property report
         
     }
     else
@@ -124,8 +128,6 @@ void printRetnalPropertyInfo(Property *currentPropPtr)
     printf("$%.2f rate a night for the first %d nights.\n", currentPropPtr->rate, currentPropPtr->interval1);
     printf("$%.2f discount rate a night for nights %d to %d\n", currentPropPtr->discount, (currentPropPtr->interval1 + 1), currentPropPtr->interval2);
     printf("$%.2f discount rate a night for each remaining night over %d.\n", (currentPropPtr->discount * DISCOUNT_MULTIPLIER), currentPropPtr->interval2);
-    
-    printSurveyResults(currentPropPtr);
     
    
     
@@ -329,6 +331,8 @@ int getValidNights(unsigned int min, unsigned int max, const int sentinel)
     int validInt = 0;
     char input[STRING_LENGTH];
     
+    puts("Enter the number of nights you want to stay.");
+    
     while (intIsValid == false)
     {
         validInt = scanInt(input);
@@ -352,6 +356,32 @@ int getValidNights(unsigned int min, unsigned int max, const int sentinel)
 void rentalMode(Property *currentPropPtr)
 {
     bool sentinalEntered = false;
+    int validInt = 0;
+    
+    do 
+    {
+        // Task 3.1 - Display rental property information and Ratings
+        printRetnalPropertyInfo(currentPropPtr);
+        printSurveyResults(currentPropPtr);
+        
+        // Task 3.2 - Get number of nights
+        validInt = getValidNights(MIN_RENTAL_NIGHTS, MAX_RENTAL_NIGHTS, SENTINAL_NEG1);
+        
+        if (validInt == SENTINAL_NEG1)
+        {
+            // get owner login
+            sentinalEntered = true;
+        }
+        else
+        {
+            // calculate charge
+            // get property rating
+        }
+        
+        // Task 3.3 - Get property ratings from Renter
+        
+        
+    } while (sentinalEntered == false);
 } //rentalMode
 
 
@@ -362,7 +392,7 @@ void getPropertyRatings(Property *propPtr)
 {
     if (propPtr->totalRenters <= sizeof(propPtr->ratings))
     {
-        puts("We want to know how your experience was renting out property. Using the rating system 1 to 5 to enter your rating for each category.");
+        puts("We want to know how your experience was renting out property. Using the rating system 1 to 5 to enter your rating for each category:");
         // display survey info
         printCategories();
         for (int i = 0; i < (propPtr->totalRenters + 1); i++)
@@ -453,7 +483,7 @@ void calculateCategoryAverages(Property *currentProp)
 } //calculateCategoryAverages end
 
 
-
+// Prints
 void printSurveyResults(Property *propPtr)
 {
     if (propPtr->totalRenters == 0)
