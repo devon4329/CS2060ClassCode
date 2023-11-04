@@ -44,6 +44,7 @@
 #define MAX_RATE 1000
 #define DISCOUNT_MULTIPLIER 2
 
+
 // Structure for rental property information
 // Holds the values each property needs to hold
 // typedef allows for easy creation and reference of the property
@@ -61,6 +62,8 @@ typedef struct Property {
 } Property;
 
 
+
+
 // Function Prototypes
 void printRetnalPropertyInfo(Property *currentPropPtr);
 void setUpProperty(int minNights, int maxNights, int minRate, int maxRate, Property *propertyPtr);
@@ -73,6 +76,7 @@ int getValidNights(unsigned int min, unsigned int max, const int sentinel);
 void rentalMode(Property *currentPropPtr);
 void getPropertyRatings(Property *propPtr);
 void printCategories(void);
+void printCategoryData(Property *propPtr)
 
 
 int main (void){
@@ -87,6 +91,7 @@ int main (void){
     
     Property property1;
     
+    printCategories(&property1);
     
     // User Story 1: Rental Property Owner Login
     if (ownerLogin(CORRECT_ID, CORRECT_PASSCODE, LOGIN_MAX_ATTEMPTS) == true)
@@ -96,7 +101,7 @@ int main (void){
         // User Story 2: Rental Property Owner Set-up
         setUpProperty(MIN_RENTAL_NIGHTS, MAX_RENTAL_NIGHTS, MIN_RATE, MAX_RATE, &property1);
         printRetnalPropertyInfo(&property1);
-        printCategories();
+        printCategories(&property1);
     }
     else
     {
@@ -106,7 +111,7 @@ int main (void){
     return 0;
 } //main
 
-// printRentalPropertyInfo
+// Task 3.1 - Display rental property information and Ratings
 // Prints property information using a pointer to the information held in the
 // property structure.
 void printRetnalPropertyInfo(Property *currentPropPtr)
@@ -374,15 +379,42 @@ void getPropertyRatings(Property *propPtr)
 // Prints categories of the survey
 void printCategories(void)
 {
-    const char *surveyCategories[RENTER_SURVEY_CATEGORIES] = {"Check-in Process", "Cleanliness", "Amenities"};
+    const char *surveyCats[RENTER_SURVEY_CATEGORIES] = {"Check-in Process", "Cleanliness", "Amenities"};
     
     //loop to display each category horizontally
     puts("We want to know how your experience was renting out property. Using the rating system 1 to 5 to enter your rating for each category.");
     printf("%s", "Rating Categories:\t");
     for (size_t surveyCategory = 0; surveyCategory < RENTER_SURVEY_CATEGORIES; ++surveyCategory)
     {
-        printf("\t%zu.%s\t", surveyCategory+1, surveyCategories[surveyCategory]);
+        printf("\t%zu.%s\t", surveyCategory+1, surveyCats[surveyCategory]);
     }
     puts(""); //start new line of output
     
-} //end printCategories
+} //printCategories
+
+
+// Print averages by reading from the categoryAverages array
+// uses *categories parameter to be able to print category info using printCategories function
+void printCategoryData(Property *propPtr)
+{
+    //Call function to reprint category information
+    printCategories();
+    
+    if (propPtr->totalRenters == 0)
+    {
+        puts("No Ratings Currently");
+    }
+    else
+    {
+        printf("%s", "Rating Averages:");
+        
+        for (size_t i = 0; i < RENTER_SURVEY_CATEGORIES; i++)
+        {
+            printf("%20.1f\n", averageArray[i]);
+        } //for loop end
+    }
+    
+    puts("");
+    
+} // printCategoryData end
+
