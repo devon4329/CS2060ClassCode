@@ -370,6 +370,7 @@ void rentalMode(Property *currentPropPtr)
     bool sentinalEntered = false;
     int validInt = 0;
     double totalCost = 0.0;
+    currentPropPtr->ratingsEntered = 0;
     
     do 
     {
@@ -415,7 +416,6 @@ void rentalMode(Property *currentPropPtr)
 // Get ratings from user
 void getRatings(int maxRating, int minRating, const int numRatings, const int numCategories, Property *arrayPtr)
 {
-    arrayPtr->ratingsEntered = 0;
     const char *surveyCats[RENTER_SURVEY_CATEGORIES] = {"Check-in Process", "Cleanliness", "Amenities"};
     
     // Puts categories into array located in structure
