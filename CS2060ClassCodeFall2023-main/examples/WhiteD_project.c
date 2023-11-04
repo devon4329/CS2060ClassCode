@@ -548,7 +548,7 @@ void printSurveyResults(Property *propPtr)
             
             for (size_t j = 0; j < RENTER_SURVEY_CATEGORIES; j++)
             {
-                printf("%20d", propPtr->ratings[i][j]);
+                printf("%25d", propPtr->ratings[i][j]);
                 
             } //nested for
             puts("");
