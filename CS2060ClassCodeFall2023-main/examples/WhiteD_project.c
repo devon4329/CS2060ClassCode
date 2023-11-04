@@ -409,8 +409,15 @@ void rentalMode(Property *currentPropPtr)
             currentPropPtr->totalNights = currentPropPtr->totalNights + validInt;
             
             // Task 3.3 - Get property ratings from Renter
-            getRatings(MAX_RATING, MIN_RATING, currentPropPtr->totalRenters, RENTER_SURVEY_CATEGORIES, currentPropPtr);
-            puts("");
+            if (currentPropPtr->ratingsEntered < VACATION_RENTERS)
+            {
+                getRatings(MAX_RATING, MIN_RATING, currentPropPtr->totalRenters, RENTER_SURVEY_CATEGORIES, currentPropPtr);
+                puts("");
+            }
+            else
+            {
+                puts("Maximum number of rating has been reached.");
+            }
         }
     } while (sentinalEntered == false);
 } //rentalMode
@@ -444,7 +451,7 @@ void getRatings(int maxRating, int minRating, const int numRatings, const int nu
     puts("");
     if (arrayPtr->ratingsEntered < VACATION_RENTERS)
     {
-        for (size_t i = arrayPtr->ratingsEntered; i < VACATION_RENTERS; i++)
+        for (size_t i = arrayPtr->ratingsEntered; i < numRatings; i++)
         {
             for (size_t j = 0; j < numCategories; j++)
             {
