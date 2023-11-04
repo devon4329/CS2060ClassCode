@@ -448,6 +448,7 @@ void getRatings(int maxRating, int minRating, const int numRatings, const int nu
                 arrayPtr->ratings[i][j] = getValidInt(minRating, maxRating);
             } //inner
         } //outer
+        puts("");
         arrayPtr->ratingsEntered++;
     }
     else
@@ -513,7 +514,7 @@ double calculateCategoryAverages(Property *currentProp)
             
             //if used for when the sum of all columns have been obtained
             //then able to find the average and store in the averageCatergories array in main
-            if (j == VACATION_RENTERS - 1)
+            if (j == currentProp->totalRenters - 1)
             {
                 average = (double)sum / VACATION_RENTERS;
                 catAverages[i] = average;
