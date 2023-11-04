@@ -469,7 +469,7 @@ void printCategories(Property *categoryPtr)
     {
         printf("\t%zu.%s\t", surveyCategory+1, categoryPtr->categories[surveyCategory]);
     }
-    puts(""); //start new line of output
+    puts("");
     
 } //printCategories
 
@@ -516,7 +516,7 @@ double calculateCategoryAverages(Property *currentProp)
             
             //if used for when the sum of all columns have been obtained
             //then able to find the average and store in the averageCatergories array in main
-            if (j == currentProp->totalRenters - 1)
+            if (j == VACATION_RENTERS - 1)
             {
                 average = (double)sum / VACATION_RENTERS;
                 catAverages[i] = average;
@@ -543,7 +543,7 @@ void printSurveyResults(Property *propPtr)
     else
     {
         puts("");
-        printCategories(propPtr);
+        //printCategories(propPtr);
         for (size_t i = 0; i < propPtr->totalRenters; i++)
         {
             printf("%s %zu: ", "Survey", i+1);
