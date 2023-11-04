@@ -76,7 +76,9 @@ int getValidNights(unsigned int min, unsigned int max, const int sentinel);
 void rentalMode(Property *currentPropPtr);
 void getPropertyRatings(Property *propPtr);
 void printCategories(void);
-void printCategoryData(Property *propPtr)
+void printCategoryData(Property *propPtr);
+void calculateCategoryAverages(Property *currentProp);
+void printSurveyResults(Property *propPtr);
 
 
 int main (void){
@@ -91,7 +93,7 @@ int main (void){
     
     Property property1;
     
-    printCategories(&property1);
+    
     
     // User Story 1: Rental Property Owner Login
     if (ownerLogin(CORRECT_ID, CORRECT_PASSCODE, LOGIN_MAX_ATTEMPTS) == true)
@@ -101,7 +103,7 @@ int main (void){
         // User Story 2: Rental Property Owner Set-up
         setUpProperty(MIN_RENTAL_NIGHTS, MAX_RENTAL_NIGHTS, MIN_RATE, MAX_RATE, &property1);
         printRetnalPropertyInfo(&property1);
-        printCategories(&property1);
+        
     }
     else
     {
@@ -121,7 +123,9 @@ void printRetnalPropertyInfo(Property *currentPropPtr)
     printf("Rental Property can be rented for %d to %d nights.\n", MIN_RENTAL_NIGHTS, MAX_RENTAL_NIGHTS);
     printf("$%.2f rate a night for the first %d nights.\n", currentPropPtr->rate, currentPropPtr->interval1);
     printf("$%.2f discount rate a night for nights %d to %d\n", currentPropPtr->discount, (currentPropPtr->interval1 + 1), currentPropPtr->interval2);
-    printf("$%.2f discount rate a night for each remaining night over %d.\n\n", (currentPropPtr->discount * DISCOUNT_MULTIPLIER), currentPropPtr->interval2);
+    printf("$%.2f discount rate a night for each remaining night over %d.\n", (currentPropPtr->discount * DISCOUNT_MULTIPLIER), currentPropPtr->interval2);
+    
+    printSurveyResults(currentPropPtr);
     
    
     
@@ -358,6 +362,7 @@ void getPropertyRatings(Property *propPtr)
 {
     if (propPtr->totalRenters <= sizeof(propPtr->ratings))
     {
+        puts("We want to know how your experience was renting out property. Using the rating system 1 to 5 to enter your rating for each category.");
         // display survey info
         printCategories();
         for (int i = 0; i < (propPtr->totalRenters + 1); i++)
@@ -382,7 +387,7 @@ void printCategories(void)
     const char *surveyCats[RENTER_SURVEY_CATEGORIES] = {"Check-in Process", "Cleanliness", "Amenities"};
     
     //loop to display each category horizontally
-    puts("We want to know how your experience was renting out property. Using the rating system 1 to 5 to enter your rating for each category.");
+    puts("Survey Results");
     printf("%s", "Rating Categories:\t");
     for (size_t surveyCategory = 0; surveyCategory < RENTER_SURVEY_CATEGORIES; ++surveyCategory)
     {
@@ -399,22 +404,77 @@ void printCategoryData(Property *propPtr)
 {
     //Call function to reprint category information
     printCategories();
+    printSurveyResults(propPtr);
     
-    if (propPtr->totalRenters == 0)
-    {
-        puts("No Ratings Currently");
-    }
-    else
-    {
-        printf("%s", "Rating Averages:");
+   
+    printf("%s", "Rating Averages:");
         
-        for (size_t i = 0; i < RENTER_SURVEY_CATEGORIES; i++)
-        {
-            printf("%20.1f\n", averageArray[i]);
-        } //for loop end
-    }
+    for (size_t i = 0; i < RENTER_SURVEY_CATEGORIES; i++)
+    {
+        //printf("%20.1f\n", averageArray[i]);
+    } //for loop end
     
     puts("");
     
 } // printCategoryData end
 
+void calculateCategoryAverages(Property *currentProp)
+{
+    double average = 0.0;
+    int sum = 0;
+    double catAverages[RENTER_SURVEY_CATEGORIES];
+    
+    //for loop to iterate through the columns second
+    //allows for easy calculation of sum an averages of each column
+    for (size_t i = 0; i < RENTER_SURVEY_CATEGORIES; i++)
+    {
+        sum = 0;
+        
+        //nested for loop to iterate through each survey in the first column
+        //to obtain sum and average
+        for (size_t j = 0; j < VACATION_RENTERS; j++)
+        {
+            sum = sum + currentProp->ratings[j][i];
+            
+            //if used for when the sum of all columns have been obtained
+            //then able to find the average and store in the averageCatergories array in main
+            if (j == VACATION_RENTERS - 1)
+            {
+                average = (double)sum / VACATION_RENTERS;
+                catAverages[i] = average;
+            }
+            
+        } //end nested for
+        
+        
+    } //end for
+    
+    
+} //calculateCategoryAverages end
+
+
+
+void printSurveyResults(Property *propPtr)
+{
+    if (propPtr->totalRenters == 0)
+    {
+        puts("Survey Results");
+        puts("No Ratings Currently");
+    }
+    else
+    {
+        printCategories();
+        for (size_t i = 0; i < VACATION_RENTERS; i++)
+        {
+            printf("%s %zu: ", "Survey", i+1);
+            
+            for (size_t j = 0; j < RENTER_SURVEY_CATEGORIES; j++)
+            {
+                printf("%7d", propPtr->ratings[i][j]);
+                
+            } //nested for
+            puts("");
+        } //for
+    }
+    
+} //printSurveyResults end
