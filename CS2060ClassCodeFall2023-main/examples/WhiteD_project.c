@@ -80,7 +80,6 @@ void printNightsCharges(unsigned int nights, double charges);
 void rentalMode(Property *currentPropPtr);
 void getRatings(int maxRating, int minRating, const int numRatings, const int numCategories,Property *arrayPtr);
 void printCategories(Property *categoryPtr);
-void printCategoryData(Property *propPtr);
 void calculateCategoryAverages(Property *currentProp);
 void printSurveyResults(Property *propPtr);
 void ownerReportMode(Property *currentProp);
@@ -355,19 +354,17 @@ int getValidNights(unsigned int min, unsigned int max, const int sentinel)
     return validInt;
 } //getValidNights
 
+// printNightsCharges
 // Prints number of nights and charges for current customer.
 void printNightsCharges(unsigned int nights, double charges)
 {
-    
     puts("Nights\tCharge");
     printf("%d\t\t$%.2f\n\n", nights, charges);
-    
-    
 } //printNightsCharges function end
 
 
 // rentalMode
-// This method is for the vacationer to select the properlty they want to rent
+// vacationer  rental mode to select the property they want to rent
 // get the deails and provide a rating for the property.
 void rentalMode(Property *currentPropPtr)
 {
@@ -424,9 +421,15 @@ void rentalMode(Property *currentPropPtr)
 // 2D property array in the structure.
 void getRatings(int maxRating, int minRating, const int numRatings, const int numCategories, Property *arrayPtr)
 {
+    // use of char array to place the strings needed for the categories in categories structure
+    // element.
+    // declared as const for use with strcpy() function.
     const char *surveyCats[RENTER_SURVEY_CATEGORIES] = {"Check-in Process", "Cleanliness", "Amenities"};
     
     // Puts categories into array located in structure
+    // strcpy function copies strings from "surveyCats[i]" and puts in categories[i] element in
+    // the structure.
+    // for loop used to iterate through both arrays and put in corresponding indexes.
     for (size_t i = 0; i < RENTER_SURVEY_CATEGORIES; i++)
     {
         strcpy(arrayPtr->categories[i], surveyCats[i]);
@@ -474,28 +477,6 @@ void printCategories(Property *categoryPtr)
     
 } //printCategories
 
-/*
-// Print averages by reading from the categoryAverages array
-// uses *categories parameter to be able to print category info using printCategories function
-void printCategoryData(Property *propPtr)
-{
-    //Call function to reprint category information
-    printCategories(propPtr);
-    printSurveyResults(propPtr);
-    
-   
-    printf("%s", "Rating Averages:");
-        
-    for (size_t i = 0; i < RENTER_SURVEY_CATEGORIES; i++)
-    {
-        //printf("%20.1f\n", averageArray[i]);
-    } //for loop end
-    
-    puts("");
-    
-} // printCategoryData end
-*/
-
 
 void calculateCategoryAverages(Property *currentProp)
 {
@@ -522,10 +503,8 @@ void calculateCategoryAverages(Property *currentProp)
                 currentProp->averageRatings[i] = average;
             }
             
-        } //end nested for
-        
-        
-    } //end for
+        } //nested for
+    } //for
 } //calculateCategoryAverages end
 
 
@@ -549,11 +528,9 @@ void printSurveyResults(Property *propPtr)
             for (size_t j = 0; j < RENTER_SURVEY_CATEGORIES; j++)
             {
                 printf("%21d", propPtr->ratings[i][j]);
-                
             } //nested for
             puts("");
         } //for
-        
     }
     puts("");
 } //printSurveyResults end
@@ -577,8 +554,4 @@ void ownerReportMode(Property *currentProp)
     {
         printf("%s: %.1lf\n", currentProp->categories[i], currentProp->averageRatings[i]);
     }
-    //printf("Check-in Process: %.1lf\n", currentProp->averageRatings[0]);
-    //printf("Cleanliness: %.1lf\n", currentProp->averageRatings[1]);
-    //printf("Amenities: %.1lf\n", currentProp->averageRatings[2]);
-    
-}
+} //ownerReportMode
