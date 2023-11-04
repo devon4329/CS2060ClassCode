@@ -80,8 +80,9 @@ void rentalMode(Property *currentPropPtr);
 void getRatings(int maxRating, int minRating, const int numRatings, const int numCategories,Property *arrayPtr);
 void printCategories(Property *categoryPtr);
 void printCategoryData(Property *propPtr);
-void calculateCategoryAverages(Property *currentProp);
+double calculateCategoryAverages(Property *currentProp);
 void printSurveyResults(Property *propPtr);
+void ownerReportMode(Property *currentProp);
 
 
 int main (void){
@@ -103,6 +104,9 @@ int main (void){
         
         // User Story 4: Rental Property Owner Report mode
         // Task 4.1 - Display property report
+        ownerReportMode(&property1);
+        
+        puts("\nExiting AirUCCS");
         
     }
     else
@@ -487,7 +491,7 @@ void printCategoryData(Property *propPtr)
     
 } // printCategoryData end
 
-void calculateCategoryAverages(Property *currentProp)
+double calculateCategoryAverages(Property *currentProp)
 {
     double average = 0.0;
     int sum = 0;
@@ -518,7 +522,7 @@ void calculateCategoryAverages(Property *currentProp)
         
     } //end for
     
-    
+    return average;
 } //calculateCategoryAverages end
 
 
@@ -546,5 +550,23 @@ void printSurveyResults(Property *propPtr)
         } //for
         puts("");
     }
-    
 } //printSurveyResults end
+
+
+// Prints the report of total property information and ratings
+void ownerReportMode(Property *currentProp)
+{
+    puts("Rental Property Report");
+    printf("Name: %s\n", currentProp->name);
+    printf("Location: %s\n\n", currentProp->location);
+    
+    puts("Rental Property Totals");
+    puts("Renters\tNights\tCharges\n");
+    printf("%d\t%d\t$%d\n\n", currentProp->totalRenters, currentProp->totalNights, (int)currentProp->totalRevenue);
+    
+    puts("Category Rating Averages");
+    printf("Check-in Process: %.1lf\n", calculateCategoryAverages(currentProp));
+    printf("Cleanliness: %.1lf\n", calculateCategoryAverages(currentProp));
+    printf("Amenities: %.1lf\n", calculateCategoryAverages(currentProp));
+    
+}
