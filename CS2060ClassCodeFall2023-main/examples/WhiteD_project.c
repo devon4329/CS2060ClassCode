@@ -442,9 +442,9 @@ void getRatings(int maxRating, int minRating, const int numRatings, const int nu
         printf("%zu: %s\n", i + 1, arrayPtr->categories[i]);
     }
     puts("");
-    if (arrayPtr->ratingsEntered <= VACATION_RENTERS)
+    if (arrayPtr->ratingsEntered < VACATION_RENTERS)
     {
-        for (size_t i = arrayPtr->ratingsEntered; i < numRatings; i++)
+        for (size_t i = arrayPtr->ratingsEntered; i < VACATION_RENTERS; i++)
         {
             for (size_t j = 0; j < numCategories; j++)
             {
