@@ -420,7 +420,7 @@ void rentalMode(Property *currentPropPtr)
             }
             else
             {
-                puts("Maximum number of rating has been reached.");
+                puts("Maximum number of rating has been reached.\n\n");
             }
         }
     } while (sentinalEntered == false);
