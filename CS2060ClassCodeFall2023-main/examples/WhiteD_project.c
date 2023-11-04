@@ -543,14 +543,14 @@ void printSurveyResults(Property *propPtr)
     else
     {
         puts("");
-        //printCategories(propPtr);
+        printCategories(propPtr);
         for (size_t i = 0; i < propPtr->totalRenters; i++)
         {
             printf("%s %zu: ", "Survey", i+1);
             
             for (size_t j = 0; j < RENTER_SURVEY_CATEGORIES; j++)
             {
-                printf("%7d", propPtr->ratings[i][j]);
+                printf("%10d", propPtr->ratings[i][j]);
                 
             } //nested for
             puts("");
