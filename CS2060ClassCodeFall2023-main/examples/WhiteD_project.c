@@ -412,7 +412,7 @@ void getRatings(int maxRating, int minRating, const int numRatings, const int nu
     const char *surveyCats[RENTER_SURVEY_CATEGORIES] = {"Check-in Process", "Cleanliness", "Amenities"};
     
     // Puts categories into array located in structure
-    for (int i = 0; i < RENTER_SURVEY_CATEGORIES; i++)
+    for (size_t i = 0; i < RENTER_SURVEY_CATEGORIES; i++)
     {
         strcpy(arrayPtr->categories[i], surveyCats[i]);
     }
@@ -422,13 +422,11 @@ void getRatings(int maxRating, int minRating, const int numRatings, const int nu
     {
         printf("%zu: %s\n", i + 1, arrayPtr->categories[i]);
     }
-    
+    puts("");
     for (size_t i = 0; i < numRatings; i++)
     {
         for (size_t j = 0; j < numCategories; j++)
         {
-            printf("%s%zu\n", "Renter ", i+1);
-            
             puts("Enter your rating for");
             printf("Category %zu: ", j+1);
             arrayPtr->ratings[i][j] = getValidInt(minRating, maxRating);
@@ -451,9 +449,9 @@ void getPropertyRatings(Property *propPtr)
     {
         // display survey info
         
-        for (int i = 0; i < (propPtr->totalRenters + 1); i++)
+        for (size_t i = 0; i < (propPtr->totalRenters + 1); i++)
         {
-            for (int j = 0; j < RENTER_SURVEY_CATEGORIES; j++)
+            for (size_t j = 0; j < RENTER_SURVEY_CATEGORIES; j++)
             {
                 propPtr->ratings[i][j] = getValidInt(MIN_RATING, MAX_RATING);
             }
