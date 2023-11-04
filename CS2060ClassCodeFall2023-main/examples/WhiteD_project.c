@@ -377,7 +377,11 @@ void rentalMode(Property *currentPropPtr)
     {
         // Task 3.1 - Display rental property information and Ratings
         printRetnalPropertyInfo(currentPropPtr);
-        printSurveyResults(currentPropPtr);
+        
+        if (currentPropPtr->ratingsEntered <= VACATION_RENTERS)
+        {
+            printSurveyResults(currentPropPtr);
+        }
         
         // Task 3.2 - Get number of nights
         validInt = getValidNights(MIN_RENTAL_NIGHTS, MAX_RENTAL_NIGHTS, SENTINAL_NEG1);
