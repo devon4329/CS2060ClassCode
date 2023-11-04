@@ -561,8 +561,8 @@ void ownerReportMode(Property *currentProp)
     printf("Location: %s\n\n", currentProp->location);
     
     puts("Rental Property Totals");
-    puts("Renters\tNights\tCharges\n");
-    printf("%d\t%d\t$%d\n\n", currentProp->totalRenters, currentProp->totalNights, (int)currentProp->totalRevenue);
+    puts("Renters\t\tNights\t\tCharges");
+    printf("%d\t\t\t\t%d\t\t$%d\n\n", currentProp->totalRenters, currentProp->totalNights, (int)currentProp->totalRevenue);
     
     puts("Category Rating Averages");
     printf("Check-in Process: %.1lf\n", calculateCategoryAverages(currentProp));
