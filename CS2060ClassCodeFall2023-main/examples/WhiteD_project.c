@@ -57,6 +57,7 @@ typedef struct Property {
     double rate;
     double discount;
     int ratings[VACATION_RENTERS][RENTER_SURVEY_CATEGORIES];
+    char categories[RENTER_SURVEY_CATEGORIES][STRING_LENGTH];
     double totalRevenue;
     int totalNights;
 } Property;
@@ -77,7 +78,7 @@ void printNightsCharges(unsigned int nights, double charges);
 void rentalMode(Property *currentPropPtr);
 void getRatings(int maxRating, int minRating, const int numRatings, const int numCategories,Property *arrayPtr);
 void getPropertyRatings(Property *propPtr);
-void printCategories(void);
+void printCategories(Property *categoryPtr);
 void printCategoryData(Property *propPtr);
 void calculateCategoryAverages(Property *currentProp);
 void printSurveyResults(Property *propPtr);
@@ -85,16 +86,9 @@ void printSurveyResults(Property *propPtr);
 
 int main (void){
     
-    /*
-    //test
-    puts("Test");
-    char test[STRING_LENGTH] = {'\0'};
-    getValidInt(MIN_RENTAL_NIGHTS, MAX_RENTAL_NIGHTS);
-    printf("%s", test);
-    */
-    
     Property property1;
     
+   
     
     // User Story 1: Rental Property Owner Login
     if (ownerLogin(CORRECT_ID, CORRECT_PASSCODE, LOGIN_MAX_ATTEMPTS) == true)
@@ -415,6 +409,19 @@ void rentalMode(Property *currentPropPtr)
 // Get ratings from user
 void getRatings(int maxRating, int minRating, const int numRatings, const int numCategories, Property *arrayPtr)
 {
+    const char *surveyCats[RENTER_SURVEY_CATEGORIES] = {"Check-in Process", "Cleanliness", "Amenities"};
+    
+    // Puts categories into array located in structure
+    for (int i = 0; i < RENTER_SURVEY_CATEGORIES; i++)
+    {
+        strcpy(arrayPtr->categories[i], surveyCats[i]);
+    }
+    
+    puts("We want to know how your experience was renting out property. Using the rating system 1 to 5 to enter your rating for each category:");
+    for (size_t i = 0; i < numCategories; i++)
+    {
+        printf("%zu: %s\n", i + 1, arrayPtr->categories[i]);
+    }
     
     for (size_t i = 0; i < numRatings; i++)
     {
@@ -442,7 +449,6 @@ void getPropertyRatings(Property *propPtr)
 {
     if (propPtr->totalRenters <= sizeof(propPtr->ratings))
     {
-        puts("We want to know how your experience was renting out property. Using the rating system 1 to 5 to enter your rating for each category:");
         // display survey info
         
         for (int i = 0; i < (propPtr->totalRenters + 1); i++)
@@ -462,16 +468,14 @@ void getPropertyRatings(Property *propPtr)
 
 
 // Prints categories of the survey
-void printCategories(void)
+void printCategories(Property *categoryPtr)
 {
-    const char *surveyCats[RENTER_SURVEY_CATEGORIES] = {"Check-in Process", "Cleanliness", "Amenities"};
-    
     //loop to display each category horizontally
     puts("Survey Results");
     printf("%s", "Rating Categories:\t");
     for (size_t surveyCategory = 0; surveyCategory < RENTER_SURVEY_CATEGORIES; ++surveyCategory)
     {
-        printf("\t%zu.%s\t", surveyCategory+1, surveyCats[surveyCategory]);
+        printf("\t%zu.%s\t", surveyCategory+1, categoryPtr->categories[surveyCategory]);
     }
     puts(""); //start new line of output
     
@@ -483,7 +487,7 @@ void printCategories(void)
 void printCategoryData(Property *propPtr)
 {
     //Call function to reprint category information
-    printCategories();
+    printCategories(propPtr);
     printSurveyResults(propPtr);
     
    
@@ -544,7 +548,7 @@ void printSurveyResults(Property *propPtr)
     }
     else
     {
-        printCategories();
+        //printCategories();
         for (size_t i = 0; i < VACATION_RENTERS; i++)
         {
             printf("%s %zu: ", "Survey", i+1);
