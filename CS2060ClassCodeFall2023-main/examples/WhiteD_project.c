@@ -455,7 +455,7 @@ void getRatings(int maxRating, int minRating, const int numRatings, const int nu
     puts("");
     if (arrayPtr->ratingsEntered < VACATION_RENTERS)
     {
-        for (size_t i = arrayPtr->ratingsEntered; i < numRatings; i++)
+        for (size_t i = arrayPtr->ratingsEntered; i <= arrayPtr->ratingsEntered; i++)
         {
             for (size_t j = 0; j < numCategories; j++)
             {
@@ -505,15 +505,15 @@ void calculateCategoryAverages(Property *currentProp)
         
         // Nested for loop to iterate through each survey in the first column
         // to obtain sum and average
-        for (size_t j = 0; j < currentProp->totalRenters; j++)
+        for (size_t j = 0; j < currentProp->ratingsEntered; j++)
         {
             sum = sum + currentProp->ratings[j][i];
             
             // If used for when the sum of all columns have been obtained
             // then able to find the average and store in the averageCatergories array in main
-            if (j == (currentProp->totalRenters - 1))
+            if (j == (currentProp->ratingsEntered - 1))
             {
-                average = (double)sum / currentProp->totalRenters;
+                average = (double)sum / currentProp->ratingsEntered;
                 currentProp->averageRatings[i] = average;
             }
             
