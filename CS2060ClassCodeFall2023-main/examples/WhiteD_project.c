@@ -518,7 +518,7 @@ double calculateCategoryAverages(Property *currentProp)
             //then able to find the average and store in the averageCatergories array in main
             if (j == (currentProp->totalRenters - 1))
             {
-                average = (double)sum / VACATION_RENTERS;
+                average = (double)sum / currentProp->totalRenters;
                 catAverages[i] = average;
             }
             
