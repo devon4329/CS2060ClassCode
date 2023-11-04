@@ -510,13 +510,13 @@ double calculateCategoryAverages(Property *currentProp)
         
         //nested for loop to iterate through each survey in the first column
         //to obtain sum and average
-        for (size_t j = 0; j < VACATION_RENTERS; j++)
+        for (size_t j = 0; j < currentProp->totalRenters; j++)
         {
             sum = sum + currentProp->ratings[j][i];
             
             //if used for when the sum of all columns have been obtained
             //then able to find the average and store in the averageCatergories array in main
-            if (j == VACATION_RENTERS - 1)
+            if (j == (currentProp->totalRenters - 1))
             {
                 average = (double)sum / VACATION_RENTERS;
                 catAverages[i] = average;
@@ -550,9 +550,10 @@ void printSurveyResults(Property *propPtr)
             
             for (size_t j = 0; j < RENTER_SURVEY_CATEGORIES; j++)
             {
-                printf("%2d\n", propPtr->ratings[i][j]);
+                printf("%7d", propPtr->ratings[i][j]);
                 
             } //nested for
+            puts("");
         } //for
         
     }
