@@ -536,7 +536,7 @@ void printSurveyResults(Property *propPtr)
     {
         puts("");
         printCategories(propPtr);
-        for (size_t i = 0; i < VACATION_RENTERS; i++)
+        for (size_t i = 0; i < propPtr->ratingsEntered; i++)
         {
             printf("%s %zu: ", "Survey", i+1);
             
