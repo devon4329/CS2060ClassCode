@@ -572,6 +572,7 @@ void printSurveyResults(Property *propPtr)
                 
             } //nested for
         } //for
+        puts("");
     }
     
 } //printSurveyResults end
