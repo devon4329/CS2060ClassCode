@@ -78,7 +78,6 @@ int getValidNights(unsigned int min, unsigned int max, const int sentinel);
 void printNightsCharges(unsigned int nights, double charges);
 void rentalMode(Property *currentPropPtr);
 void getRatings(int maxRating, int minRating, const int numRatings, const int numCategories,Property *arrayPtr);
-void getPropertyRatings(Property *propPtr);
 void printCategories(Property *categoryPtr);
 void printCategoryData(Property *propPtr);
 void calculateCategoryAverages(Property *currentProp);
@@ -414,6 +413,8 @@ void rentalMode(Property *currentPropPtr)
 
 
 // Get ratings from user
+// A function that points to the property structure to access and mainuplate the
+// 2D property array in the structure.
 void getRatings(int maxRating, int minRating, const int numRatings, const int numCategories, Property *arrayPtr)
 {
     const char *surveyCats[RENTER_SURVEY_CATEGORIES] = {"Check-in Process", "Cleanliness", "Amenities"};
@@ -447,36 +448,7 @@ void getRatings(int maxRating, int minRating, const int numRatings, const int nu
     {
         puts("Maximum number of rating has been reached.");
     }
-        
-    
-    
-    
 } //getRatings
-
-
-
-// getPropertyRatings
-// A function that points to the property structure to access and mainuplate the
-// 2D property array in the structure.
-void getPropertyRatings(Property *propPtr)
-{
-    if (propPtr->totalRenters <= sizeof(propPtr->ratings))
-    {
-        // display survey info
-        
-        for (size_t i = 0; i < (propPtr->totalRenters + 1); i++)
-        {
-            for (size_t j = 0; j < RENTER_SURVEY_CATEGORIES; j++)
-            {
-                propPtr->ratings[i][j] = getValidInt(MIN_RATING, MAX_RATING);
-            }
-        }
-    }
-    else
-    {
-        puts("Maximum number of rating has been reached.");
-    }
-} //getPropertyRatings
 
 
 
