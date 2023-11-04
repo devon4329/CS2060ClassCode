@@ -73,6 +73,7 @@ char *fgetsWrapper (char *str, int size, FILE *stream);
 double calculateCharges(unsigned int nights, unsigned int interval1Nights, unsigned int interval2Nights, double rate, double discount, int multiplier);
 bool ownerLogin(const char* username, const char* passcode, unsigned int attempts);
 int getValidNights(unsigned int min, unsigned int max, const int sentinel);
+void printNightsCharges(unsigned int nights, double charges);
 void rentalMode(Property *currentPropPtr);
 void getPropertyRatings(Property *propPtr);
 void printCategories(void);
@@ -161,7 +162,7 @@ void setUpProperty(int minNights, int maxNights, int minRate, int maxRate, Prope
     // Task 2.5 * 2.6 - Get rental property name and location.
     puts("\nEnter the location of the property: ");
     fgetsWrapper(propertyPtr->location, STRING_LENGTH, stdin);
-    puts("\nEnter the name of the property: ");
+    puts("\nEnter the name of the property: \n");
     fgetsWrapper(propertyPtr->name, STRING_LENGTH, stdin);
     
 } //setUpProperty
@@ -349,6 +350,16 @@ int getValidNights(unsigned int min, unsigned int max, const int sentinel)
     return validInt;
 } //getValidNights
 
+// Prints number of nights and charges for current customer.
+void printNightsCharges(unsigned int nights, double charges)
+{
+    
+    puts("Nights\tCharge");
+    printf("%d\t\t$%.2f\n\n", nights, charges);
+    
+    
+} //printNightsCharges function end
+
 
 // rentalMode
 // This method is for the vacationer to select the properlty they want to rent
@@ -381,6 +392,9 @@ void rentalMode(Property *currentPropPtr)
             
             // Incriment renters
             currentPropPtr->totalRenters++;
+            
+            // Print charges for current stay
+            printNightsCharges(validInt, totalCost);
             
             // Add to total revenue
             currentPropPtr->totalRevenue = currentPropPtr->totalRevenue + totalCost;
@@ -500,6 +514,7 @@ void printSurveyResults(Property *propPtr)
     {
         puts("Survey Results");
         puts("No Ratings Currently");
+        puts("");
     }
     else
     {
