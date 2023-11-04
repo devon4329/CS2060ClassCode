@@ -27,7 +27,7 @@
 // Symbolic constants to prevent hardcoding
 //Maximum length of a string
 #define  STRING_LENGTH 80
-//Two dimensional array storage amounts for rows and columns of surve data
+//Two dimensional array storage amounts for rows and columns of survey data
 #define VACATION_RENTERS 5
 #define RENTER_SURVEY_CATEGORIES 3
 #define MIN_RATING 1
@@ -442,7 +442,7 @@ void getRatings(int maxRating, int minRating, const int numRatings, const int nu
         printf("%zu: %s\n", i + 1, arrayPtr->categories[i]);
     }
     puts("");
-    if (arrayPtr->ratingsEntered <= numRatings)
+    if (arrayPtr->ratingsEntered <= VACATION_RENTERS)
     {
         for (size_t i = arrayPtr->ratingsEntered; i < numRatings; i++)
         {
@@ -490,20 +490,20 @@ void calculateCategoryAverages(Property *currentProp)
     double average = 0.0;
     int sum = 0;
     
-    //for loop to iterate through the columns second
-    //allows for easy calculation of sum an averages of each column
+    // For loop to iterate through the columns second
+    // allows for easy calculation of sum an averages of each column
     for (size_t i = 0; i < RENTER_SURVEY_CATEGORIES; i++)
     {
         sum = 0;
         
-        //nested for loop to iterate through each survey in the first column
-        //to obtain sum and average
+        // Nested for loop to iterate through each survey in the first column
+        // to obtain sum and average
         for (size_t j = 0; j < currentProp->totalRenters; j++)
         {
             sum = sum + currentProp->ratings[j][i];
             
-            //if used for when the sum of all columns have been obtained
-            //then able to find the average and store in the averageCatergories array in main
+            // If used for when the sum of all columns have been obtained
+            // then able to find the average and store in the averageCatergories array in main
             if (j == (currentProp->totalRenters - 1))
             {
                 average = (double)sum / currentProp->totalRenters;
