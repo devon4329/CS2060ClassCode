@@ -473,7 +473,7 @@ void printCategories(Property *categoryPtr)
     
 } //printCategories
 
-
+/*
 // Print averages by reading from the categoryAverages array
 // uses *categories parameter to be able to print category info using printCategories function
 void printCategoryData(Property *propPtr)
@@ -493,6 +493,8 @@ void printCategoryData(Property *propPtr)
     puts("");
     
 } // printCategoryData end
+*/
+
 
 double calculateCategoryAverages(Property *currentProp)
 {
@@ -540,18 +542,19 @@ void printSurveyResults(Property *propPtr)
     }
     else
     {
-        //printCategories();
+        puts("");
+        printCategories(propPtr);
         for (size_t i = 0; i < propPtr->totalRenters; i++)
         {
             printf("%s %zu: ", "Survey", i+1);
             
             for (size_t j = 0; j < RENTER_SURVEY_CATEGORIES; j++)
             {
-                printf("%7d", propPtr->ratings[i][j]);
+                printf("%10d\n", propPtr->ratings[i][j]);
                 
             } //nested for
         } //for
-        puts("");
+        
     }
 } //printSurveyResults end
 
