@@ -536,7 +536,7 @@ void printSurveyResults(Property *propPtr)
         puts("No Ratings Currently");
         puts("");
     }
-    else
+    else if (propPtr->ratingsEntered < VACATION_RENTERS)
     {
         puts("");
         printCategories(propPtr);
@@ -551,6 +551,7 @@ void printSurveyResults(Property *propPtr)
             puts("");
         } //for
     }
+    
     puts("");
 } //printSurveyResults end
 
