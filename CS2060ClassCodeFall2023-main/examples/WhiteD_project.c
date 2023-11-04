@@ -432,7 +432,7 @@ void getRatings(int maxRating, int minRating, const int numRatings, const int nu
     puts("");
     if (arrayPtr->ratingsEntered <= numRatings)
     {
-        for (size_t i = 0; i < numRatings; i++)
+        for (size_t i = arrayPtr->ratingsEntered; i < numRatings; i++)
         {
             for (size_t j = 0; j < numCategories; j++)
             {
@@ -441,7 +441,7 @@ void getRatings(int maxRating, int minRating, const int numRatings, const int nu
                 arrayPtr->ratings[i][j] = getValidInt(minRating, maxRating);
             } //inner
         } //outer
-
+        arrayPtr->ratingsEntered++;
     }
     else
     {
