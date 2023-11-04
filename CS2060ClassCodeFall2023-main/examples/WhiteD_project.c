@@ -81,7 +81,7 @@ void rentalMode(Property *currentPropPtr);
 void getRatings(int maxRating, int minRating, const int numRatings, const int numCategories,Property *arrayPtr);
 void printCategories(Property *categoryPtr);
 void printCategoryData(Property *propPtr);
-double calculateCategoryAverages(Property *currentProp);
+void calculateCategoryAverages(Property *currentProp);
 void printSurveyResults(Property *propPtr);
 void ownerReportMode(Property *currentProp);
 
@@ -497,7 +497,7 @@ void printCategoryData(Property *propPtr)
 */
 
 
-double calculateCategoryAverages(Property *currentProp)
+void calculateCategoryAverages(Property *currentProp)
 {
     double average = 0.0;
     int sum = 0;
@@ -562,8 +562,6 @@ void printSurveyResults(Property *propPtr)
 // Prints the report of total property information and ratings
 void ownerReportMode(Property *currentProp)
 {
-    double averages[] = {0};
-    
     puts("Rental Property Report");
     printf("Name: %s\n", currentProp->name);
     printf("Location: %s\n\n", currentProp->location);
@@ -572,14 +570,11 @@ void ownerReportMode(Property *currentProp)
     puts("Renters\t\tNights\t\tCharges");
     printf("%d\t\t\t\t%d\t\t$%d\n\n", currentProp->totalRenters, currentProp->totalNights, (int)currentProp->totalRevenue);
     
-    for (size_t i = 0; i < sizeof(currentProp->averageRatings); i++)
-    {
-        averages[i] = calculateCategoryAverages(currentProp);
-    }
+    calculateCategoryAverages(currentProp);
     
     puts("Category Rating Averages");
-    printf("Check-in Process: %.1lf\n", calculateCategoryAverages(currentProp));
-    printf("Cleanliness: %.1lf\n", calculateCategoryAverages(currentProp));
-    printf("Amenities: %.1lf\n", calculateCategoryAverages(currentProp));
+    printf("Check-in Process: %.1lf\n", currentProp->averageRatings[0]);
+    printf("Cleanliness: %.1lf\n", currentProp->averageRatings[1]);
+    printf("Amenities: %.1lf\n", currentProp->averageRatings[2]);
     
 }
