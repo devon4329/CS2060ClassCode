@@ -571,7 +571,6 @@ void printSurveyResults(Property *propPtr)
                 printf("%7d", propPtr->ratings[i][j]);
                 
             } //nested for
-            puts("\n");
         } //for
     }
     
