@@ -58,6 +58,7 @@ typedef struct Property {
     double discount;
     int ratings[VACATION_RENTERS][RENTER_SURVEY_CATEGORIES];
     char categories[RENTER_SURVEY_CATEGORIES][STRING_LENGTH];
+    double averageRatings[RENTER_SURVEY_CATEGORIES];
     double totalRevenue;
     int totalNights;
     int ratingsEntered;
@@ -500,7 +501,6 @@ double calculateCategoryAverages(Property *currentProp)
 {
     double average = 0.0;
     int sum = 0;
-    double catAverages[RENTER_SURVEY_CATEGORIES];
     
     //for loop to iterate through the columns second
     //allows for easy calculation of sum an averages of each column
@@ -519,15 +519,13 @@ double calculateCategoryAverages(Property *currentProp)
             if (j == (currentProp->totalRenters - 1))
             {
                 average = (double)sum / currentProp->totalRenters;
-                catAverages[i] = average;
+                currentProp->averageRatings[i] = average;
             }
             
         } //end nested for
         
         
     } //end for
-    
-    return average;
 } //calculateCategoryAverages end
 
 
@@ -550,7 +548,7 @@ void printSurveyResults(Property *propPtr)
             
             for (size_t j = 0; j < RENTER_SURVEY_CATEGORIES; j++)
             {
-                printf("%15d", propPtr->ratings[i][j]);
+                printf("%20d", propPtr->ratings[i][j]);
                 
             } //nested for
             puts("");
@@ -564,6 +562,8 @@ void printSurveyResults(Property *propPtr)
 // Prints the report of total property information and ratings
 void ownerReportMode(Property *currentProp)
 {
+    double averages[] = {0};
+    
     puts("Rental Property Report");
     printf("Name: %s\n", currentProp->name);
     printf("Location: %s\n\n", currentProp->location);
@@ -571,6 +571,11 @@ void ownerReportMode(Property *currentProp)
     puts("Rental Property Totals");
     puts("Renters\t\tNights\t\tCharges");
     printf("%d\t\t\t\t%d\t\t$%d\n\n", currentProp->totalRenters, currentProp->totalNights, (int)currentProp->totalRevenue);
+    
+    for (size_t i = 0; i < sizeof(currentProp->averageRatings); i++)
+    {
+        averages[i] = calculateCategoryAverages(currentProp);
+    }
     
     puts("Category Rating Averages");
     printf("Check-in Process: %.1lf\n", calculateCategoryAverages(currentProp));
