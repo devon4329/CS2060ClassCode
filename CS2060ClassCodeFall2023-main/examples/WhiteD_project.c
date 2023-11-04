@@ -387,7 +387,9 @@ void rentalMode(Property *currentPropPtr)
         if (validInt == SENTINAL_NEG1)
         {
             // get owner login
+            puts("");
             ownerLogin(CORRECT_ID, CORRECT_PASSCODE, LOGIN_MAX_ATTEMPTS);
+            puts("");
             sentinalEntered = true;
         }
         else
