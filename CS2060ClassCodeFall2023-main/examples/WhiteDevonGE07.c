@@ -295,7 +295,7 @@ void removePets(Pets** headPtr)
             {
                 yesOrNo = 'n';
             }
-           
+            printList(*headPtr);
         }
         else
         {
