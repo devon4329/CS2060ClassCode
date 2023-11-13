@@ -53,6 +53,8 @@ int main (void){
     writeNamesToFile(nameFilePtr, headNodePtr);
     
     removePets(&headNodePtr);
+    
+    puts("Removing all animals from memory before exiting program.");
     removeAllPets(&headNodePtr);
     
     // Requirement 9 - Display list of pets
