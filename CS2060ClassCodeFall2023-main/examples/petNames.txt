@@ -1,3 +1,3 @@
-Hana	3
-Kya	11
-Shaggy	12
+Buddy	9
+monty	2
+Muffin	3
