@@ -43,7 +43,6 @@ int main (void){
     // Requirement 2 - Use a linked list to store the pet information in
     // alphabetical order
     Pets* headNodePtr = NULL;
-    printList(headNodePtr);
     
     insertPet(&headNodePtr);
     printList(headNodePtr);
@@ -109,7 +108,7 @@ void insertPet(Pets** headPtr)
     int age = 0;
     char yesOrNo = ' ';
     
-    puts("Do you want to enter a pet? ");
+    printf("%s", "Do you want to enter a pet? ");
     yesOrNo = validateYesNo();
     
     while (yesOrNo == 'y')
@@ -155,7 +154,7 @@ void insertPet(Pets** headPtr)
             printf("No memory to create node for %s\n", name);
         }
         
-        puts("\nDo you want to add another pet? ");
+        printf("%s", "\nDo you want to add another pet? ");
         yesOrNo = validateYesNo();
     }
 
@@ -266,7 +265,7 @@ void removePets(Pets** headPtr)
                 Pets* previousPtr = NULL;
                 Pets* currentPtr = *headPtr;
                 
-                printf("%s", "Enter the name you want removed: ");
+                printf("%s", "\nEnter the name you want removed: ");
                 fgetsWrapper(nameToDelete, STRING_LENGTH, stdin);
                 
                 if (strcmp((*headPtr)->name, nameToDelete) == 0)
@@ -290,7 +289,7 @@ void removePets(Pets** headPtr)
                     }
                     else
                     {
-                        printf("'%s' was not found in the list of pets!", nameToDelete);
+                        printf("'%s' was not found in the list of pets!\n", nameToDelete);
                     }
                 }
             }
