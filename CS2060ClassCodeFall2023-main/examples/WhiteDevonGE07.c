@@ -249,19 +249,19 @@ void removePets(Pets** headPtr)
     char nameToDelete[STRING_LENGTH] = {'\0'};
     int result = 0;
     
-    puts("\nDo you want to remove a pet from the list?\n");
-    yesOrNo = validateYesNo();
-    
-    while (yesOrNo == 'y')
+   do
     {
-        Pets* previousPtr = NULL;
-        Pets* currentPtr = *headPtr;
-        
-        printf("%s", "Enter the name you want removed: ");
-        fgetsWrapper(nameToDelete, STRING_LENGTH, stdin);
-        
         if (*headPtr != NULL)
         {
+            puts("\nDo you want to remove a pet from the list?\n");
+            yesOrNo = validateYesNo();
+            
+            Pets* previousPtr = NULL;
+            Pets* currentPtr = *headPtr;
+            
+            printf("%s", "Enter the name you want removed: ");
+            fgetsWrapper(nameToDelete, STRING_LENGTH, stdin);
+            
             if (strcmp((*headPtr)->name, nameToDelete) == 0)
             {
                 *headPtr = (*headPtr)->nextNodePtr;
@@ -287,15 +287,11 @@ void removePets(Pets** headPtr)
                     printf("The pet %s was not found in the list.", nameToDelete);
                 }
             }
-            printList(*headPtr);
-            puts("Do you want to remove a pet from the list?\n");
-            yesOrNo = validateYesNo();
-            
         }
         else
         {
             printList(*headPtr);
             yesOrNo = 'n';
         }
-    }
+    }  while (yesOrNo == 'y');
 } // removePets
