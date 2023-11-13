@@ -247,7 +247,6 @@ void removePets(Pets** headPtr)
 {
     char yesOrNo = ' ';
     char nameToDelete[STRING_LENGTH] = {'\0'};
-    int result = 0;
     
    do
     {
