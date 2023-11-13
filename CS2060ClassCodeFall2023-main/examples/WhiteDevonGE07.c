@@ -45,7 +45,6 @@ int main (void){
     Pets* headNodePtr = NULL;
     
     insertPet(&headNodePtr);
-    printList(headNodePtr);
     
     FILE *nameFilePtr = NULL;
     
