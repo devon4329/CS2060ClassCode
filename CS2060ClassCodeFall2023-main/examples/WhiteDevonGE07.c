@@ -35,6 +35,7 @@ void printList(Pets* listPtr);
 char validateYesNo(void);
 void writeNamesToFile(FILE* filePtr, Pets* petPtr);
 void removePets(Pets** headPtr);
+void removeAllPets(Pets** headPtr);
 
 
 int main (void){
@@ -52,6 +53,8 @@ int main (void){
     writeNamesToFile(nameFilePtr, headNodePtr);
     
     removePets(&headNodePtr);
+    removeAllPets(&headNodePtr);
+    printList(headNodePtr);
     
     return 0;
 } //main
@@ -255,37 +258,44 @@ void removePets(Pets** headPtr)
             puts("\nDo you want to remove a pet from the list?\n");
             yesOrNo = validateYesNo();
             
-            Pets* previousPtr = NULL;
-            Pets* currentPtr = *headPtr;
-            
-            printf("%s", "Enter the name you want removed: ");
-            fgetsWrapper(nameToDelete, STRING_LENGTH, stdin);
-            
-            if (strcmp((*headPtr)->name, nameToDelete) == 0)
+            if (yesOrNo == 'y')
             {
-                *headPtr = (*headPtr)->nextNodePtr;
-                free(currentPtr);
-                currentPtr = NULL;
-            }
-            else
-            {
-                while (currentPtr != NULL && strcmp(currentPtr->name, nameToDelete) != 0)
+                Pets* previousPtr = NULL;
+                Pets* currentPtr = *headPtr;
+                
+                printf("%s", "Enter the name you want removed: ");
+                fgetsWrapper(nameToDelete, STRING_LENGTH, stdin);
+                
+                if (strcmp((*headPtr)->name, nameToDelete) == 0)
                 {
-                    previousPtr = currentPtr;
-                    currentPtr = currentPtr->nextNodePtr;
-                }
-                if (currentPtr != NULL)
-                {
-                    previousPtr->nextNodePtr = currentPtr->nextNodePtr;
-                    
+                    *headPtr = (*headPtr)->nextNodePtr;
                     free(currentPtr);
                     currentPtr = NULL;
                 }
                 else
                 {
-                    printf("The pet %s was not found in the list.", nameToDelete);
+                    while (currentPtr != NULL && strcmp(currentPtr->name, nameToDelete) != 0)
+                    {
+                        previousPtr = currentPtr;
+                        currentPtr = currentPtr->nextNodePtr;
+                    }
+                    if (currentPtr != NULL)
+                    {
+                        previousPtr->nextNodePtr = currentPtr->nextNodePtr;
+                        free(currentPtr);
+                        currentPtr = NULL;
+                    }
+                    else
+                    {
+                        printf("The pet '%s' was not found in the list.", nameToDelete);
+                    }
                 }
             }
+            else
+            {
+                yesOrNo = 'n';
+            }
+           
         }
         else
         {
@@ -294,3 +304,20 @@ void removePets(Pets** headPtr)
         }
     }  while (yesOrNo == 'y');
 } // removePets
+
+
+// Requirement 8 - Function to remove any remaining pets in the list
+void removeAllPets(Pets** headPtr)
+{
+    Pets* currentPtr = *headPtr;
+    Pets* nextPtr = NULL;
+    
+    while (currentPtr != NULL)
+    {
+        nextPtr = currentPtr->nextNodePtr;
+        free(currentPtr);
+        currentPtr = nextPtr;
+    }
+    
+    *headPtr = NULL;
+} // removeAllPets
