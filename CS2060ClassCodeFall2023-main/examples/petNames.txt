@@ -1,5 +1,1 @@
-Beetle	9
-bintu	3
-Buddy	9
-monty	3
-Muffin	3
+shag	6
