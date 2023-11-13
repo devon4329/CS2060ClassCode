@@ -54,6 +54,8 @@ int main (void){
     
     removePets(&headNodePtr);
     removeAllPets(&headNodePtr);
+    
+    // Requirement 9 - Display list of pets
     printList(headNodePtr);
     
     return 0;
@@ -152,7 +154,7 @@ void insertPet(Pets** headPtr)
         }
         
         printList(*headPtr);
-        puts("\nDo you want to enter another pet?\n");
+        puts("\nDo you want to add another pet?\n");
         yesOrNo = validateYesNo();
     }
 
@@ -188,14 +190,14 @@ void printList(Pets* listPtr)
 {
     if (listPtr != NULL)
     {
-        printf("%s", "\nThe list is: \n");
+        printf("%s", "\nThe names in alphabetical order:\n");
         
         Pets* currentPtr = listPtr;
 
         while (currentPtr != NULL)
         {
             // display and go to next node
-            printf("%s\t\t%d\n", currentPtr->name, currentPtr->age);
+            printf("%s is %d years old.\n", currentPtr->name, currentPtr->age);
             currentPtr = currentPtr->nextNodePtr;
         }
     }
@@ -210,7 +212,7 @@ char validateYesNo(void)
     char validYesNo;
 
     do {
-        puts("Please enter (y)es or (n)o:");
+        printf("%s", "Please enter (y)es or (n)o: ");
         validYesNo = getchar();
         while (getchar() != '\n');
 
@@ -287,7 +289,7 @@ void removePets(Pets** headPtr)
                     }
                     else
                     {
-                        printf("The pet '%s' was not found in the list.", nameToDelete);
+                        printf("'%s' was not found in the list of pets!", nameToDelete);
                     }
                 }
             }
