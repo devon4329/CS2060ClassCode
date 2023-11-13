@@ -1,5 +1,3 @@
-Coby	6
-Jake	10
-Karma	9
-Shaggy	12
-Taz	4
+Hana	6
+Zimo	3
+Zyn	6
