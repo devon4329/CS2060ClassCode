@@ -256,7 +256,7 @@ void removePets(Pets** headPtr)
     {
         if (*headPtr != NULL)
         {
-            puts("\nDo you want to remove a pet from the list?\n");
+            printf("%s", "\nDo you want to remove a pet from the list? ");
             yesOrNo = validateYesNo();
             
             if (yesOrNo == 'y')
