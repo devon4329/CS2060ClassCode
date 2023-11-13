@@ -1,3 +1,4 @@
-Buddy	9
+beetle	9
+Bintu	3
 monty	2
 Muffin	3
