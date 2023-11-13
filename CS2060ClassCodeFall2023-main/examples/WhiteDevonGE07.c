@@ -109,7 +109,7 @@ void insertPet(Pets** headPtr)
     int age = 0;
     char yesOrNo = ' ';
     
-    puts("Do you want to enter a pet?\n");
+    puts("Do you want to enter a pet? ");
     yesOrNo = validateYesNo();
     
     while (yesOrNo == 'y')
@@ -155,12 +155,11 @@ void insertPet(Pets** headPtr)
             printf("No memory to create node for %s\n", name);
         }
         
-        printList(*headPtr);
-        puts("\nDo you want to add another pet?\n");
+        puts("\nDo you want to add another pet? ");
         yesOrNo = validateYesNo();
     }
 
-   
+    printList(*headPtr);
 } // insertPetName
 
 
