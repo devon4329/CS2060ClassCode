@@ -198,7 +198,7 @@ void printList(Pets* listPtr)
     }
     else
     {
-        puts("There are no pets in the list.\n");
+        puts("\nThere are no pets in the list.\n");
     }
 } // printList
 
