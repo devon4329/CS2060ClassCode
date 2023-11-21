@@ -703,10 +703,14 @@ int compareNames(Property* name1, Property* name2)
     strcpy(nodeName, name2->name);
     
     
-    for (size_t i = 0; i < sizeof(name1->name); i++)
+    while (nameToCompare[counter] != '\0')
     {
-        nameToCompare[i] = tolower(name1->name[i]);
+        nameToCompare[counter] = tolower(nameToCompare[counter]);
+        counter++;
     }
+    
+    counter = 0;
+    
     while (nodeName[counter] != '\0')
     {
         nodeName[counter] = tolower(nodeName[counter]);
