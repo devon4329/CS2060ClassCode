@@ -102,10 +102,10 @@ int main (void){
         puts("Login Successful\n");
         
         // User Story 2: Rental Property Owner Set-up
-        setUpProperty(MIN_RENTAL_NIGHTS, MAX_RENTAL_NIGHTS, MIN_RATE, MAX_RATE, &property1);
+        setUpProperty(MIN_RENTAL_NIGHTS, MAX_RENTAL_NIGHTS, MIN_RATE, MAX_RATE, &headPropPtr);
         
         // User Story 3: Vacationer Rental Mode
-        rentalMode(&property1);
+        rentalMode(headPropPtr);
         
         
         
@@ -434,8 +434,22 @@ void rentalMode(Property *currentPropPtr)
     
     do 
     {
-        // Task 3.1 - Display rental property information and Ratings
-        printRetnalPropertyInfo(currentPropPtr);
+        if (currentPropPtr != NULL)
+        {
+            Property* currentListPtr = currentPropPtr;
+            
+            while (currentListPtr != NULL)
+            {
+                // Task 3.1 - Display rental property information and Ratings
+                printRetnalPropertyInfo(currentPropPtr);
+                currentListPtr = currentListPtr->nextPropPtr;
+            }
+        }
+        else
+        {
+            puts ("\nThere are no properties to display.\n");
+        }
+        
         
         if (currentPropPtr->ratingsEntered <= VACATION_RENTERS)
         {
