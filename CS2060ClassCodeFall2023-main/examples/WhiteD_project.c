@@ -102,11 +102,7 @@ int main (void){
         // User Story 3: Vacationer Rental Mode
         rentalMode(&property1);
         
-        // User Story 4: Rental Property Owner Report mode
-        // Task 4.1 - Display property report
-        ownerReportMode(&property1);
         
-        puts("\nExiting AirUCCS");
         
     }
     else
@@ -393,6 +389,12 @@ void rentalMode(Property *currentPropPtr)
             ownerLogin(CORRECT_ID, CORRECT_PASSCODE, LOGIN_MAX_ATTEMPTS);
             puts("");
             sentinalEntered = true;
+            
+            // User Story 4: Rental Property Owner Report mode
+            // Task 4.1 - Display property report
+            ownerReportMode(currentPropPtr);
+            
+            puts("\nExiting AirUCCS");
         }
         else
         {
