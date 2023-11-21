@@ -86,7 +86,7 @@ void calculateCategoryAverages(Property *currentProp);
 void printSurveyResults(Property *propPtr);
 void ownerReportMode(Property *currentProp);
 char validateYesNo(void);
-int compareNames(char* name, Property* prop1);
+int compareNames(Property* name1, Property* name2);
 
 
 int main (void){
@@ -144,12 +144,12 @@ void printRetnalPropertyInfo(Property *currentPropPtr)
 // into a linked list.
 void setUpProperty(int minNights, int maxNights, int minRate, int maxRate, Property** headPropPtr)
 {
-    char name[STRING_LENGTH] = {'\0'};
     char yesOrNo = ' ';
-    Property* newPropPtr = malloc(sizeof(Property));
     
     do
     {
+        Property* newPropPtr = malloc(sizeof(Property));
+        
         if (newPropPtr != NULL)
         {
             newPropPtr->nextPropPtr = NULL;
@@ -178,10 +178,10 @@ void setUpProperty(int minNights, int maxNights, int minRate, int maxRate, Prope
             puts("\nEnter the location of the property: ");
             fgetsWrapper(newPropPtr->location, STRING_LENGTH, stdin);
             puts("\nEnter the name of the property: ");
-            fgetsWrapper(name, STRING_LENGTH, stdin);
+            fgetsWrapper(newPropPtr->name, STRING_LENGTH, stdin);
             puts("");
             
-            while (currentPtr != NULL && compareNames(name, currentPtr) >= 0)
+            while (currentPtr != NULL && compareNames(newPropPtr, currentPtr) >= 0)
             {
                 previousPtr = currentPtr;
                 currentPtr = currentPtr->nextPropPtr;
@@ -443,17 +443,16 @@ void rentalMode(Property *currentPropPtr)
                 // Task 3.1 - Display rental property information and Ratings
                 printRetnalPropertyInfo(currentPropPtr);
                 currentListPtr = currentListPtr->nextPropPtr;
+                
+                if (currentPropPtr->ratingsEntered <= VACATION_RENTERS)
+                {
+                    printSurveyResults(currentPropPtr);
+                }
             }
         }
         else
         {
             puts ("\nThere are no properties to display.\n");
-        }
-        
-        
-        if (currentPropPtr->ratingsEntered <= VACATION_RENTERS)
-        {
-            printSurveyResults(currentPropPtr);
         }
         
         // Task 3.2 - Get number of nights
@@ -693,18 +692,20 @@ char validateYesNo(void)
 // Returns an integer value
 // Returned vales allows for determination of which name should be placed first in a
 // linked list.
-int compareNames(char* name, Property* prop1)
+int compareNames(Property* name1, Property* name2)
 {
     int result = 0;
     int counter = 0;
     char nameToCompare[STRING_LENGTH] = {'\0'};
     char nodeName[STRING_LENGTH] = {'\0'};
     
-    strcpy(nodeName, prop1->name);
+    strcpy(nameToCompare, name1->name);
+    strcpy(nodeName, name2->name);
     
-    for (size_t i = 0; i < sizeof(name); i++)
+    
+    for (size_t i = 0; i < sizeof(name1->name); i++)
     {
-        nameToCompare[i] = tolower(name[i]);
+        nameToCompare[i] = tolower(name1->name[i]);
     }
     while (nodeName[counter] != '\0')
     {
