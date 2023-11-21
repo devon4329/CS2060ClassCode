@@ -317,7 +317,7 @@ bool ownerLogin(const char* username, const char* passcode, unsigned int attempt
         }
     }
     return validLogin;
-}
+} //ownerLogin
 
 
 // getValidNight
@@ -386,15 +386,19 @@ void rentalMode(Property *currentPropPtr)
         {
             // get owner login
             puts("");
-            ownerLogin(CORRECT_ID, CORRECT_PASSCODE, LOGIN_MAX_ATTEMPTS);
-            puts("");
-            sentinalEntered = true;
-            
-            // User Story 4: Rental Property Owner Report mode
-            // Task 4.1 - Display property report
-            ownerReportMode(currentPropPtr);
-            
-            puts("\nExiting AirUCCS");
+            if (ownerLogin(CORRECT_ID, CORRECT_PASSCODE, LOGIN_MAX_ATTEMPTS == true))
+            {
+                sentinalEntered = true;
+                // User Story 4: Rental Property Owner Report mode
+                // Task 4.1 - Display property report
+                ownerReportMode(currentPropPtr);
+                
+            }
+           else
+           {
+               puts("");
+               puts("\nIncorrect Login - returning to Rental Menu.");
+           }
         }
         else
         {
