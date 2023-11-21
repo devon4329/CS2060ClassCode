@@ -23,6 +23,7 @@
 #include <errno.h>
 #include <limits.h>
 #include <string.h>
+#include <ctype.h>
 
 // Symbolic constants to prevent hardcoding
 //Maximum length of a string
@@ -62,6 +63,7 @@ typedef struct Property {
     double totalRevenue;
     int totalNights;
     int ratingsEntered;
+    struct Property* nextPropPtr;
 } Property;
 
 
@@ -69,7 +71,7 @@ typedef struct Property {
 
 // Function Prototypes
 void printRetnalPropertyInfo(Property *currentPropPtr);
-void setUpProperty(int minNights, int maxNights, int minRate, int maxRate, Property *propertyPtr);
+void setUpProperty(int minNights, int maxNights, int minRate, int maxRate, Property** propertyPtr);
 int scanInt(char* str);
 int getValidInt(unsigned int min, unsigned int max);
 char *fgetsWrapper (char *str, int size, FILE *stream);
@@ -83,11 +85,14 @@ void printCategories(Property *categoryPtr);
 void calculateCategoryAverages(Property *currentProp);
 void printSurveyResults(Property *propPtr);
 void ownerReportMode(Property *currentProp);
+char validateYesNo(void);
+int compareNames(char* name, Property* prop1);
 
 
 int main (void){
     
     Property property1;
+    Property* headPropPtr = NULL;
     
    
     
@@ -133,36 +138,73 @@ void printRetnalPropertyInfo(Property *currentPropPtr)
 // setUpProperty
 // Sets up the property once a valid userID and password have been
 // entered within 3 attempts.
-// Recieves Symbolic constant values for min & max nights, and min & max rate, and a pointer
+// Recieves Symbolic constant values for min & max nights, and min & max rate, and a double pointer
 // to the property structure.
-// Returns void but initializes values in the property structure.
-void setUpProperty(int minNights, int maxNights, int minRate, int maxRate, Property *propertyPtr)
+// Returns void but initializes values in the property structure and adds multiple properties
+// into a linked list.
+void setUpProperty(int minNights, int maxNights, int minRate, int maxRate, Property** headPropPtr)
 {
-    propertyPtr->totalRenters = 0;
-    propertyPtr->totalNights = 0;
+    char name[STRING_LENGTH] = {'\0'};
+    char yesOrNo = ' ';
+    Property* newPropPtr = malloc(sizeof(Property));
     
-    // Task 2.1 - Get interval 1 number of nights.
-    puts("\nEnter the number of nights until the first discount: ");
-    propertyPtr->interval1 = getValidInt(minNights, maxNights);
+    do
+    {
+        if (newPropPtr != NULL)
+        {
+            newPropPtr->nextPropPtr = NULL;
+            
+            Property* previousPtr = NULL;
+            
+            Property* currentPtr = *headPropPtr;
+            
+            // Task 2.1 - Get interval 1 number of nights.
+            puts("\nEnter the number of nights until the first discount: ");
+            newPropPtr->interval1 = getValidInt(minNights, maxNights);
+            
+            // Task 2.2 - Get interval 2 number of nights.
+            puts("\nEnter the number of night suntil the second discount: ");
+            newPropPtr->interval2 = getValidInt(minNights, maxNights);
+            
+            // Task 2.3 - Get nightly rental rate.
+            puts("\nEnter the nightly rental rate: ");
+            newPropPtr->rate = (double)getValidInt(minRate, maxRate);
+            
+            // Task 2.4 - Get the discount amount.
+            puts("\nEnter the discount: ");
+            newPropPtr->discount = (double)getValidInt(minRate, maxRate);
+            
+            // Task 2.5 * 2.6 - Get rental property name and location.
+            puts("\nEnter the location of the property: ");
+            fgetsWrapper(newPropPtr->location, STRING_LENGTH, stdin);
+            puts("\nEnter the name of the property: ");
+            fgetsWrapper(name, STRING_LENGTH, stdin);
+            puts("");
+            
+            while (currentPtr != NULL && compareNames(name, currentPtr) >= 0)
+            {
+                previousPtr = currentPtr;
+                currentPtr = currentPtr->nextPropPtr;
+            }
+            if (previousPtr == NULL)
+            {
+                *headPropPtr = newPropPtr;
+            }
+            else
+            {
+                previousPtr->nextPropPtr = newPropPtr;
+            }
+            newPropPtr->nextPropPtr = currentPtr;
+            
+            puts("Would you like to add another property?\n");
+            yesOrNo = validateYesNo();
+        }
+        else
+        {
+            puts ("No memory to create a property.");
+        }
+    } while (yesOrNo == 'y');
     
-    // Task 2.2 - Get interval 2 number of nights.
-    puts("\nEnter the number of night suntil the second discount: ");
-    propertyPtr->interval2 = getValidInt(minNights, maxNights);
-    
-    // Task 2.3 - Get nightly rental rate.
-    puts("\nEnter the nightly rental rate: ");
-    propertyPtr->rate = (double)getValidInt(minRate, maxRate);
-    
-    // Task 2.4 - Get the discount amount.
-    puts("\nEnter the discount: ");
-    propertyPtr->discount = (double)getValidInt(minRate, maxRate);
-    
-    // Task 2.5 * 2.6 - Get rental property name and location.
-    puts("\nEnter the location of the property: ");
-    fgetsWrapper(propertyPtr->location, STRING_LENGTH, stdin);
-    puts("\nEnter the name of the property: ");
-    fgetsWrapper(propertyPtr->name, STRING_LENGTH, stdin);
-    puts("");
     
 } //setUpProperty
 
@@ -609,3 +651,66 @@ void ownerReportMode(Property *currentProp)
         printf("%s: %.1lf\n", currentProp->categories[i], currentProp->averageRatings[i]);
     }
 } //ownerReportMode
+
+
+// validateYesNo
+// Validates userinput for a yes or no response
+// Receives no parameters
+// Returns a char that is converted to a lowercase 'y' or 'n'
+char validateYesNo(void)
+{
+    char validYesNo;
+
+    do {
+        printf("%s", "Please enter (y)es or (n)o: ");
+        validYesNo = getchar();
+        while (getchar() != '\n');
+
+        validYesNo = tolower(validYesNo);
+
+    } while (validYesNo != 'y' && validYesNo != 'n');
+
+    return  validYesNo;
+} //End validateYesNo
+
+
+// compareNames
+// Receives a pointer to a string for a name and a pointer to a node
+// Returns an integer value
+// Returned vales allows for determination of which name should be placed first in a
+// linked list.
+int compareNames(char* name, Property* prop1)
+{
+    int result = 0;
+    int counter = 0;
+    char nameToCompare[STRING_LENGTH] = {'\0'};
+    char nodeName[STRING_LENGTH] = {'\0'};
+    
+    strcpy(nodeName, prop1->name);
+    
+    for (size_t i = 0; i < sizeof(name); i++)
+    {
+        nameToCompare[i] = tolower(name[i]);
+    }
+    while (nodeName[counter] != '\0')
+    {
+        nodeName[counter] = tolower(nodeName[counter]);
+        counter++;
+    }
+    counter = 0;
+    
+    result = strcmp(nameToCompare, nodeName);
+    
+    if (result < 0)
+    {
+        return -1;
+    }
+    else if (result > 0)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+} // compareNames
