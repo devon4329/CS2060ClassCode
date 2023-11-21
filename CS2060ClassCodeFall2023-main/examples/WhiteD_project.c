@@ -133,6 +133,9 @@ void printRetnalPropertyInfo(Property *currentPropPtr)
 // setUpProperty
 // Sets up the property once a valid userID and password have been
 // entered within 3 attempts.
+// Recieves Symbolic constant values for min & max nights, and min & max rate, and a pointer
+// to the property structure.
+// Returns void but initializes values in the property structure.
 void setUpProperty(int minNights, int maxNights, int minRate, int maxRate, Property *propertyPtr)
 {
     propertyPtr->totalRenters = 0;
@@ -166,6 +169,8 @@ void setUpProperty(int minNights, int maxNights, int minRate, int maxRate, Prope
 
 // getValidInt
 // Checks the range of the input from the user
+// Recieves an min and max value greater or equal to zero (using symbolic constants)
+// returns a valid integer value that is between the parameters set for min and max.
 int getValidInt(unsigned int min, unsigned int max)
 {
     bool intIsValid = false;
@@ -192,6 +197,7 @@ int getValidInt(unsigned int min, unsigned int max)
 // scanInt
 // Obtains a valid integer value and loops if a valid integer is not input by user.
 // Will replace stdio function "scanf"
+// Recieves a pointer to a string and returns an integer value.
 int scanInt(char* str)
 {
     char* end;
@@ -239,6 +245,10 @@ int scanInt(char* str)
 // fgetsWrapper
 // Replaces '\n' character with '\0' character from user input.
 // Passing variable "str" not as constant because value will be changed at its address
+// Receives a pionter to a string which is returned with a null terminator replacing the
+// new line character, recieves an int for the size of the char array the pointer is pointing
+// to, and the file stream in which to determine how the function is reading characters.
+// Returning a string in where the new line character is replaced with a null terminator.
 char *fgetsWrapper (char *str, int size, FILE *stream)
 {
     size_t length = 0;
@@ -263,6 +273,9 @@ char *fgetsWrapper (char *str, int size, FILE *stream)
 
 // calcualteCharges
 // calculates the charge based on the number of nights rented
+// The function receives non negative number of nights, interval1 & 2 nights, and symbolic constant
+// numbers for the dicount and multiplier.  The rate is received from the input of the user.
+// Returns the fully calculated charges as a double value.
 double calculateCharges(unsigned int nights, unsigned int interval1Nights, unsigned int interval2Nights, double rate, double discount, int multiplier)
 {
     double totalCharge = 0.0;
@@ -322,6 +335,9 @@ bool ownerLogin(const char* username, const char* passcode, unsigned int attempt
 
 // getValidNight
 // Checks the range of the input from the user
+// Receives the symbolic constant values for min and max nights and the sentinel value.
+// Returns an integer value that is between the ranges of the min and max
+// Also allows the value sentinel value to be returned which is outside of the range.
 int getValidNights(unsigned int min, unsigned int max, const int sentinel)
 {
     bool intIsValid = false;
@@ -351,7 +367,8 @@ int getValidNights(unsigned int min, unsigned int max, const int sentinel)
 } //getValidNights
 
 // printNightsCharges
-// Prints number of nights and charges for current customer.
+// Recieves values of the values of nights and charges to be printed.
+// Returns output of nights and charges for the current customer.
 void printNightsCharges(unsigned int nights, double charges)
 {
     puts("Nights\tCharge");
@@ -362,6 +379,10 @@ void printNightsCharges(unsigned int nights, double charges)
 // rentalMode
 // vacationer  rental mode to select the property they want to rent
 // get the deails and provide a rating for the property.
+// Recevies a pointer to a property structure containing the information needed to rent
+// a property.
+// No return, but is a constant loop until the sentinel value is entered which will exit
+// the loop.
 void rentalMode(Property *currentPropPtr)
 {
     bool sentinalEntered = false;
@@ -386,7 +407,7 @@ void rentalMode(Property *currentPropPtr)
         {
             // get owner login
             puts("");
-            if (ownerLogin(CORRECT_ID, CORRECT_PASSCODE, LOGIN_MAX_ATTEMPTS == true))
+            if (ownerLogin(CORRECT_ID, CORRECT_PASSCODE, LOGIN_MAX_ATTEMPTS) == true)
             {
                 sentinalEntered = true;
                 // User Story 4: Rental Property Owner Report mode
@@ -437,6 +458,9 @@ void rentalMode(Property *currentPropPtr)
 // Get ratings from user
 // A function that points to the property structure to access and mainuplate the
 // 2D property array in the structure.
+// Receives symbolic constant values for max and min ratings, and number of categories.
+// Also receives a const int for number of ratings and pointer to a property structure.
+// This fuction is used to Ask for and update the ratings for property structure.
 void getRatings(int maxRating, int minRating, const int numRatings, const int numCategories, Property *arrayPtr)
 {
     // use of char array to place the strings needed for the categories in categories structure
@@ -480,6 +504,9 @@ void getRatings(int maxRating, int minRating, const int numRatings, const int nu
 // printCategories
 // Displays the categories of the survey that are stored in the categories element
 // in the property structure.
+// Receives the pointer to the category element of a property structure
+// Returns a print statement of the categories in the property element of the
+// property structure.
 void printCategories(Property *categoryPtr)
 {
     //loop to display each category horizontally
@@ -498,6 +525,8 @@ void printCategories(Property *categoryPtr)
 // an averages array elemeent inside the property structure.
 // Use of an array element to store category averages so it can be stored with this
 // specific property and not lost once method is completed.
+// Receives the pointer to the current property to read the each rating of each category
+// Returns a print statment displaying the average rating of each category
 void calculateCategoryAverages(Property *currentProp)
 {
     double average = 0.0;
@@ -529,7 +558,8 @@ void calculateCategoryAverages(Property *currentProp)
 
 
 // printSurveyResults
-// Displays the results of every survey completed for a property.
+// Receives a property structure pointer to access the categories element of the structure.
+// This function prints the ratings for all categories from each surveyor
 void printSurveyResults(Property *propPtr)
 {
     if (propPtr->totalRenters == 0)
@@ -559,6 +589,8 @@ void printSurveyResults(Property *propPtr)
 
 // ownerReportMode
 // Prints the report of total property renters, nights rented, revenue made and ratings
+// Receives a pointer to the current property structure to access elements needed to print a
+// total report for the owner.
 void ownerReportMode(Property *currentProp)
 {
     puts("Rental Property Report");
