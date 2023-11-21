@@ -441,13 +441,15 @@ void rentalMode(Property *currentPropPtr)
             while (currentListPtr != NULL)
             {
                 // Task 3.1 - Display rental property information and Ratings
-                printRetnalPropertyInfo(currentPropPtr);
+                printRetnalPropertyInfo(currentListPtr);
+                if (currentListPtr->ratingsEntered <= VACATION_RENTERS)
+                {
+                    printSurveyResults(currentListPtr);
+                }
+                
                 currentListPtr = currentListPtr->nextPropPtr;
                 
-                if (currentPropPtr->ratingsEntered <= VACATION_RENTERS)
-                {
-                    printSurveyResults(currentPropPtr);
-                }
+                
             }
         }
         else
