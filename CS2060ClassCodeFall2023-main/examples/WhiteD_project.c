@@ -814,7 +814,7 @@ int compareNames(Property* name1, Property* name2)
                  name[i] = '_';
              }
          }
-         fprintf(fileName, "/Users/devonwite/Desktop/%s%s.txt", folderPath, fileName);
+         printf(fileName, "/Users/devonwite/Desktop/%s%s.txt", folderPath, fileName);
      }
      current = current->nextPropPtr;
      
