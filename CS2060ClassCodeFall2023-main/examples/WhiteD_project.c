@@ -482,6 +482,7 @@ void rentalMode(Property *currentPropPtr)
                 currentPropPtr = previousProp;
                 puts("\nError, the property you entered doesn't match. Enter the property again.");
                 fgetsWrapper(userInput->name, STRING_LENGTH, stdin);
+                puts ("");
             }
         }
         // Task 3.2 - Get number of nights
