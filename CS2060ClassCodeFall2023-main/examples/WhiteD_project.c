@@ -509,25 +509,25 @@ void rentalMode(Property *currentPropPtr)
         else
         {
             // calculate charge
-            totalCost = calculateCharges(validInt, currentPropPtr->interval1, currentPropPtr->interval2, currentPropPtr->rate, currentPropPtr->discount, DISCOUNT_MULTIPLIER);
+            totalCost = calculateCharges(validInt, current->interval1, current->interval2, current->rate, current->discount, DISCOUNT_MULTIPLIER);
             
             // Increment totalRenters element in property structure
-            currentPropPtr->totalRenters++;
+            current->totalRenters++;
             
             // Print charges for current stay
             puts("");
             printNightsCharges(validInt, totalCost);
             
             // Add to totalRevenue element in property structure
-            currentPropPtr->totalRevenue = currentPropPtr->totalRevenue + totalCost;
+            current->totalRevenue = current->totalRevenue + totalCost;
             
             // Add to totalNights element in property structure
-            currentPropPtr->totalNights = currentPropPtr->totalNights + validInt;
+            current->totalNights = current->totalNights + validInt;
             
             // Task 3.3 - Get property ratings from Renter
-            if (currentPropPtr->ratingsEntered < VACATION_RENTERS)
+            if (current->ratingsEntered < VACATION_RENTERS)
             {
-                getRatings(MAX_RATING, MIN_RATING, currentPropPtr->totalRenters, RENTER_SURVEY_CATEGORIES, currentPropPtr);
+                getRatings(MAX_RATING, MIN_RATING, current->totalRenters, RENTER_SURVEY_CATEGORIES, current);
                 puts("");
             }
             else
