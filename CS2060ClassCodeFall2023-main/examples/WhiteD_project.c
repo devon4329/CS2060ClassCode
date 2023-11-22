@@ -468,7 +468,7 @@ void rentalMode(Property *currentPropPtr)
             puts ("Enter the name of the property you want to rent: ");
             fgetsWrapper(propName, STRING_LENGTH, stdin);
             
-            while (current != NULL && strcmp(propName, current->name) == 0)
+            if (current != NULL && strcmp(propName, current->name) == 0)
             {
                 // Task 3.2 - Get number of nights
                 validInt = getValidNights(MIN_RENTAL_NIGHTS, MAX_RENTAL_NIGHTS, SENTINAL_NEG1);
