@@ -87,6 +87,7 @@ void printSurveyResults(Property *propPtr);
 void ownerReportMode(Property *currentProp);
 char validateYesNo(void);
 int compareNames(Property* name1, Property* name2);
+void writeReportToFile(FILE* filePtr, Property* headPtr);
 
 
 int main (void){
@@ -496,6 +497,11 @@ void rentalMode(Property *currentPropPtr)
                 // User Story 4: Rental Property Owner Report mode
                 // Task 4.1 - Display property report
                 ownerReportMode(currentPropPtr);
+                
+                FILE* filePointer = NULL;
+                
+                // Task 4.1.1 - Write report to a file
+                writeReportToFile(filePointer, currentPropPtr);
             }
            else
            {
@@ -681,7 +687,7 @@ void ownerReportMode(Property *currentProp)
 {
     if (currentProp != NULL)
     {
-        puts("Rental Property Report\n");
+        puts("\nRental Property Report\n");
         
         Property* reportPtr = currentProp;
         
@@ -699,7 +705,7 @@ void ownerReportMode(Property *currentProp)
             puts("Category Rating Averages");
             for (size_t i = 0; i < RENTER_SURVEY_CATEGORIES; i++)
             {
-                printf("%s: %.1lf\n", currentProp->categories[i], currentProp->averageRatings[i]);
+                printf("%s: %.1lf\n\n", currentProp->categories[i], currentProp->averageRatings[i]);
             }
             
             reportPtr = reportPtr->nextPropPtr;
@@ -780,7 +786,7 @@ int compareNames(Property* name1, Property* name2)
     }
 } // compareNames
 
-/*
+
  // writeReportToFile
  // Receives a pointer to a file and a pointer to a property structure
  // outputs a file as a txt so the owner can read or print the report
@@ -798,10 +804,9 @@ int compareNames(Property* name1, Property* name2)
  {
  while (current != NULL)
  {
- fprintf(filePtr, "%s\t%d\n", current->name, current->age);
- current = current->nextNodePtr;
+     ownerReportMode(headPtr);
  }
  }
  fclose(filePtr);
  } // writeNamesToFile
- */
+ 
