@@ -525,12 +525,12 @@ void rentalMode(Property *currentPropPtr)
                 }
             }
            
-            if (strcmp(propName, current->name) > 0 || strcmp(propName, current->name) < 0)
+            else if (strcmp(propName, current->name) > 0 || strcmp(propName, current->name) < 0)
             {
                 previousProp = current;
                 current = current->nextPropPtr;
             }
-            if (current == NULL)
+            else if (current == NULL)
             {
                 puts("Error, the property you entered doesn't match. Enter the property again.");
                 fgetsWrapper(propName, STRING_LENGTH, stdin);
