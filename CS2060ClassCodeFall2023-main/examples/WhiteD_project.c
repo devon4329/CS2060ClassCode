@@ -821,26 +821,22 @@ int compareNames(Property* name1, Property* name2)
          }
          else
          {
-             while (current != NULL)
+             fprintf(filePtr, "%s\n", "Rental Property Report");
+             fprintf(filePtr, "Name: %s\n", current->name);
+             fprintf(filePtr, "Location: %s\n\n", current->location);
+             
+             fprintf(filePtr, "%s\n", "Rental Property Totals");
+             fprintf(filePtr, "%s\t\t%s\t\t%s\n", "Renters", "Nights", "Charges");
+             fprintf(filePtr, "%d\t\t\t\t%d\t\t$%d\n\n", current->totalRenters, current->totalNights, (int)current->totalRevenue);
+             
+             calculateCategoryAverages(current);
+             
+             fprintf(filePtr, "%s", "Category Rating Averages");
+             for (size_t i = 0; i < RENTER_SURVEY_CATEGORIES; i++)
              {
-                 fprintf(filePtr, "%s\n", "Rental Property Report");
-                 fprintf(filePtr, "Name: %s\n", current->name);
-                 fprintf(filePtr, "Location: %s\n\n", current->location);
-                 
-                 fprintf(filePtr, "%s\n", "Rental Property Totals");
-                 fprintf(filePtr, "%s\t\t%s\t\t%s\n", "Renters", "Nights", "Charges");
-                 fprintf(filePtr, "%d\t\t\t\t%d\t\t$%d\n\n", current->totalRenters, current->totalNights, (int)current->totalRevenue);
-                 
-                 calculateCategoryAverages(current);
-                 
-                 fprintf(filePtr, "%s", "Category Rating Averages");
-                 for (size_t i = 0; i < RENTER_SURVEY_CATEGORIES; i++)
-                 {
-                     fprintf(filePtr, "%s: %.1lf\n", current->categories[i], current->averageRatings[i]);
-                     //fwrite(current->categories[i], current->averageRatings[i]);
-                 }
-                 current = current->nextPropPtr;
-             } //while Print info to file
+                 fprintf(filePtr, "%s: %.1lf\n", current->categories[i], current->averageRatings[i]);
+             }
+             current = current->nextPropPtr;
          } //else
         
      } //while to loop thorugh all properties
