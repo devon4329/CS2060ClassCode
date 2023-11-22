@@ -459,20 +459,34 @@ void rentalMode(Property *currentPropPtr)
         {
             puts ("\nThere are no properties to display.\n");
         }
-        Property* propNamePtr = malloc(sizeof(Property));
+        
         
         // Task 3.1.2 - Get property name customer wants to rent.
         puts ("Enter the name of the property you want to rent: ");
         fgetsWrapper(propName, STRING_LENGTH, stdin);
-        
-        strcpy(propNamePtr->name, propName);
-        
-        Property* previousProp = NULL;
-        Property* current = currentPropPtr;
+        Property* userInput = malloc(sizeof(Property));
+        strcpy(userInput->name, propName);
         
         do
         {
-            while (current != NULL && compareNames(propNamePtr, current) == 0)
+            Property* previousProp = NULL;
+            
+            if (compareNames(userInput, currentPropPtr) != 0)
+            {
+                while (currentPropPtr != NULL)
+                {
+                    previousProp = currentPropPtr;
+                    currentPropPtr = currentPropPtr->nextPropPtr;
+                    
+                    if (currentPropPtr == NULL)
+                    {
+                        currentPropPtr = previousProp;
+                        puts("\nError, the property you entered doesn't match. Enter the property again.");
+                        fgetsWrapper(userInput->name, STRING_LENGTH, stdin);
+                    }
+                }
+            }
+            else
             {
                 // Task 3.2 - Get number of nights
                 validInt = getValidNights(MIN_RENTAL_NIGHTS, MAX_RENTAL_NIGHTS, SENTINAL_NEG1);
@@ -488,7 +502,6 @@ void rentalMode(Property *currentPropPtr)
                         // User Story 4: Rental Property Owner Report mode
                         // Task 4.1 - Display property report
                         ownerReportMode(currentPropPtr);
-                        
                     }
                    else
                    {
@@ -525,24 +538,12 @@ void rentalMode(Property *currentPropPtr)
                         puts("Maximum number of rating has been reached.\n\n");
                     }
                     validPropName = true;
-                    current = NULL;
-                }
-            }
-            while (current != NULL && compareNames(propNamePtr, current) != 0)
-            {
-                previousProp = current;
-                current = current->nextPropPtr;
-                
-                if (current == NULL)
-                {
-                    current = currentPropPtr;
-                    puts("\nError, the property you entered doesn't match. Enter the property again.");
-                    fgetsWrapper(propNamePtr->name, STRING_LENGTH, stdin);
                 }
             }
             
-
-        } while (validPropName == false);
+        } while (currentPropPtr != NULL && compareNames(userInput, currentPropPtr) != 0);
+        
+    
         
         //free(propNamePtr);
     
