@@ -705,7 +705,7 @@ void ownerReportMode(Property *currentProp)
             puts("Category Rating Averages");
             for (size_t i = 0; i < RENTER_SURVEY_CATEGORIES; i++)
             {
-                printf("%s: %.1lf\n\n", currentProp->categories[i], currentProp->averageRatings[i]);
+                printf("%s: %.1lf\n", currentProp->categories[i], currentProp->averageRatings[i]);
             }
             
             reportPtr = reportPtr->nextPropPtr;
@@ -815,36 +815,39 @@ int compareNames(Property* name1, Property* name2)
              }
          }
          printf(fileName, "/Users/devonwite/Desktop/%s%s.txt", folderPath, fileName);
-     }
-     current = current->nextPropPtr;
-     
-     if ((filePtr = fopen("/Users/devonwhite/Desktop/fundraiser/", "w")) == NULL)
-     {
-         puts("File could not be opened.");
-     }
-     else
-     {
-         while (current != NULL)
+         
+         if ((filePtr = fopen(fileName, "w")) == NULL)
          {
-             fprintf(filePtr, "Name: %s\n", current->name);
-             fprintf(filePtr, "Location: %s\n\n", current->location);
-             
-             fprintf(filePtr, "%s\n", "Rental Property Totals");
-             fprintf(filePtr, "%s\\t%s\t\t%s\n", "Renters", "Nights", "Charges");
-             fprintf(filePtr, "%d\t\t\t\t%d\t\t$%d\n\n", current->totalRenters, current->totalNights, (int)current->totalRevenue);
-             
-             calculateCategoryAverages(current);
-             
-             puts("Category Rating Averages");
-             for (size_t i = 0; i < RENTER_SURVEY_CATEGORIES; i++)
+             puts("File could not be opened.");
+         }
+         else
+         {
+             while (current != NULL)
              {
-                 printf("%s: %.1lf\n\n", current->categories[i], current->averageRatings[i]);
+                 fprintf(filePtr, "Name: %s\n", current->name);
+                 fprintf(filePtr, "Location: %s\n\n", current->location);
+                 
+                 fprintf(filePtr, "%s\n", "Rental Property Totals");
+                 fprintf(filePtr, "%s\\t%s\t\t%s\n", "Renters", "Nights", "Charges");
+                 fprintf(filePtr, "%d\t\t\t\t%d\t\t$%d\n\n", current->totalRenters, current->totalNights, (int)current->totalRevenue);
+                 
+                 calculateCategoryAverages(current);
+                 
+                 puts("Category Rating Averages");
+                 for (size_t i = 0; i < RENTER_SURVEY_CATEGORIES; i++)
+                 {
+                     printf("%s: %.1lf\n\n", current->categories[i], current->averageRatings[i]);
+                     //fwrite(current->categories[i], current->averageRatings[i]);
+                 }
+                 
+                 current = current->nextPropPtr;
              }
              
-             current = current->nextPropPtr;
          }
-         
      }
+     
+     
+     
      fclose(filePtr);
  } // writeNamesToFile
  
