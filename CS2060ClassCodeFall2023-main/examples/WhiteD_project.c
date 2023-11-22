@@ -792,12 +792,33 @@ int compareNames(Property* name1, Property* name2)
  // outputs a file as a txt so the owner can read or print the report
  void writeReportToFile(FILE* filePtr, Property* headPtr)
  {
+     char name[STRING_LENGTH];
+     char folderPath[STRING_LENGTH] = {"fundraiser/"};
+     const char fileName[STRING_LENGTH];
+     
+     
      Property* current = malloc(sizeof(headPtr));
      
      current = headPtr;
-         
      
-     if ((filePtr = fopen("/Users/devonwhite/Desktop/Github/CS2060ClassCode/CS2060ClassCodeFall2023-main/examples/fundraiser/.txt", "w")) == NULL)
+     
+         
+     while (current != NULL)
+     {
+         strcpy(name, current->name);
+         
+         for (size_t i = 0; name[i] != '\0'; i++)
+         {
+             if (name[i] == ' ')
+             {
+                 name[i] = '_';
+             }
+         }
+         fprintf(fileName, "/Users/devonwite/Desktop/%s%s.txt", folderPath, fileName);
+     }
+     current = current->nextPropPtr;
+     
+     if ((filePtr = fopen("/Users/devonwhite/Desktop/fundraiser/", "w")) == NULL)
      {
          puts("File could not be opened.");
      }
