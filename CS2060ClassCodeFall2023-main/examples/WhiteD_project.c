@@ -436,8 +436,6 @@ void rentalMode(Property *currentPropPtr)
     char propName[STRING_LENGTH] = {'\0'};
     bool validPropName = false;
     
-    
-    
     do
     {
         // Task 3.1.1 - Print properties in alphabetical order from linked list
@@ -463,78 +461,79 @@ void rentalMode(Property *currentPropPtr)
         
         do
         {
+            Property* previousProp = NULL;
+            Property* current = currentPropPtr;
+            
             // Task 3.1.2 - Get property name customer wants to rent.
             puts ("Enter the name of the property you want to rent: ");
             fgetsWrapper(propName, STRING_LENGTH, stdin);
             
-            while (currentPropPtr != NULL)
+            while (current != NULL && strcmp(propName, current->name) == 0)
             {
-                
-                if (strcmp(propName, currentPropPtr->name) == 0)
+                // Task 3.2 - Get number of nights
+                validInt = getValidNights(MIN_RENTAL_NIGHTS, MAX_RENTAL_NIGHTS, SENTINAL_NEG1);
+                validPropName = true;
+                if (validInt == SENTINAL_NEG1)
                 {
-                    // Task 3.2 - Get number of nights
-                    validInt = getValidNights(MIN_RENTAL_NIGHTS, MAX_RENTAL_NIGHTS, SENTINAL_NEG1);
-                    validPropName = true;
-                    if (validInt == SENTINAL_NEG1)
+                    // get owner login
+                    puts("");
+                    if (ownerLogin(CORRECT_ID, CORRECT_PASSCODE, LOGIN_MAX_ATTEMPTS) == true)
                     {
-                        // get owner login
-                        puts("");
-                        if (ownerLogin(CORRECT_ID, CORRECT_PASSCODE, LOGIN_MAX_ATTEMPTS) == true)
-                        {
-                            sentinalEntered = true;
-                            // User Story 4: Rental Property Owner Report mode
-                            // Task 4.1 - Display property report
-                            ownerReportMode(currentPropPtr);
-                            
-                        }
-                       else
-                       {
-                           puts("");
-                           puts("\nIncorrect Login - returning to Rental Menu.");
-                       }
+                        sentinalEntered = true;
+                        // User Story 4: Rental Property Owner Report mode
+                        // Task 4.1 - Display property report
+                        ownerReportMode(currentPropPtr);
+                        
                     }
-                    else
-                    {
-                        // calculate charge
-                        totalCost = calculateCharges(validInt, currentPropPtr->interval1, currentPropPtr->interval2, currentPropPtr->rate, currentPropPtr->discount, DISCOUNT_MULTIPLIER);
-                        
-                        // Increment totalRenters element in property structure
-                        currentPropPtr->totalRenters++;
-                        
-                        // Print charges for current stay
-                        puts("");
-                        printNightsCharges(validInt, totalCost);
-                        
-                        // Add to totalRevenue element in property structure
-                        currentPropPtr->totalRevenue = currentPropPtr->totalRevenue + totalCost;
-                        
-                        // Add to totalNights element in property structure
-                        currentPropPtr->totalNights = currentPropPtr->totalNights + validInt;
-                        
-                        // Task 3.3 - Get property ratings from Renter
-                        if (currentPropPtr->ratingsEntered < VACATION_RENTERS)
-                        {
-                            getRatings(MAX_RATING, MIN_RATING, currentPropPtr->totalRenters, RENTER_SURVEY_CATEGORIES, currentPropPtr);
-                            puts("");
-                        }
-                        else
-                        {
-                            puts("Maximum number of rating has been reached.\n\n");
-                        }
-                        validPropName = true;
-                    }
-                    
-                    
-                }
-                else if (strcmp(propName, currentPropPtr->name) > 0 || strcmp(propName, currentPropPtr->name) < 0)
-                {
-                    currentPropPtr = currentPropPtr->nextPropPtr;
+                   else
+                   {
+                       puts("");
+                       puts("\nIncorrect Login - returning to Rental Menu.");
+                   }
                 }
                 else
                 {
-                    puts("Error, the property you entered doesn't match. Enter the property again.");
+                    // calculate charge
+                    totalCost = calculateCharges(validInt, currentPropPtr->interval1, currentPropPtr->interval2, currentPropPtr->rate, currentPropPtr->discount, DISCOUNT_MULTIPLIER);
+                    
+                    // Increment totalRenters element in property structure
+                    currentPropPtr->totalRenters++;
+                    
+                    // Print charges for current stay
+                    puts("");
+                    printNightsCharges(validInt, totalCost);
+                    
+                    // Add to totalRevenue element in property structure
+                    currentPropPtr->totalRevenue = currentPropPtr->totalRevenue + totalCost;
+                    
+                    // Add to totalNights element in property structure
+                    currentPropPtr->totalNights = currentPropPtr->totalNights + validInt;
+                    
+                    // Task 3.3 - Get property ratings from Renter
+                    if (currentPropPtr->ratingsEntered < VACATION_RENTERS)
+                    {
+                        getRatings(MAX_RATING, MIN_RATING, currentPropPtr->totalRenters, RENTER_SURVEY_CATEGORIES, currentPropPtr);
+                        puts("");
+                    }
+                    else
+                    {
+                        puts("Maximum number of rating has been reached.\n\n");
+                    }
+                    validPropName = true;
                 }
             }
+           
+            if (strcmp(propName, current->name) > 0 || strcmp(propName, current->name) < 0)
+            {
+                previousProp = currentPropPtr;
+                currentPropPtr = currentPropPtr->nextPropPtr;
+            }
+            else
+            {
+                puts("Error, the property you entered doesn't match. Enter the property again.");
+                fgetsWrapper(propName, STRING_LENGTH, stdin);
+            }
+            
             
         } while (validPropName == false);
         
