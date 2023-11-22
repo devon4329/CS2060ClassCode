@@ -91,7 +91,6 @@ int compareNames(Property* name1, Property* name2);
 
 int main (void){
     
-    Property property1;
     Property* headPropPtr = NULL;
     
    
@@ -437,38 +436,41 @@ void rentalMode(Property *currentPropPtr)
     char name[STRING_LENGTH] = {'\0'};
     bool validPropName = false;
     
-    // Task 3.1.2 - Get property name customer wants to rent.
-    puts ("Enter the name of the property you want to rent: ");
-    fgetsWrapper(name, STRING_LENGTH, stdin);
     
-    while (validPropName == false)
+    
+    do
     {
-        while (currentPropPtr != NULL)
+        // Task 3.1.1 - Print properties in alphabetical order from linked list
+        if (currentPropPtr != NULL)
         {
-            if (strcmp(name, currentPropPtr->name) == 0)
+            Property* currentListPtr = currentPropPtr;
+            
+            while (currentListPtr != NULL)
             {
-                do
+                // Task 3.1 - Display rental property information and Ratings
+                printRetnalPropertyInfo(currentListPtr);
+                if (currentListPtr->ratingsEntered <= VACATION_RENTERS)
                 {
-                    // Task 3.1.1 - Print properties in alphabetical order from linked list
-                    if (currentPropPtr != NULL)
-                    {
-                        Property* currentListPtr = currentPropPtr;
-                        
-                        while (currentListPtr != NULL)
-                        {
-                            // Task 3.1 - Display rental property information and Ratings
-                            printRetnalPropertyInfo(currentListPtr);
-                            if (currentListPtr->ratingsEntered <= VACATION_RENTERS)
-                            {
-                                printSurveyResults(currentListPtr);
-                            }
-                            currentListPtr = currentListPtr->nextPropPtr;
-                        }
-                    }
-                    else
-                    {
-                        puts ("\nThere are no properties to display.\n");
-                    }
+                    printSurveyResults(currentListPtr);
+                }
+                currentListPtr = currentListPtr->nextPropPtr;
+            }
+        }
+        else
+        {
+            puts ("\nThere are no properties to display.\n");
+        }
+        
+        do
+        {
+            // Task 3.1.2 - Get property name customer wants to rent.
+            puts ("Enter the name of the property you want to rent: ");
+            fgetsWrapper(name, STRING_LENGTH, stdin);
+            
+            while (currentPropPtr != NULL)
+            {
+                if (strcmp(name, currentPropPtr->name) == 0)
+                {
                     // Task 3.2 - Get number of nights
                     validInt = getValidNights(MIN_RENTAL_NIGHTS, MAX_RENTAL_NIGHTS, SENTINAL_NEG1);
                     validPropName = true;
@@ -519,17 +521,22 @@ void rentalMode(Property *currentPropPtr)
                             puts("Maximum number of rating has been reached.\n\n");
                         }
                     }
-                } while (sentinalEntered == false);
-                
-                validPropName = true;
+                    
+                    validPropName = true;
+                }
+                else
+                {
+                    puts("Error, the property you entered doesn't match. Enter the property again.");
+                }
             }
-            else
-            {
-                puts("Error, the property you entered doesn't match. Enter the property again.");
-            }
-        }
+            
+        } while (validPropName == false);
         
-    }
+    
+    } while (sentinalEntered == false);
+    
+    
+    
 } //rentalMode
 
 
