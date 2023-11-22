@@ -827,7 +827,7 @@ int compareNames(Property* name1, Property* name2)
              
              fprintf(filePtr, "%s\n", "Rental Property Totals");
              fprintf(filePtr, "%s\t\t%s\t\t%s\n", "Renters", "Nights", "Charges");
-             fprintf(filePtr, "%d\t\t\t\t%d\t\t$%d\n\n", current->totalRenters, current->totalNights, (int)current->totalRevenue);
+             fprintf(filePtr, "%d\t\t\t%d\t\t$%d\n\n", current->totalRenters, current->totalNights, (int)current->totalRevenue);
              
              calculateCategoryAverages(current);
              
