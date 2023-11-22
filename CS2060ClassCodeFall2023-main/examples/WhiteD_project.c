@@ -459,16 +459,16 @@ void rentalMode(Property *currentPropPtr)
             puts ("\nThere are no properties to display.\n");
         }
         
+        // Task 3.1.2 - Get property name customer wants to rent.
+        puts ("Enter the name of the property you want to rent: ");
+        fgetsWrapper(propName, STRING_LENGTH, stdin);
+        
         do
         {
             Property* previousProp = NULL;
             Property* current = currentPropPtr;
             
-            // Task 3.1.2 - Get property name customer wants to rent.
-            puts ("Enter the name of the property you want to rent: ");
-            fgetsWrapper(propName, STRING_LENGTH, stdin);
-            
-            if (current != NULL && strcmp(propName, current->name) == 0)
+            while (current != NULL && strcmp(propName, current->name) == 0)
             {
                 // Task 3.2 - Get number of nights
                 validInt = getValidNights(MIN_RENTAL_NIGHTS, MAX_RENTAL_NIGHTS, SENTINAL_NEG1);
@@ -525,7 +525,7 @@ void rentalMode(Property *currentPropPtr)
                 }
             }
            
-            else if (strcmp(propName, current->name) > 0 || strcmp(propName, current->name) < 0)
+            if (strcmp(propName, current->name) > 0 || strcmp(propName, current->name) < 0)
             {
                 previousProp = current;
                 current = current->nextPropPtr;
@@ -533,7 +533,7 @@ void rentalMode(Property *currentPropPtr)
             else if (current == NULL)
             {
                 puts("Error, the property you entered doesn't match. Enter the property again.");
-                fgetsWrapper(propName, STRING_LENGTH, stdin);
+                //fgetsWrapper(propName, STRING_LENGTH, stdin);
             }
             
             
