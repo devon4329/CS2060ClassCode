@@ -458,19 +458,18 @@ void rentalMode(Property *currentPropPtr)
         {
             puts ("\nThere are no properties to display.\n");
         }
+        Property* propNamePtr = NULL;
         
         // Task 3.1.2 - Get property name customer wants to rent.
         puts ("Enter the name of the property you want to rent: ");
-        fgetsWrapper(propName, STRING_LENGTH, stdin);
+        fgetsWrapper(propNamePtr->name, STRING_LENGTH, stdin);
         
         Property* previousProp = NULL;
         Property* current = currentPropPtr;
         
         do
         {
-            
-            
-            while (current != NULL && strcmp(propName, current->name) == 0)
+            while (current != NULL && compareNames(propNamePtr, current) == 0)
             {
                 // Task 3.2 - Get number of nights
                 validInt = getValidNights(MIN_RENTAL_NIGHTS, MAX_RENTAL_NIGHTS, SENTINAL_NEG1);
@@ -525,18 +524,20 @@ void rentalMode(Property *currentPropPtr)
                     validPropName = true;
                     current = NULL;
                 }
-                while (current != NULL && strcmp(propName, current->name) != 0)
+            }
+            while (current != NULL && compareNames(propNamePtr, current) != 0)
+            {
+                previousProp = current;
+                current = current->nextPropPtr;
+                
+                if (current == NULL)
                 {
-                    previousProp = current;
-                    current = current->nextPropPtr;
+                    current = currentPropPtr;
+                    puts("\nError, the property you entered doesn't match. Enter the property again.");
+                    fgetsWrapper(propName, STRING_LENGTH, stdin);
                 }
             }
-            if (current == NULL && strcmp(propName, current->name) != 0)
-            {
-                current = currentPropPtr;
-                puts("\nError, the property you entered doesn't match. Enter the property again.");
-                fgetsWrapper(propName, STRING_LENGTH, stdin);
-            }
+            
 
         } while (validPropName == false);
         
