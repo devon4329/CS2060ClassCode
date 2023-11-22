@@ -463,10 +463,12 @@ void rentalMode(Property *currentPropPtr)
         puts ("Enter the name of the property you want to rent: ");
         fgetsWrapper(propName, STRING_LENGTH, stdin);
         
+        Property* previousProp = NULL;
+        Property* current = currentPropPtr;
+        
         do
         {
-            Property* previousProp = NULL;
-            Property* current = currentPropPtr;
+            
             
             while (current != NULL && strcmp(propName, current->name) == 0)
             {
@@ -525,7 +527,7 @@ void rentalMode(Property *currentPropPtr)
                 }
             }
            
-            if (strcmp(propName, current->name) > 0 || strcmp(propName, current->name) < 0)
+            if (current != NULL && strcmp(propName, current->name) != 0)
             {
                 previousProp = current;
                 current = current->nextPropPtr;
