@@ -486,7 +486,6 @@ void rentalMode(Property *currentPropPtr)
         }
         // Task 3.2 - Get number of nights
         validInt = getValidNights(MIN_RENTAL_NIGHTS, MAX_RENTAL_NIGHTS, SENTINAL_NEG1);
-        validPropName = true;
         
         if (validInt == SENTINAL_NEG1)
         {
