@@ -447,6 +447,80 @@ void rentalMode(Property *currentPropPtr)
         {
             if (strcmp(name, currentPropPtr->name) == 0)
             {
+                do
+                {
+                    // Task 3.1.1 - Print properties in alphabetical order from linked list
+                    if (currentPropPtr != NULL)
+                    {
+                        Property* currentListPtr = currentPropPtr;
+                        
+                        while (currentListPtr != NULL)
+                        {
+                            // Task 3.1 - Display rental property information and Ratings
+                            printRetnalPropertyInfo(currentListPtr);
+                            if (currentListPtr->ratingsEntered <= VACATION_RENTERS)
+                            {
+                                printSurveyResults(currentListPtr);
+                            }
+                            currentListPtr = currentListPtr->nextPropPtr;
+                        }
+                    }
+                    else
+                    {
+                        puts ("\nThere are no properties to display.\n");
+                    }
+                    // Task 3.2 - Get number of nights
+                    validInt = getValidNights(MIN_RENTAL_NIGHTS, MAX_RENTAL_NIGHTS, SENTINAL_NEG1);
+                    validPropName = true;
+                    if (validInt == SENTINAL_NEG1)
+                    {
+                        // get owner login
+                        puts("");
+                        if (ownerLogin(CORRECT_ID, CORRECT_PASSCODE, LOGIN_MAX_ATTEMPTS) == true)
+                        {
+                            sentinalEntered = true;
+                            // User Story 4: Rental Property Owner Report mode
+                            // Task 4.1 - Display property report
+                            ownerReportMode(currentPropPtr);
+                            
+                        }
+                       else
+                       {
+                           puts("");
+                           puts("\nIncorrect Login - returning to Rental Menu.");
+                       }
+                    }
+                    else
+                    {
+                        // calculate charge
+                        totalCost = calculateCharges(validInt, currentPropPtr->interval1, currentPropPtr->interval2, currentPropPtr->rate, currentPropPtr->discount, DISCOUNT_MULTIPLIER);
+                        
+                        // Increment totalRenters element in property structure
+                        currentPropPtr->totalRenters++;
+                        
+                        // Print charges for current stay
+                        puts("");
+                        printNightsCharges(validInt, totalCost);
+                        
+                        // Add to totalRevenue element in property structure
+                        currentPropPtr->totalRevenue = currentPropPtr->totalRevenue + totalCost;
+                        
+                        // Add to totalNights element in property structure
+                        currentPropPtr->totalNights = currentPropPtr->totalNights + validInt;
+                        
+                        // Task 3.3 - Get property ratings from Renter
+                        if (currentPropPtr->ratingsEntered < VACATION_RENTERS)
+                        {
+                            getRatings(MAX_RATING, MIN_RATING, currentPropPtr->totalRenters, RENTER_SURVEY_CATEGORIES, currentPropPtr);
+                            puts("");
+                        }
+                        else
+                        {
+                            puts("Maximum number of rating has been reached.\n\n");
+                        }
+                    }
+                } while (sentinalEntered == false);
+                
                 validPropName = true;
             }
             else
@@ -456,83 +530,6 @@ void rentalMode(Property *currentPropPtr)
         }
         
     }
-    
-    
-    do
-    {
-        // Task 3.1.1 - Print properties in alphabetical order from linked list
-        if (currentPropPtr != NULL)
-        {
-            Property* currentListPtr = currentPropPtr;
-            
-            while (currentListPtr != NULL)
-            {
-                // Task 3.1 - Display rental property information and Ratings
-                printRetnalPropertyInfo(currentListPtr);
-                if (currentListPtr->ratingsEntered <= VACATION_RENTERS)
-                {
-                    printSurveyResults(currentListPtr);
-                }
-                currentListPtr = currentListPtr->nextPropPtr;
-            }
-        }
-        else
-        {
-            puts ("\nThere are no properties to display.\n");
-        }
-        // Task 3.2 - Get number of nights
-        validInt = getValidNights(MIN_RENTAL_NIGHTS, MAX_RENTAL_NIGHTS, SENTINAL_NEG1);
-        validPropName = true;
-        if (validInt == SENTINAL_NEG1)
-        {
-            // get owner login
-            puts("");
-            if (ownerLogin(CORRECT_ID, CORRECT_PASSCODE, LOGIN_MAX_ATTEMPTS) == true)
-            {
-                sentinalEntered = true;
-                // User Story 4: Rental Property Owner Report mode
-                // Task 4.1 - Display property report
-                ownerReportMode(currentPropPtr);
-                
-            }
-           else
-           {
-               puts("");
-               puts("\nIncorrect Login - returning to Rental Menu.");
-           }
-        }
-        else
-        {
-            // calculate charge
-            totalCost = calculateCharges(validInt, currentPropPtr->interval1, currentPropPtr->interval2, currentPropPtr->rate, currentPropPtr->discount, DISCOUNT_MULTIPLIER);
-            
-            // Increment totalRenters element in property structure
-            currentPropPtr->totalRenters++;
-            
-            // Print charges for current stay
-            puts("");
-            printNightsCharges(validInt, totalCost);
-            
-            // Add to totalRevenue element in property structure
-            currentPropPtr->totalRevenue = currentPropPtr->totalRevenue + totalCost;
-            
-            // Add to totalNights element in property structure
-            currentPropPtr->totalNights = currentPropPtr->totalNights + validInt;
-            
-            // Task 3.3 - Get property ratings from Renter
-            if (currentPropPtr->ratingsEntered < VACATION_RENTERS)
-            {
-                getRatings(MAX_RATING, MIN_RATING, currentPropPtr->totalRenters, RENTER_SURVEY_CATEGORIES, currentPropPtr);
-                puts("");
-            }
-            else
-            {
-                puts("Maximum number of rating has been reached.\n\n");
-            }
-        }
-    } while (sentinalEntered == false);
-    
-    
 } //rentalMode
 
 
