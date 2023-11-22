@@ -709,11 +709,6 @@ void ownerReportMode(Property *currentProp)
     {
         puts ("\nNo Properties Have Been Rented!\n");
     }
-    
-    
-    
-    
-    
 } //ownerReportMode
 
 
@@ -785,27 +780,28 @@ int compareNames(Property* name1, Property* name2)
     }
 } // compareNames
 
-
-// writeReportToFile
-// Receives a pointer to a file and a pointer to a property structure
-// outputs a file as a txt so the owner can read or print the report
-void writeReportToFile(FILE* filePtr, Property* headPtr)
-{
-    Property* current = malloc(sizeof(headPtr));
-    
-    current = headPtr;
-    
-    if ((filePtr = fopen("/Users/devonwhite/Desktop/Github/CS2060ClassCode/CS2060ClassCodeFall2023-main/examples/petNames.txt", "w")) == NULL)
-    {
-        puts("File could not be opened.");
-    }
-    else
-    {
-        while (current != NULL)
-        {
-            fprintf(filePtr, "%s\t%d\n", current->name, current->age);
-            current = current->nextNodePtr;
-        }
-    }
-    fclose(filePtr);
-} // writeNamesToFile
+/*
+ // writeReportToFile
+ // Receives a pointer to a file and a pointer to a property structure
+ // outputs a file as a txt so the owner can read or print the report
+ void writeReportToFile(FILE* filePtr, Property* headPtr)
+ {
+ Property* current = malloc(sizeof(headPtr));
+ 
+ current = headPtr;
+ 
+ if ((filePtr = fopen("/Users/devonwhite/Desktop/Github/CS2060ClassCode/CS2060ClassCodeFall2023-main/examples/fundraiser/%s.txt", "w")) == NULL)
+ {
+ puts("File could not be opened.");
+ }
+ else
+ {
+ while (current != NULL)
+ {
+ fprintf(filePtr, "%s\t%d\n", current->name, current->age);
+ current = current->nextNodePtr;
+ }
+ }
+ fclose(filePtr);
+ } // writeNamesToFile
+ */
