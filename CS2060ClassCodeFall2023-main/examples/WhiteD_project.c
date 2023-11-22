@@ -2,19 +2,23 @@
  * Name: Devon White
  * Class: CS2060 M/W 10:50AM - 12:05PM
  * MAC OS
- * Due: Nov 05, 2023
+ * Due: Nov 28, 2023
  * Description: This program rents out properties to vactioners from a company
  * called AirUCCS. The pricing has three different tiers. The base rate ranging
  * from the minimum days allowed to interval1. Tier 2 which is a discount rate for
  * days ranging from one day more than interval1 to interval2. And tier 3 where the
  * discount is doubled for day ranging from one day more than interval2 to the
  * maximum days allowed. The program will prompt for a userID and password for the
- * user to enter "owner mode" and set up a property containing the previously stated
- * parameters. In addition, the owner can input the sentinel value when in "renter
- * mode" to have the progrom print out a summary report of the property's rental numbers,
- * total amount made, and average rankings provided by the renter.
- * Renters are able rent a property while in "rental mode" and rank the property based on
- * the provided categories.
+ * owner to enter "owner mode" and set up properties containing the previously stated
+ * parameters. The owner can create more than one property. Properties will be added to a
+ * linked list for access in the program. In addition, the owner can input the sentinel value
+ * when in "renter mode" to have the progrom print out a summary report of each property's
+ * rental numbers, total amount made, and average rankings provided by the renter.
+ * The summary will also be written to a txt file for easy viewing. Renters are
+ * able rent a property while in "rental mode" and rank the property based onthe provided categories.
+ * The renter will be asked to select which property they want to rent by name, and the program
+ * will compare the input to each property's name (not case sensitive), and then they will proceed
+ * through the rest of the rental process.
  */
 
 #include <stdio.h>
@@ -72,8 +76,8 @@ typedef struct Property {
 // Function Prototypes
 void printRetnalPropertyInfo(Property *currentPropPtr);
 void setUpProperty(int minNights, int maxNights, int minRate, int maxRate, Property** propertyPtr);
-int scanInt(char* str);
 int getValidInt(unsigned int min, unsigned int max);
+int scanInt(char* str);
 char *fgetsWrapper (char *str, int size, FILE *stream);
 double calculateCharges(unsigned int nights, unsigned int interval1Nights, unsigned int interval2Nights, double rate, double discount, int multiplier);
 bool ownerLogin(const char* username, const char* passcode, unsigned int attempts);
@@ -93,8 +97,6 @@ void writeReportToFile(FILE* filePtr, Property* headPtr);
 int main (void){
     
     Property* headPropPtr = NULL;
-    
-   
     
     // User Story 1: Rental Property Owner Login
     if (ownerLogin(CORRECT_ID, CORRECT_PASSCODE, LOGIN_MAX_ATTEMPTS) == true)
@@ -128,9 +130,6 @@ void printRetnalPropertyInfo(Property *currentPropPtr)
     printf("$%.2f rate a night for the first %d nights.\n", currentPropPtr->rate, currentPropPtr->interval1);
     printf("$%.2f discount rate a night for nights %d to %d\n", currentPropPtr->discount, (currentPropPtr->interval1 + 1), currentPropPtr->interval2);
     printf("$%.2f discount rate a night for each remaining night over %d.\n\n", (currentPropPtr->discount * DISCOUNT_MULTIPLIER), currentPropPtr->interval2);
-    
-   
-    
 } //printRentalPropertyInfo
 
 
@@ -355,7 +354,6 @@ bool ownerLogin(const char* username, const char* passcode, unsigned int attempt
     char inputID[STRING_LENGTH] = {'\0'};
     char inputPassword[STRING_LENGTH] = {'\0'};
     
-    
     while (counter <= attempts && validLogin == false)
     {
         puts("Enter User ID:");
@@ -469,8 +467,6 @@ void rentalMode(Property *currentPropPtr)
         Property* previousProp = NULL;
         Property* current = currentPropPtr;
         
-        
-        
         while (current != NULL && compareNames(userInput, current) != 0)
         {
             previousProp = current;
@@ -538,8 +534,6 @@ void rentalMode(Property *currentPropPtr)
                 puts("Maximum number of rating has been reached.\n\n");
             }
         }
-        
-        //free(propNamePtr);
     
     } while (sentinalEntered == false);
     
@@ -609,8 +603,8 @@ void printCategories(Property *categoryPtr)
         printf("\t%zu.%s\t", surveyCategory+1, categoryPtr->categories[surveyCategory]);
     }
     puts("");
-    
 } //printCategories
+
 
 // calculateCategoryAverages
 // Calcuates the averages of each category and stores that value into
