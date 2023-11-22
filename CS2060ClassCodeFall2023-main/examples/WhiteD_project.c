@@ -433,7 +433,7 @@ void rentalMode(Property *currentPropPtr)
     int validInt = 0;
     double totalCost = 0.0;
     currentPropPtr->ratingsEntered = 0;
-    char name[STRING_LENGTH] = {'\0'};
+    char propName[STRING_LENGTH] = {'\0'};
     bool validPropName = false;
     
     
@@ -465,11 +465,11 @@ void rentalMode(Property *currentPropPtr)
         {
             // Task 3.1.2 - Get property name customer wants to rent.
             puts ("Enter the name of the property you want to rent: ");
-            fgetsWrapper(name, STRING_LENGTH, stdin);
+            fgetsWrapper(propName, STRING_LENGTH, stdin);
             
             while (currentPropPtr != NULL)
             {
-                if (strcmp(name, currentPropPtr->name) == 0)
+                if (strcmp(propName, currentPropPtr->name) == 0)
                 {
                     // Task 3.2 - Get number of nights
                     validInt = getValidNights(MIN_RENTAL_NIGHTS, MAX_RENTAL_NIGHTS, SENTINAL_NEG1);
@@ -523,6 +523,10 @@ void rentalMode(Property *currentPropPtr)
                     }
                     
                     validPropName = true;
+                }
+                else if (strcmp(propName, currentPropPtr->name) > 0 || strcmp(propName, currentPropPtr->name) < 0)
+                {
+                    currentPropPtr = currentPropPtr->nextPropPtr;
                 }
                 else
                 {
