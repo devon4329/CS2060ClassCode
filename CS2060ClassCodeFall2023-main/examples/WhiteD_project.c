@@ -467,82 +467,75 @@ void rentalMode(Property *currentPropPtr)
         Property* userInput = malloc(sizeof(Property));
         strcpy(userInput->name, propName);
         
-        do
+        Property* previousProp = NULL;
+        
+        
+        
+        while (compareNames(userInput, currentPropPtr) != 0)
         {
-            Property* previousProp = NULL;
-            
-            if (compareNames(userInput, currentPropPtr) != 0)
+            while (currentPropPtr != NULL)
             {
-                while (currentPropPtr != NULL)
-                {
-                    previousProp = currentPropPtr;
-                    currentPropPtr = currentPropPtr->nextPropPtr;
-                }
-                if (currentPropPtr == NULL)
-                {
-                    currentPropPtr = previousProp;
-                    puts("\nError, the property you entered doesn't match. Enter the property again.");
-                    fgetsWrapper(userInput->name, STRING_LENGTH, stdin);
-                }
+                previousProp = currentPropPtr;
+                currentPropPtr = currentPropPtr->nextPropPtr;
+            }
+            if (currentPropPtr == NULL)
+            {
+                currentPropPtr = previousProp;
+                puts("\nError, the property you entered doesn't match. Enter the property again.");
+                fgetsWrapper(userInput->name, STRING_LENGTH, stdin);
+            }
+        }
+        // Task 3.2 - Get number of nights
+        validInt = getValidNights(MIN_RENTAL_NIGHTS, MAX_RENTAL_NIGHTS, SENTINAL_NEG1);
+        validPropName = true;
+        
+        if (validInt == SENTINAL_NEG1)
+        {
+            // get owner login
+            puts("");
+            if (ownerLogin(CORRECT_ID, CORRECT_PASSCODE, LOGIN_MAX_ATTEMPTS) == true)
+            {
+                sentinalEntered = true;
+                // User Story 4: Rental Property Owner Report mode
+                // Task 4.1 - Display property report
+                ownerReportMode(currentPropPtr);
+            }
+           else
+           {
+               puts("");
+               puts("\nIncorrect Login - returning to Rental Menu.");
+           }
+        }
+        else
+        {
+            // calculate charge
+            totalCost = calculateCharges(validInt, currentPropPtr->interval1, currentPropPtr->interval2, currentPropPtr->rate, currentPropPtr->discount, DISCOUNT_MULTIPLIER);
+            
+            // Increment totalRenters element in property structure
+            currentPropPtr->totalRenters++;
+            
+            // Print charges for current stay
+            puts("");
+            printNightsCharges(validInt, totalCost);
+            
+            // Add to totalRevenue element in property structure
+            currentPropPtr->totalRevenue = currentPropPtr->totalRevenue + totalCost;
+            
+            // Add to totalNights element in property structure
+            currentPropPtr->totalNights = currentPropPtr->totalNights + validInt;
+            
+            // Task 3.3 - Get property ratings from Renter
+            if (currentPropPtr->ratingsEntered < VACATION_RENTERS)
+            {
+                getRatings(MAX_RATING, MIN_RATING, currentPropPtr->totalRenters, RENTER_SURVEY_CATEGORIES, currentPropPtr);
+                puts("");
             }
             else
             {
-                // Task 3.2 - Get number of nights
-                validInt = getValidNights(MIN_RENTAL_NIGHTS, MAX_RENTAL_NIGHTS, SENTINAL_NEG1);
-                validPropName = true;
-                
-                if (validInt == SENTINAL_NEG1)
-                {
-                    // get owner login
-                    puts("");
-                    if (ownerLogin(CORRECT_ID, CORRECT_PASSCODE, LOGIN_MAX_ATTEMPTS) == true)
-                    {
-                        sentinalEntered = true;
-                        // User Story 4: Rental Property Owner Report mode
-                        // Task 4.1 - Display property report
-                        ownerReportMode(currentPropPtr);
-                    }
-                   else
-                   {
-                       puts("");
-                       puts("\nIncorrect Login - returning to Rental Menu.");
-                   }
-                }
-                else
-                {
-                    // calculate charge
-                    totalCost = calculateCharges(validInt, currentPropPtr->interval1, currentPropPtr->interval2, currentPropPtr->rate, currentPropPtr->discount, DISCOUNT_MULTIPLIER);
-                    
-                    // Increment totalRenters element in property structure
-                    currentPropPtr->totalRenters++;
-                    
-                    // Print charges for current stay
-                    puts("");
-                    printNightsCharges(validInt, totalCost);
-                    
-                    // Add to totalRevenue element in property structure
-                    currentPropPtr->totalRevenue = currentPropPtr->totalRevenue + totalCost;
-                    
-                    // Add to totalNights element in property structure
-                    currentPropPtr->totalNights = currentPropPtr->totalNights + validInt;
-                    
-                    // Task 3.3 - Get property ratings from Renter
-                    if (currentPropPtr->ratingsEntered < VACATION_RENTERS)
-                    {
-                        getRatings(MAX_RATING, MIN_RATING, currentPropPtr->totalRenters, RENTER_SURVEY_CATEGORIES, currentPropPtr);
-                        puts("");
-                    }
-                    else
-                    {
-                        puts("Maximum number of rating has been reached.\n\n");
-                    }
-                    validPropName = true;
-                }
+                puts("Maximum number of rating has been reached.\n\n");
             }
-            
-        } while (currentPropPtr != NULL && compareNames(userInput, currentPropPtr) != 0);
-        
-    
+            validPropName = true;
+        }
         
         //free(propNamePtr);
     
