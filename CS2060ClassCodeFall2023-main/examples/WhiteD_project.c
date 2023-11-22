@@ -205,6 +205,7 @@ void setUpProperty(int minNights, int maxNights, int minRate, int maxRate, Prope
         {
             puts ("No memory to create a property.");
         }
+        
     } while (yesOrNo == 'y');
     puts ("");
     
@@ -458,11 +459,13 @@ void rentalMode(Property *currentPropPtr)
         {
             puts ("\nThere are no properties to display.\n");
         }
-        Property* propNamePtr = NULL;
+        Property* propNamePtr = malloc(sizeof(Property));
         
         // Task 3.1.2 - Get property name customer wants to rent.
         puts ("Enter the name of the property you want to rent: ");
-        fgetsWrapper(propNamePtr->name, STRING_LENGTH, stdin);
+        fgetsWrapper(propName, STRING_LENGTH, stdin);
+        
+        strcpy(propNamePtr->name, propName);
         
         Property* previousProp = NULL;
         Property* current = currentPropPtr;
@@ -534,17 +537,16 @@ void rentalMode(Property *currentPropPtr)
                 {
                     current = currentPropPtr;
                     puts("\nError, the property you entered doesn't match. Enter the property again.");
-                    fgetsWrapper(propName, STRING_LENGTH, stdin);
+                    fgetsWrapper(propNamePtr->name, STRING_LENGTH, stdin);
                 }
             }
             
 
         } while (validPropName == false);
         
+        free(propNamePtr);
     
     } while (sentinalEntered == false);
-    
-    
     
 } //rentalMode
 
