@@ -146,6 +146,8 @@ void setUpProperty(int minNights, int maxNights, int minRate, int maxRate, Prope
 {
     char yesOrNo = ' ';
     
+    // Task 2.1.1 - Allow owner to create more than one property and add to a linked list
+    // properties must be added in alphabetical order.
     do
     {
         Property* newPropPtr = malloc(sizeof(Property));
@@ -196,6 +198,7 @@ void setUpProperty(int minNights, int maxNights, int minRate, int maxRate, Prope
             }
             newPropPtr->nextPropPtr = currentPtr;
             
+            // Task 2.1.2 - Prompt owner if they want to add another property
             puts("Would you like to add another property?\n");
             yesOrNo = validateYesNo();
         }
@@ -431,9 +434,33 @@ void rentalMode(Property *currentPropPtr)
     int validInt = 0;
     double totalCost = 0.0;
     currentPropPtr->ratingsEntered = 0;
+    char name[STRING_LENGTH] = {'\0'};
+    bool validPropName = false;
     
-    do 
+    // Task 3.1.2 - Get property name customer wants to rent.
+    puts ("Enter the name of the property you want to rent: ");
+    fgetsWrapper(name, STRING_LENGTH, stdin);
+    
+    while (validPropName == false)
     {
+        while (currentPropPtr != NULL)
+        {
+            if (strcmp(name, currentPropPtr->name) == 0)
+            {
+                validPropName = true;
+            }
+            else
+            {
+                puts("Error, the property you entered doesn't match. Enter the property again.");
+            }
+        }
+        
+    }
+    
+    
+    do
+    {
+        // Task 3.1.1 - Print properties in alphabetical order from linked list
         if (currentPropPtr != NULL)
         {
             Property* currentListPtr = currentPropPtr;
@@ -446,20 +473,16 @@ void rentalMode(Property *currentPropPtr)
                 {
                     printSurveyResults(currentListPtr);
                 }
-                
                 currentListPtr = currentListPtr->nextPropPtr;
-                
-                
             }
         }
         else
         {
             puts ("\nThere are no properties to display.\n");
         }
-        
         // Task 3.2 - Get number of nights
         validInt = getValidNights(MIN_RENTAL_NIGHTS, MAX_RENTAL_NIGHTS, SENTINAL_NEG1);
-        
+        validPropName = true;
         if (validInt == SENTINAL_NEG1)
         {
             // get owner login
@@ -508,6 +531,8 @@ void rentalMode(Property *currentPropPtr)
             }
         }
     } while (sentinalEntered == false);
+    
+    
 } //rentalMode
 
 
