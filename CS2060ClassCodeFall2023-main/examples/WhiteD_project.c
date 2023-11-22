@@ -471,13 +471,11 @@ void rentalMode(Property *currentPropPtr)
         
         
         
-        while (compareNames(userInput, current) != 0)
+        while (current != NULL && compareNames(userInput, current) != 0)
         {
-            while (current != NULL)
-            {
-                previousProp = current;
-                current = current->nextPropPtr;
-            }
+            previousProp = current;
+            current = current->nextPropPtr;
+            
             if (current == NULL)
             {
                 current = currentPropPtr;
