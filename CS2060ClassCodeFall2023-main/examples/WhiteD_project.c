@@ -801,8 +801,6 @@ int compareNames(Property* name1, Property* name2)
      
      current = headPtr;
      
-     
-         
      while (current != NULL)
      {
          strcpy(name, current->name);
@@ -814,6 +812,7 @@ int compareNames(Property* name1, Property* name2)
                  name[i] = '_';
              }
          }
+         
          sprintf(fileName, "%s%s", folderPath, name);
          
          if ((filePtr = fopen(fileName, "w")) == NULL)
@@ -824,7 +823,7 @@ int compareNames(Property* name1, Property* name2)
          {
              while (current != NULL)
              {
-                 fprintf(filePtr, "Rental Property Report\n");
+                 fprintf(filePtr, "%s\n", "Rental Property Report");
                  fprintf(filePtr, "Name: %s\n", current->name);
                  fprintf(filePtr, "Location: %s\n\n", current->location);
                  
@@ -834,21 +833,18 @@ int compareNames(Property* name1, Property* name2)
                  
                  calculateCategoryAverages(current);
                  
-                 puts("Category Rating Averages");
+                 fprintf(filePtr, "%s", "Category Rating Averages");
                  for (size_t i = 0; i < RENTER_SURVEY_CATEGORIES; i++)
                  {
-                     printf("%s: %.1lf\n", current->categories[i], current->averageRatings[i]);
+                     fprintf(filePtr, "%s: %.1lf\n", current->categories[i], current->averageRatings[i]);
                      //fwrite(current->categories[i], current->averageRatings[i]);
                  }
-                 
                  current = current->nextPropPtr;
-             }
-             
-         }
-     }
-     
-     
-     
+             } //while Print info to file
+         } //else
+        
+     } //while to loop thorugh all properties
+    
      fclose(filePtr);
  } // writeNamesToFile
  
