@@ -105,14 +105,13 @@ int main (void){
         
         // User Story 3: Vacationer Rental Mode
         rentalMode(headPropPtr);
-        
-        
-        
     }
     else
     {
         puts("Incorrect Login more than 3 times. Exiting AirUCCS.");
     }
+    
+    free(headPropPtr);
     
     return 0;
 } //main
@@ -680,21 +679,41 @@ void printSurveyResults(Property *propPtr)
 // total report for the owner.
 void ownerReportMode(Property *currentProp)
 {
-    puts("Rental Property Report");
-    printf("Name: %s\n", currentProp->name);
-    printf("Location: %s\n\n", currentProp->location);
-    
-    puts("Rental Property Totals");
-    puts("Renters\t\tNights\t\tCharges");
-    printf("%d\t\t\t\t%d\t\t$%d\n\n", currentProp->totalRenters, currentProp->totalNights, (int)currentProp->totalRevenue);
-    
-    calculateCategoryAverages(currentProp);
-    
-    puts("Category Rating Averages");
-    for (size_t i = 0; i < RENTER_SURVEY_CATEGORIES; i++)
+    if (currentProp != NULL)
     {
-        printf("%s: %.1lf\n", currentProp->categories[i], currentProp->averageRatings[i]);
+        puts("Rental Property Report\n");
+        
+        Property* reportPtr = currentProp;
+        
+        while (reportPtr != NULL)
+        {
+            printf("Name: %s\n", currentProp->name);
+            printf("Location: %s\n\n", currentProp->location);
+            
+            puts("Rental Property Totals");
+            puts("Renters\t\tNights\t\tCharges");
+            printf("%d\t\t\t\t%d\t\t$%d\n\n", currentProp->totalRenters, currentProp->totalNights, (int)currentProp->totalRevenue);
+            
+            calculateCategoryAverages(currentProp);
+            
+            puts("Category Rating Averages");
+            for (size_t i = 0; i < RENTER_SURVEY_CATEGORIES; i++)
+            {
+                printf("%s: %.1lf\n", currentProp->categories[i], currentProp->averageRatings[i]);
+            }
+            
+            reportPtr = reportPtr->nextPropPtr;
+        }
     }
+    else
+    {
+        puts ("\nNo Properties Have Been Rented!\n");
+    }
+    
+    
+    
+    
+    
 } //ownerReportMode
 
 
@@ -765,3 +784,28 @@ int compareNames(Property* name1, Property* name2)
         return 0;
     }
 } // compareNames
+
+
+// writeReportToFile
+// Receives a pointer to a file and a pointer to a property structure
+// outputs a file as a txt so the owner can read or print the report
+void writeReportToFile(FILE* filePtr, Property* headPtr)
+{
+    Property* current = malloc(sizeof(headPtr));
+    
+    current = headPtr;
+    
+    if ((filePtr = fopen("/Users/devonwhite/Desktop/Github/CS2060ClassCode/CS2060ClassCodeFall2023-main/examples/petNames.txt", "w")) == NULL)
+    {
+        puts("File could not be opened.");
+    }
+    else
+    {
+        while (current != NULL)
+        {
+            fprintf(filePtr, "%s\t%d\n", current->name, current->age);
+            current = current->nextNodePtr;
+        }
+    }
+    fclose(filePtr);
+} // writeNamesToFile
