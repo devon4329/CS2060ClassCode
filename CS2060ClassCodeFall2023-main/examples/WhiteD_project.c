@@ -467,19 +467,20 @@ void rentalMode(Property *currentPropPtr)
         strcpy(userInput->name, propName);
         
         Property* previousProp = NULL;
+        Property* current = currentPropPtr;
         
         
         
-        while (compareNames(userInput, currentPropPtr) != 0)
+        while (compareNames(userInput, current) != 0)
         {
-            while (currentPropPtr != NULL)
+            while (current != NULL)
             {
-                previousProp = currentPropPtr;
-                currentPropPtr = currentPropPtr->nextPropPtr;
+                previousProp = current;
+                current = current->nextPropPtr;
             }
-            if (currentPropPtr == NULL)
+            if (current == NULL)
             {
-                currentPropPtr = previousProp;
+                current = currentPropPtr;
                 puts("\nError, the property you entered doesn't match. Enter the property again.");
                 fgetsWrapper(userInput->name, STRING_LENGTH, stdin);
                 puts ("");
