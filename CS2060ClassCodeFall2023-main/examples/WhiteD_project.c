@@ -544,7 +544,7 @@ void rentalMode(Property *currentPropPtr)
 
         } while (validPropName == false);
         
-        free(propNamePtr);
+        //free(propNamePtr);
     
     } while (sentinalEntered == false);
     
