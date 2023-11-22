@@ -792,21 +792,38 @@ int compareNames(Property* name1, Property* name2)
  // outputs a file as a txt so the owner can read or print the report
  void writeReportToFile(FILE* filePtr, Property* headPtr)
  {
- Property* current = malloc(sizeof(headPtr));
- 
- current = headPtr;
- 
- if ((filePtr = fopen("/Users/devonwhite/Desktop/Github/CS2060ClassCode/CS2060ClassCodeFall2023-main/examples/fundraiser/%s.txt", "w")) == NULL)
- {
- puts("File could not be opened.");
- }
- else
- {
- while (current != NULL)
- {
-     ownerReportMode(headPtr);
- }
- }
- fclose(filePtr);
+     Property* current = malloc(sizeof(headPtr));
+     
+     current = headPtr;
+         
+     
+     if ((filePtr = fopen("/Users/devonwhite/Desktop/Github/CS2060ClassCode/CS2060ClassCodeFall2023-main/examples/fundraiser/.txt", "w")) == NULL)
+     {
+         puts("File could not be opened.");
+     }
+     else
+     {
+         while (current != NULL)
+         {
+             fprintf(filePtr, "Name: %s\n", current->name);
+             fprintf(filePtr, "Location: %s\n\n", current->location);
+             
+             fprintf(filePtr, "%s\n", "Rental Property Totals");
+             fprintf(filePtr, "%s\\t%s\t\t%s\n", "Renters", "Nights", "Charges");
+             fprintf(filePtr, "%d\t\t\t\t%d\t\t$%d\n\n", current->totalRenters, current->totalNights, (int)current->totalRevenue);
+             
+             calculateCategoryAverages(current);
+             
+             puts("Category Rating Averages");
+             for (size_t i = 0; i < RENTER_SURVEY_CATEGORIES; i++)
+             {
+                 printf("%s: %.1lf\n\n", current->categories[i], current->averageRatings[i]);
+             }
+             
+             current = current->nextPropPtr;
+         }
+         
+     }
+     fclose(filePtr);
  } // writeNamesToFile
  
