@@ -469,6 +469,7 @@ void rentalMode(Property *currentPropPtr)
             
             while (currentPropPtr != NULL)
             {
+                
                 if (strcmp(propName, currentPropPtr->name) == 0)
                 {
                     // Task 3.2 - Get number of nights
@@ -520,9 +521,10 @@ void rentalMode(Property *currentPropPtr)
                         {
                             puts("Maximum number of rating has been reached.\n\n");
                         }
+                        validPropName = true;
                     }
                     
-                    validPropName = true;
+                    
                 }
                 else if (strcmp(propName, currentPropPtr->name) > 0 || strcmp(propName, currentPropPtr->name) < 0)
                 {
