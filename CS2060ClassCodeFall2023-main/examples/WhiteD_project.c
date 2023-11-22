@@ -435,7 +435,6 @@ void rentalMode(Property *currentPropPtr)
     double totalCost = 0.0;
     currentPropPtr->ratingsEntered = 0;
     char propName[STRING_LENGTH] = {'\0'};
-    bool validPropName = false;
     
     do
     {
@@ -534,7 +533,6 @@ void rentalMode(Property *currentPropPtr)
             {
                 puts("Maximum number of rating has been reached.\n\n");
             }
-            validPropName = true;
         }
         
         //free(propNamePtr);
