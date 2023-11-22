@@ -831,7 +831,7 @@ int compareNames(Property* name1, Property* name2)
              
              calculateCategoryAverages(current);
              
-             fprintf(filePtr, "%s", "Category Rating Averages");
+             fprintf(filePtr, "%s\n", "Category Rating Averages");
              for (size_t i = 0; i < RENTER_SURVEY_CATEGORIES; i++)
              {
                  fprintf(filePtr, "%s: %.1lf\n", current->categories[i], current->averageRatings[i]);
