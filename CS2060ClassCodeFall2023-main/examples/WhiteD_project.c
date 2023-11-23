@@ -287,12 +287,10 @@ int scanInt(char* str)
 
 
 // fgetsWrapper
-// Replaces '\n' character with '\0' character from user input.
 // Passing variable "str" not as constant because value will be changed at its address
-// Receives a pionter to a string which is returned with a null terminator replacing the
-// new line character, recieves an int for the size of the char array the pointer is pointing
+// Receives a pionter to a string, an int for the size of the char array the pointer is pointing
 // to, and the file stream in which to determine how the function is reading characters.
-// Returning a string in where the new line character is replaced with a null terminator.
+// Returns a string in where the new line '\n' character is replaced with a null terminator '\0'.
 char *fgetsWrapper (char *str, int size, FILE *stream)
 {
     size_t length = 0;
@@ -502,7 +500,7 @@ void rentalMode(Property *currentPropPtr)
            else
            {
                puts("");
-               puts("\nIncorrect Login - returning to Rental Menu.");
+               puts("\nIncorrect Login - returning to Rental Menu.\n");
            }
         }
         else
