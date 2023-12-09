@@ -92,6 +92,7 @@ void ownerReportMode(Property *currentProp);
 char validateYesNo(void);
 int compareNames(Property* name1, Property* name2);
 void writeReportToFile(FILE* filePtr, Property* headPtr);
+Property* comparePropertyName(Property *propPtr);
 
 
 int main (void){
@@ -432,15 +433,14 @@ void rentalMode(Property *currentPropPtr)
     int validInt = 0;
     double totalCost = 0.0;
     currentPropPtr->ratingsEntered = 0;
-    char propName[STRING_LENGTH] = {'\0'};
     
     do
     {
+        Property* currentListPtr = currentPropPtr;
+        
         // Task 3.1.1 - Print properties in alphabetical order from linked list
         if (currentPropPtr != NULL)
         {
-            Property* currentListPtr = currentPropPtr;
-            
             while (currentListPtr != NULL)
             {
                 // Task 3.1 - Display rental property information and Ratings
@@ -459,27 +459,8 @@ void rentalMode(Property *currentPropPtr)
         
         
         // Task 3.1.2 - Get property name customer wants to rent.
-        puts ("Enter the name of the property you want to rent: ");
-        fgetsWrapper(propName, STRING_LENGTH, stdin);
-        Property* userInput = malloc(sizeof(Property));
-        strcpy(userInput->name, propName);
+        currentListPtr = comparePropertyName(currentPropPtr);
         
-        Property* previousProp = NULL;
-        Property* current = currentPropPtr;
-        
-        while (current != NULL && compareNames(userInput, current) != 0)
-        {
-            previousProp = current;
-            current = current->nextPropPtr;
-            
-            if (current == NULL)
-            {
-                current = currentPropPtr;
-                puts("\nError, the property you entered doesn't match. Enter the property again.");
-                fgetsWrapper(userInput->name, STRING_LENGTH, stdin);
-                puts ("");
-            }
-        }
         // Task 3.2 - Get number of nights
         validInt = getValidNights(MIN_RENTAL_NIGHTS, MAX_RENTAL_NIGHTS, SENTINAL_NEG1);
         
@@ -508,25 +489,25 @@ void rentalMode(Property *currentPropPtr)
         else
         {
             // calculate charge
-            totalCost = calculateCharges(validInt, current->interval1, current->interval2, current->rate, current->discount, DISCOUNT_MULTIPLIER);
+            totalCost = calculateCharges(validInt, currentListPtr->interval1, currentListPtr->interval2, currentListPtr->rate, currentListPtr->discount, DISCOUNT_MULTIPLIER);
             
             // Increment totalRenters element in property structure
-            current->totalRenters++;
+            currentListPtr->totalRenters++;
             
             // Print charges for current stay
             puts("");
             printNightsCharges(validInt, totalCost);
             
             // Add to totalRevenue element in property structure
-            current->totalRevenue = current->totalRevenue + totalCost;
+            currentListPtr->totalRevenue = currentListPtr->totalRevenue + totalCost;
             
             // Add to totalNights element in property structure
-            current->totalNights = current->totalNights + validInt;
+            currentListPtr->totalNights = currentListPtr->totalNights + validInt;
             
             // Task 3.3 - Get property ratings from Renter
-            if (current->ratingsEntered < VACATION_RENTERS)
+            if (currentListPtr->ratingsEntered < VACATION_RENTERS)
             {
-                getRatings(MAX_RATING, MIN_RATING, current->totalRenters, RENTER_SURVEY_CATEGORIES, current);
+                getRatings(MAX_RATING, MIN_RATING, currentListPtr->totalRenters, RENTER_SURVEY_CATEGORIES, currentListPtr);
                 puts("");
             }
             else
@@ -839,3 +820,35 @@ int compareNames(Property* name1, Property* name2)
      free(current);
  } // writeNamesToFile
  
+
+//comprePropertyName
+// Receives: a pointer to a property object
+// Returns: pointer to the selected property
+// strcpy: takes user input name and puts the in name element of the userInput node
+// compareNames: compares selected name of user to every node in linked list (not case sensitive)
+Property* comparePropertyName(Property *propPtr)
+{
+    char propName[STRING_LENGTH] = {'\0'};
+    puts ("Enter the name of the property you want to rent: ");
+    fgetsWrapper(propName, STRING_LENGTH, stdin);
+    Property* userInput = malloc(sizeof(Property));
+    strcpy(userInput->name, propName);
+    
+    Property* previousProp = NULL;
+    Property* current = propPtr;
+    
+    while (current != NULL && compareNames(userInput, current) != 0)
+    {
+        previousProp = current;
+        current = current->nextPropPtr;
+        
+        if (current == NULL)
+        {
+            current = propPtr;
+            puts("\nError, the property you entered doesn't match. Enter the property again.");
+            fgetsWrapper(userInput->name, STRING_LENGTH, stdin);
+            puts ("");
+        }
+    }
+    return current;
+}
