@@ -459,7 +459,7 @@ void rentalMode(Property *currentPropPtr)
         
         
         // Task 3.1.2 - Get property name customer wants to rent.
-        currentListPtr = comparePropertyName(currentPropPtr);
+        Property* selectedProp = comparePropertyName(currentPropPtr);
         
         // Task 3.2 - Get number of nights
         validInt = getValidNights(MIN_RENTAL_NIGHTS, MAX_RENTAL_NIGHTS, SENTINAL_NEG1);
@@ -489,25 +489,25 @@ void rentalMode(Property *currentPropPtr)
         else
         {
             // calculate charge
-            totalCost = calculateCharges(validInt, currentListPtr->interval1, currentListPtr->interval2, currentListPtr->rate, currentListPtr->discount, DISCOUNT_MULTIPLIER);
+            totalCost = calculateCharges(validInt, selectedProp->interval1, selectedProp->interval2, selectedProp->rate, selectedProp->discount, DISCOUNT_MULTIPLIER);
             
             // Increment totalRenters element in property structure
-            currentListPtr->totalRenters++;
+            selectedProp->totalRenters++;
             
             // Print charges for current stay
             puts("");
             printNightsCharges(validInt, totalCost);
             
             // Add to totalRevenue element in property structure
-            currentListPtr->totalRevenue = currentListPtr->totalRevenue + totalCost;
+            selectedProp->totalRevenue = selectedProp->totalRevenue + totalCost;
             
             // Add to totalNights element in property structure
-            currentListPtr->totalNights = currentListPtr->totalNights + validInt;
+            selectedProp->totalNights = selectedProp->totalNights + validInt;
             
             // Task 3.3 - Get property ratings from Renter
-            if (currentListPtr->ratingsEntered < VACATION_RENTERS)
+            if (selectedProp->ratingsEntered < VACATION_RENTERS)
             {
-                getRatings(MAX_RATING, MIN_RATING, currentListPtr->totalRenters, RENTER_SURVEY_CATEGORIES, currentListPtr);
+                getRatings(MAX_RATING, MIN_RATING, selectedProp->totalRenters, RENTER_SURVEY_CATEGORIES, selectedProp);
                 puts("");
             }
             else
@@ -660,27 +660,27 @@ void printSurveyResults(Property *propPtr)
 // total report for the owner.
 void ownerReportMode(Property *currentProp)
 {
-    if (currentProp != NULL)
+    Property* reportPtr = currentProp;
+    
+    if (reportPtr != NULL)
     {
         puts("\nRental Property Report");
         
-        Property* reportPtr = currentProp;
-        
         while (reportPtr != NULL)
         {
-            printf("Name: %s\n", currentProp->name);
-            printf("Location: %s\n\n", currentProp->location);
+            printf("Name: %s\n", reportPtr->name);
+            printf("Location: %s\n\n", reportPtr->location);
             
             puts("Rental Property Totals");
             puts("Renters\t\tNights\t\tCharges");
-            printf("%d\t\t\t\t%d\t\t$%d\n\n", currentProp->totalRenters, currentProp->totalNights, (int)currentProp->totalRevenue);
+            printf("%d\t\t\t\t%d\t\t$%d\n\n", reportPtr->totalRenters, reportPtr->totalNights, (int)reportPtr->totalRevenue);
             
-            calculateCategoryAverages(currentProp);
+            calculateCategoryAverages(reportPtr);
             
             puts("Category Rating Averages");
             for (size_t i = 0; i < RENTER_SURVEY_CATEGORIES; i++)
             {
-                printf("%s: %.1lf\n", currentProp->categories[i], currentProp->averageRatings[i]);
+                printf("%s: %.1lf\n", reportPtr->categories[i], reportPtr->averageRatings[i]);
             }
             puts("");
             reportPtr = reportPtr->nextPropPtr;
