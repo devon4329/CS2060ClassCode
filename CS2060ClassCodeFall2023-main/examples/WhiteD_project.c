@@ -74,7 +74,7 @@ typedef struct Property {
 
 
 // Function Prototypes
-void printRetnalPropertyInfo(Property *currentPropPtr);
+void printRetnalPropertyInfo(Property currentPropPtr);
 void setUpProperty(int minNights, int maxNights, int minRate, int maxRate, Property** propertyPtr);
 int getValidInt(unsigned int min, unsigned int max);
 int scanInt(char* str);
@@ -122,14 +122,16 @@ int main (void){
 // Task 3.1 - Display rental property information and Ratings
 // Prints property information using a pointer to the information held in the
 // property structure.
-void printRetnalPropertyInfo(Property *currentPropPtr)
+// Receives a property object
+// Returns void because method is printing information.
+void printRetnalPropertyInfo(Property currentPropPtr)
 {
-    printf("Rental Property: %s\n", currentPropPtr->name);
-    printf("Location: %s\n", currentPropPtr->location);
+    printf("Rental Property: %s\n", currentPropPtr.name);
+    printf("Location: %s\n", currentPropPtr.location);
     printf("Rental Property can be rented for %d to %d nights.\n", MIN_RENTAL_NIGHTS, MAX_RENTAL_NIGHTS);
-    printf("$%.2f rate a night for the first %d nights.\n", currentPropPtr->rate, currentPropPtr->interval1);
-    printf("$%.2f discount rate a night for nights %d to %d\n", currentPropPtr->discount, (currentPropPtr->interval1 + 1), currentPropPtr->interval2);
-    printf("$%.2f discount rate a night for each remaining night over %d.\n\n", (currentPropPtr->discount * DISCOUNT_MULTIPLIER), currentPropPtr->interval2);
+    printf("$%.2f rate a night for the first %d nights.\n", currentPropPtr.rate, currentPropPtr.interval1);
+    printf("$%.2f discount rate a night for nights %d to %d\n", currentPropPtr.discount, (currentPropPtr.interval1 + 1), currentPropPtr.interval2);
+    printf("$%.2f discount rate a night for each remaining night over %d.\n\n", (currentPropPtr.discount * DISCOUNT_MULTIPLIER), currentPropPtr.interval2);
 } //printRentalPropertyInfo
 
 
@@ -442,7 +444,7 @@ void rentalMode(Property *currentPropPtr)
             while (currentListPtr != NULL)
             {
                 // Task 3.1 - Display rental property information and Ratings
-                printRetnalPropertyInfo(currentListPtr);
+                printRetnalPropertyInfo(*currentListPtr);
                 if (currentListPtr->ratingsEntered <= VACATION_RENTERS)
                 {
                     printSurveyResults(currentListPtr);
@@ -733,7 +735,7 @@ char validateYesNo(void)
 
 // compareNames
 // Receives a pointer to a string for a name and a pointer to a node
-// Returns an integer value
+// Returns an integer value used to determine where in linked list property will be placed
 // Returned vales allows for determination of which name should be placed first in a
 // linked list.
 int compareNames(Property* name1, Property* name2)
